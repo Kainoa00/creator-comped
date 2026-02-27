@@ -58,30 +58,18 @@ const QUICK_STATS = [
   {
     label: 'Pending',
     value: ALL_PROOFS.filter((p) => p.review_status === 'pending').length,
-    bg: 'bg-amber-50',
-    border: 'border-amber-200',
-    text: 'text-amber-700',
   },
   {
     label: 'Needs Fix',
     value: ALL_PROOFS.filter((p) => p.review_status === 'needs_fix').length,
-    bg: 'bg-orange-50',
-    border: 'border-orange-200',
-    text: 'text-orange-700',
   },
   {
     label: 'Approved Today',
     value: 4,
-    bg: 'bg-emerald-50',
-    border: 'border-emerald-200',
-    text: 'text-emerald-700',
   },
   {
     label: 'Rejected Today',
     value: 1,
-    bg: 'bg-red-50',
-    border: 'border-red-200',
-    text: 'text-red-700',
   },
 ]
 
@@ -157,14 +145,12 @@ export default function ProofReviewQueuePage() {
             </div>
           </div>
           {/* Quick stats inline with header */}
-          <div className="flex items-center gap-2 flex-wrap justify-end">
+          <div className="flex items-center gap-4 flex-wrap justify-end">
             {QUICK_STATS.map((s) => (
-              <span
-                key={s.label}
-                className={`${s.bg} border ${s.border} ${s.text} rounded-full px-3 py-1 text-sm font-semibold`}
-              >
-                {s.value} {s.label}
-              </span>
+              <div key={s.label} className="text-right">
+                <p className="text-xl font-black text-slate-900 leading-none">{s.value}</p>
+                <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">{s.label}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -179,10 +165,10 @@ export default function ProofReviewQueuePage() {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 statusFilter === s
-                  ? 'bg-cc-accent text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-cc-accent'
+                  ? 'bg-cc-accent text-white'
+                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'
               }`}
             >
               {s === 'needs_fix' ? 'Needs Fix' : s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -196,10 +182,10 @@ export default function ProofReviewQueuePage() {
             <button
               key={p}
               onClick={() => setPlatformFilter(p)}
-              className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 platformFilter === p
-                  ? 'bg-cc-accent text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-cc-accent'
+                  ? 'bg-cc-accent text-white'
+                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'
               }`}
             >
               {p === 'all' ? 'All Platforms' : p === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
@@ -215,7 +201,7 @@ export default function ProofReviewQueuePage() {
             placeholder="Search creator or restaurant..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+            className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent transition-colors"
           />
         </div>
       </div>
@@ -224,12 +210,10 @@ export default function ProofReviewQueuePage() {
       {/* Queue List */}
       <div className="flex-1 overflow-y-auto px-8 py-5">
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 py-20 text-center bg-white border border-slate-100 rounded-2xl shadow-sm justify-center">
-          <div className="h-16 w-16 rounded-2xl bg-emerald-50 flex items-center justify-center">
-            <CheckCircle2 className="h-8 w-8 text-emerald-500" />
-          </div>
+        <div className="flex flex-col items-center gap-4 py-20 text-center border border-slate-200 rounded-lg justify-center">
+          <CheckCircle2 className="h-8 w-8 text-slate-300" />
           <div>
-            <p className="font-bold text-lg text-slate-900">All caught up!</p>
+            <p className="font-semibold text-slate-900">All caught up!</p>
             <p className="text-sm text-slate-400 mt-1">No proofs match your current filters.</p>
           </div>
         </div>
@@ -244,22 +228,18 @@ export default function ProofReviewQueuePage() {
             return (
               <div
                 key={proof.id}
-                className={`bg-white border rounded-xl shadow-sm px-5 py-4 flex items-center gap-4 transition-all hover:shadow-md hover:bg-slate-50/50 cursor-pointer ${
+                className={`bg-white border rounded-lg px-5 py-4 flex items-center gap-4 transition-colors hover:bg-slate-50 cursor-pointer ${
                   deadlinePassed
                     ? 'border-red-200'
                     : deadlineSoon
                     ? 'border-amber-200'
-                    : 'border-slate-100'
+                    : 'border-slate-200'
                 }`}
                 onClick={() => router.push(`/admin/proof/${proof.id}`)}
               >
-                {/* Platform badge — prominent */}
-                <span className={`shrink-0 inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold border ${
-                  proof.platform === 'IG_REEL'
-                    ? 'bg-pink-50 text-pink-700 border-pink-200'
-                    : 'bg-slate-900 text-white border-slate-900'
-                }`}>
-                  {proof.platform === 'IG_REEL' ? '📸 IG Reel' : '🎵 TikTok'}
+                {/* Platform badge */}
+                <span className="shrink-0 inline-flex items-center px-2.5 py-1 rounded border border-slate-200 text-xs font-semibold text-slate-500">
+                  {proof.platform === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
                 </span>
 
                 {/* Creator */}
@@ -333,7 +313,7 @@ export default function ProofReviewQueuePage() {
                       e.stopPropagation()
                       router.push(`/admin/proof/${proof.id}`)
                     }}
-                    className="bg-cc-accent text-white rounded-xl px-4 py-2 text-sm font-bold hover:bg-cc-accent-dark transition-colors ml-auto"
+                    className="bg-cc-accent text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-cc-accent-dark transition-colors"
                   >
                     Review
                   </button>

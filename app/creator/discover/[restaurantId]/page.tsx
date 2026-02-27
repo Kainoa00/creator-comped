@@ -62,22 +62,7 @@ function formatHour(time: string): string {
   return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 }
 
-// ── Pastel gradient for food image placeholders ──────────────
-
-const FOOD_GRADIENTS = [
-  'bg-gradient-to-br from-amber-50 to-orange-100 border-amber-100',
-  'bg-gradient-to-br from-rose-50 to-pink-100 border-rose-100',
-  'bg-gradient-to-br from-lime-50 to-green-100 border-lime-100',
-  'bg-gradient-to-br from-sky-50 to-blue-100 border-sky-100',
-  'bg-gradient-to-br from-violet-50 to-purple-100 border-violet-100',
-  'bg-gradient-to-br from-yellow-50 to-amber-100 border-yellow-100',
-]
-
-function getGradient(seed: string) {
-  let hash = 0
-  for (let i = 0; i < seed.length; i++) hash = seed.charCodeAt(i) + ((hash << 5) - hash)
-  return FOOD_GRADIENTS[Math.abs(hash) % FOOD_GRADIENTS.length]
-}
+// ── Food image placeholder ────────────────────────────────────
 
 const FOOD_EMOJIS = ['🍜', '🥗', '🍕', '🍔', '🌮', '🍣', '🥩', '🍝', '🧆', '🍱']
 function getFoodEmoji(seed: string) {
@@ -89,39 +74,33 @@ function getFoodEmoji(seed: string) {
 // ── Deliverable UI ─────────────────────────────────────────────
 
 function DeliverableBox({ type }: { type: DeliverableType }) {
-  const config: Record<DeliverableType, { icon: React.ReactNode; label: string; sublabel: string }> = {
+  const config: Record<DeliverableType, { icon: React.ReactNode; label: string }> = {
     IG_REEL: {
-      icon: <Instagram className="h-5 w-5 text-white" />,
-      label: '1 Instagram Reel required',
-      sublabel: 'Post within 48 hours of redemption',
+      icon: <Instagram className="h-4 w-4 text-slate-400" />,
+      label: '1 Instagram Reel required within 48 hours',
     },
     TIKTOK: {
-      icon: <Music2 className="h-5 w-5 text-white" />,
-      label: '1 TikTok Video required',
-      sublabel: 'Post within 48 hours of redemption',
+      icon: <Music2 className="h-4 w-4 text-slate-400" />,
+      label: '1 TikTok Video required within 48 hours',
     },
     CHOICE: {
-      icon: <CheckCircle2 className="h-5 w-5 text-white" />,
-      label: 'Choose: 1 IG Reel OR 1 TikTok',
-      sublabel: 'Post within 48 hours of redemption',
+      icon: <CheckCircle2 className="h-4 w-4 text-slate-400" />,
+      label: '1 IG Reel OR 1 TikTok required within 48 hours',
     },
     BOTH: {
-      icon: <Zap className="h-5 w-5 text-white" />,
-      label: 'Both IG Reel AND TikTok required',
-      sublabel: 'Post within 48 hours of redemption',
+      icon: <Zap className="h-4 w-4 text-slate-400" />,
+      label: 'IG Reel AND TikTok both required within 48 hours',
     },
   }
 
-  const { icon, label, sublabel } = config[type]
+  const { icon, label } = config[type]
 
   return (
-    <div className="bg-gradient-to-r from-cc-accent to-cc-accent-dark rounded-2xl p-5 flex items-center gap-3.5 shadow-sm">
-      <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-        {icon}
-      </div>
+    <div className="border border-slate-200 rounded-lg p-4 flex items-start gap-3">
+      <div className="shrink-0 mt-0.5">{icon}</div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-black text-white">{label}</p>
-        <p className="text-xs text-white/70 mt-0.5 font-medium">{sublabel}</p>
+        <p className="text-sm font-semibold text-slate-900">{label}</p>
+        <p className="text-xs text-slate-400 mt-0.5">Failure to post = strike + account block</p>
       </div>
     </div>
   )
@@ -143,32 +122,26 @@ function MenuItemRow({
   maxReached: boolean
 }) {
   const atItemMax = qty >= item.max_qty_per_order
-  const gradient = getGradient(item.id)
   const emoji = getFoodEmoji(item.id)
 
   return (
     <div className="flex items-center gap-3.5 py-4 px-5">
       {/* Image placeholder */}
-      <div
-        className={cn(
-          'w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 overflow-hidden border',
-          gradient
-        )}
-      >
+      <div className="w-14 h-14 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0 overflow-hidden">
         {item.image_url ? (
           <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
         ) : (
-          <span className="text-2xl">{emoji}</span>
+          <span className="text-xl">{emoji}</span>
         )}
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-black text-slate-900">{item.name}</p>
+        <p className="text-sm font-bold text-slate-900">{item.name}</p>
         {item.description && (
-          <p className="text-sm text-slate-500 mt-0.5 line-clamp-2 leading-snug">{item.description}</p>
+          <p className="text-xs text-slate-500 mt-0.5 line-clamp-2 leading-snug">{item.description}</p>
         )}
         {item.max_qty_per_order > 1 && (
-          <p className="text-xs text-slate-400 mt-0.5 font-medium">Max {item.max_qty_per_order}</p>
+          <p className="text-xs text-slate-400 mt-0.5">Max {item.max_qty_per_order}</p>
         )}
       </div>
 
@@ -178,26 +151,26 @@ function MenuItemRow({
           <>
             <button
               onClick={onRemove}
-              className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-slate-300 active:scale-95 transition-all"
+              className="w-7 h-7 rounded border border-slate-200 flex items-center justify-center text-slate-500 hover:border-slate-300 active:scale-95 transition-all"
             >
-              <Minus className="h-3.5 w-3.5" />
+              <Minus className="h-3 w-3" />
             </button>
-            <span className="w-5 text-center text-sm font-black text-slate-900">{qty}</span>
+            <span className="w-5 text-center text-sm font-semibold text-slate-900">{qty}</span>
             <button
               onClick={onAdd}
               disabled={atItemMax || maxReached}
-              className="w-8 h-8 rounded-full bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all shadow-sm shadow-cc-accent/30"
+              className="w-7 h-7 rounded border border-cc-accent bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
             >
-              <Plus className="h-3.5 w-3.5" />
+              <Plus className="h-3 w-3" />
             </button>
           </>
         ) : (
           <button
             onClick={onAdd}
             disabled={maxReached}
-            className="w-8 h-8 rounded-full bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all shadow-sm shadow-cc-accent/30"
+            className="w-7 h-7 rounded border border-cc-accent bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus className="h-3 w-3" />
           </button>
         )}
       </div>
@@ -286,11 +259,11 @@ export default function RestaurantSheetPage({
   return (
     <div className="min-h-screen bg-white flex flex-col max-w-sm mx-auto">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-100">
+      <header className="sticky top-0 z-20 bg-white border-b border-slate-200">
         <div className="flex items-center gap-3 h-14 px-4">
           <button
             onClick={() => router.back()}
-            className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900 active:scale-95 transition-all"
+            className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-95 transition-all"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -305,22 +278,22 @@ export default function RestaurantSheetPage({
         {/* Status pills row */}
         <div className="px-4 pt-5 pb-2 flex items-center gap-2 flex-wrap">
           {restaurant.settings.pause_comps ? (
-            <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-500 text-xs font-bold rounded-full px-3 py-1.5 border border-red-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+            <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-500 text-xs font-medium rounded px-2.5 py-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
               Comps Paused
             </span>
           ) : openNow ? (
-            <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-600 text-xs font-bold rounded-full px-3 py-1.5 border border-emerald-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+            <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-500 text-xs font-medium rounded px-2.5 py-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
               Open Now
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 bg-slate-50 text-slate-500 text-xs font-bold rounded-full px-3 py-1.5 border border-slate-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0" />
+            <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-400 text-xs font-medium rounded px-2.5 py-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
               Closed
             </span>
           )}
-          <span className="inline-flex items-center gap-1.5 bg-slate-50 text-slate-600 text-xs font-bold rounded-full px-3 py-1.5 border border-slate-100">
+          <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-400 text-xs font-medium rounded px-2.5 py-1">
             <Clock className="h-3 w-3" />
             Every {restaurant.settings.cooldown_days}d cooldown
           </span>
@@ -328,9 +301,9 @@ export default function RestaurantSheetPage({
 
         {/* Blackout warning */}
         {inBlackout && restaurant.settings.blackout_start && restaurant.settings.blackout_end && (
-          <div className="mx-4 mt-3 flex items-center gap-2.5 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
-            <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
-            <p className="text-xs text-amber-700 font-bold">
+          <div className="mx-4 mt-3 flex items-center gap-2.5 border border-slate-200 rounded-lg px-4 py-3">
+            <AlertTriangle className="h-4 w-4 text-slate-400 shrink-0" />
+            <p className="text-xs text-slate-500">
               No comps during lunch rush ({formatHour(restaurant.settings.blackout_start)}–{formatHour(restaurant.settings.blackout_end)})
             </p>
           </div>
@@ -338,7 +311,7 @@ export default function RestaurantSheetPage({
 
         {/* Hours card */}
         <div className="px-4 pt-4">
-          <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+          <div className="border border-slate-200 rounded-lg overflow-hidden">
             <button
               onClick={() => setShowFullHours((v) => !v)}
               className="w-full flex items-center justify-between px-4 py-4 hover:bg-slate-50 transition-colors"
@@ -350,7 +323,7 @@ export default function RestaurantSheetPage({
                 ) : (
                   <span className="w-2 h-2 rounded-full bg-slate-300 shrink-0" />
                 )}
-                <Clock className="h-4 w-4 text-cc-accent" />
+                <Clock className="h-4 w-4 text-slate-400" />
                 <span className="text-sm font-bold text-slate-900">
                   Today:{' '}
                   {todayHours?.closed
@@ -405,15 +378,15 @@ export default function RestaurantSheetPage({
             <DeliverableBox type={deliverable.allowed_types} />
 
             {deliverable.required_hashtags.length > 0 && (
-              <div className="bg-white border border-slate-100 rounded-2xl px-4 py-4 shadow-sm">
-                <p className="text-[10px] text-slate-400 mb-2.5 font-black uppercase tracking-widest">
+              <div className="border border-slate-200 rounded-lg px-4 py-4">
+                <p className="text-[10px] text-slate-400 mb-2.5 font-semibold uppercase tracking-widest">
                   Required hashtags
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {deliverable.required_hashtags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs bg-cc-accent-subtle text-cc-accent border border-blue-100 rounded-full px-3 py-1 font-bold"
+                      className="text-xs border border-slate-200 text-slate-600 rounded px-2.5 py-1 font-medium"
                     >
                       {tag}
                     </span>
@@ -421,14 +394,14 @@ export default function RestaurantSheetPage({
                 </div>
                 {deliverable.required_tags.length > 0 && (
                   <>
-                    <p className="text-[10px] text-slate-400 mt-4 mb-2.5 font-black uppercase tracking-widest">
+                    <p className="text-[10px] text-slate-400 mt-4 mb-2.5 font-semibold uppercase tracking-widest">
                       Tag in post
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {deliverable.required_tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-xs bg-slate-50 text-slate-600 border border-slate-200 rounded-full px-3 py-1 font-bold"
+                          className="text-xs border border-slate-200 text-slate-600 rounded px-2.5 py-1 font-medium"
                         >
                           {tag}
                         </span>
@@ -445,15 +418,15 @@ export default function RestaurantSheetPage({
         <div className="px-4 pt-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-black text-slate-900">Comped Menu</h2>
-            <span className="text-xs text-slate-400 font-bold bg-slate-100 rounded-full px-3 py-1">
+            <span className="text-xs text-slate-400 border border-slate-200 rounded px-2.5 py-1">
               Max {maxItems} item{maxItems !== 1 ? 's' : ''}
             </span>
           </div>
 
           {maxReached && (
-            <div className="flex items-center gap-2.5 bg-cc-accent-subtle border border-blue-200 rounded-2xl px-4 py-3 mb-4">
-              <AlertTriangle className="h-4 w-4 text-cc-accent shrink-0" />
-              <p className="text-xs text-cc-accent font-black">
+            <div className="flex items-center gap-2.5 border border-slate-200 rounded-lg px-4 py-3 mb-4">
+              <AlertTriangle className="h-4 w-4 text-slate-400 shrink-0" />
+              <p className="text-xs text-slate-500">
                 Order limit reached — {maxItems} items max
               </p>
             </div>
@@ -461,7 +434,7 @@ export default function RestaurantSheetPage({
         </div>
 
         {/* Menu items */}
-        <div className="mx-4 bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+        <div className="mx-4 border border-slate-200 rounded-lg overflow-hidden">
           <ul className="divide-y divide-slate-50">
             {menuItems.map((item) => (
               <li key={item.id}>
@@ -482,7 +455,7 @@ export default function RestaurantSheetPage({
       <div className="fixed bottom-16 left-0 right-0 z-30 px-4 pb-3 max-w-sm mx-auto">
         <div
           className={cn(
-            'rounded-2xl overflow-hidden transition-all duration-300',
+            'rounded-lg overflow-hidden transition-all duration-300',
             cartTotal > 0
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-2 pointer-events-none'
@@ -491,7 +464,7 @@ export default function RestaurantSheetPage({
           <button
             onClick={() => router.push('/creator/cart')}
             disabled={cartTotal === 0}
-            className="w-full flex items-center justify-between px-5 py-4 bg-cc-accent hover:bg-cc-accent-dark active:bg-cc-accent-dark transition-colors rounded-2xl shadow-lg shadow-cc-accent/30"
+            className="w-full flex items-center justify-between px-5 py-3.5 bg-cc-accent hover:bg-cc-accent-dark active:bg-cc-accent-dark transition-colors rounded-lg"
           >
             <div className="flex items-center gap-2.5">
               <ShoppingCart className="h-5 w-5 text-white" />

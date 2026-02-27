@@ -42,16 +42,16 @@ export function MapPlaceholder({ restaurants }: MapPlaceholderProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search restaurants..."
-            className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent transition-colors"
+            className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent transition-colors"
           />
         </div>
       </div>
 
       {/* Location pill */}
       <div className="px-5 pb-3">
-        <div className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-100 rounded-full px-3 py-1">
-          <MapPin className="h-3.5 w-3.5 text-cc-accent" />
-          <span className="text-xs font-semibold text-cc-accent">Utah County</span>
+        <div className="inline-flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1">
+          <MapPin className="h-3.5 w-3.5 text-slate-400" />
+          <span className="text-xs font-semibold text-slate-500">Utah County</span>
         </div>
       </div>
 
@@ -59,8 +59,8 @@ export function MapPlaceholder({ restaurants }: MapPlaceholderProps) {
       <div className="flex-1 overflow-y-auto px-5 pb-4">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-3">
-              <Search className="h-6 w-6 text-slate-400" />
+            <div className="w-14 h-14 rounded-lg border border-slate-200 flex items-center justify-center mb-3">
+              <Search className="h-6 w-6 text-slate-300" />
             </div>
             <p className="text-sm font-semibold text-slate-700">No results</p>
             <p className="text-xs text-slate-400 mt-1">Try a different search</p>
@@ -73,27 +73,22 @@ export function MapPlaceholder({ restaurants }: MapPlaceholderProps) {
                   onClick={() => router.push(`/creator/discover/${r.id}`)}
                   disabled={r.settings.pause_comps}
                   className={cn(
-                    'w-full bg-white border border-slate-100 rounded-2xl shadow-sm p-4',
-                    'flex items-center gap-3 text-left transition-shadow',
-                    'hover:shadow-md',
+                    'w-full bg-white border border-slate-200 rounded-lg p-4',
+                    'flex items-center gap-3 text-left transition-colors',
+                    'hover:bg-slate-50',
                     r.settings.pause_comps && 'opacity-50 cursor-not-allowed'
                   )}
                 >
-                  {/* Icon */}
-                  <div className="w-11 h-11 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
-                    <MapPin className="h-5 w-5 text-cc-accent" />
-                  </div>
-
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-slate-900 truncate">{r.name}</p>
                     <p className="text-xs text-slate-500 truncate mt-0.5">{r.address}</p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <span className="bg-blue-50 text-cc-accent text-xs font-semibold rounded-full px-2 py-0.5">
+                      <span className="text-xs text-slate-400 font-medium">
                         {fakeDistance(i)}
                       </span>
                       {r.settings.pause_comps && (
-                        <span className="bg-red-50 text-red-500 text-xs font-semibold rounded-full px-2 py-0.5">
+                        <span className="border border-red-200 text-red-500 text-xs font-semibold rounded px-1.5 py-0.5">
                           Paused
                         </span>
                       )}
@@ -101,14 +96,7 @@ export function MapPlaceholder({ restaurants }: MapPlaceholderProps) {
                   </div>
 
                   {/* Right action */}
-                  {!r.settings.pause_comps && (
-                    <div className="shrink-0 bg-cc-accent text-white text-xs font-bold rounded-xl px-3 py-1.5">
-                      View
-                    </div>
-                  )}
-                  {r.settings.pause_comps && (
-                    <ChevronRight className="h-4 w-4 text-slate-300 shrink-0" />
-                  )}
+                  <ChevronRight className="h-4 w-4 text-slate-300 shrink-0" />
                 </button>
               </li>
             ))}

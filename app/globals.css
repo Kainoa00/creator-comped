@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ============================================================
+   CreatorComped — Design Tokens (Tailwind v4 @theme)
+   Light theme: Instagram meets Linear
+   ============================================================ */
+@theme inline {
+  /* Colors */
+  --color-cc-bg: #ffffff;
+  --color-cc-bg-secondary: #f8fafc;
+  --color-cc-card: #ffffff;
+  --color-cc-border: #e2e8f0;
+  --color-cc-accent: #5c8ebf;
+  --color-cc-accent-light: #7aa8d4;
+  --color-cc-accent-dark: #4a7aad;
+  --color-cc-accent-subtle: #eff6ff;
+  --color-cc-success: #10b981;
+  --color-cc-warning: #f59e0b;
+  --color-cc-error: #ef4444;
+  --color-cc-text: #0f172a;
+  --color-cc-text-secondary: #475569;
+  --color-cc-text-muted: #94a3b8;
+
+  /* Font */
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-display: var(--font-manrope), system-ui, sans-serif;
+
+  /* Border radius */
+  --radius-cc-sm: 8px;
+  --radius-cc: 12px;
+  --radius-cc-lg: 16px;
+  --radius-cc-xl: 24px;
+}
+
+/* CSS custom properties for non-Tailwind usage */
+:root {
+  --cc-bg: #ffffff;
+  --cc-bg-secondary: #f8fafc;
+  --cc-card: #ffffff;
+  --cc-border: #e2e8f0;
+  --cc-accent: #5c8ebf;
+  --cc-accent-light: #7aa8d4;
+  --cc-accent-dark: #4a7aad;
+  --cc-accent-subtle: #eff6ff;
+  --cc-success: #10b981;
+  --cc-warning: #f59e0b;
+  --cc-error: #ef4444;
+  --cc-text: #0f172a;
+  --cc-text-secondary: #475569;
+  --cc-text-muted: #94a3b8;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5c8ebf;
+}
+
+/* Mapbox — use light style */
+.mapboxgl-map {
+  font-family: var(--font-manrope), system-ui, sans-serif;
+}
+
+/* Clean popup */
+.mapboxgl-popup-content {
+  border-radius: 16px !important;
+  padding: 0 !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+.mapboxgl-popup-tip {
+  display: none !important;
+}
+.mapboxgl-popup-close-button {
+  display: none !important;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(92, 142, 191, 0.2);
+  color: #0f172a;
+}
+
+/* Focus ring global reset */
+:focus-visible {
+  outline: 2px solid #5c8ebf;
+  outline-offset: 2px;
+}
+
+/* Centering container — bypasses Tailwind v4 class generation issues */
+.cc-container {
+  width: 100%;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.cc-container-wide {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Use inside already-padded wrappers (no extra padding) */
+.cc-inner {
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -250,7 +250,6 @@ export default function LandingPage() {
                         position: 'absolute',
                         left: pin.x,
                         top: pin.y,
-                        transform: 'translate(-50%, -100%)',
                         width: '28px',
                         height: '28px',
                         background: i === 1 ? '#5c8ebf' : '#ffffff',

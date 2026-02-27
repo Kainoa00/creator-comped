@@ -105,7 +105,7 @@ export default function RestaurantDetailPage() {
   return (
     <div className="px-8 py-6">
       {/* Header */}
-      <div className="border-b border-slate-100 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-slate-200 pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon-sm" onClick={() => router.back()}>
             <ArrowLeft className="h-4 w-4" />
@@ -125,7 +125,7 @@ export default function RestaurantDetailPage() {
               </span>
             </div>
             {isPaused && (
-              <span className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-md">
                 Comps Paused
               </span>
             )}
@@ -164,7 +164,7 @@ export default function RestaurantDetailPage() {
         {/* Left Column */}
         <div className="col-span-2 space-y-4">
           {/* Restaurant info card */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-4">
             <h2 className="text-sm font-semibold text-slate-900">Details</h2>
 
             <div className="space-y-3">
@@ -193,7 +193,7 @@ export default function RestaurantDetailPage() {
                   )}
                 </button>
               </div>
-              <div className="flex items-center gap-2 bg-slate-900 text-white rounded-xl px-4 py-3">
+              <div className="flex items-center gap-2 bg-slate-900 text-white rounded-lg px-4 py-3">
                 <span className="font-mono text-base tracking-[0.3em] font-bold">
                   {pinRevealed ? restaurant.manager_pin : '•'.repeat(restaurant.manager_pin.length)}
                 </span>
@@ -202,7 +202,7 @@ export default function RestaurantDetailPage() {
           </div>
 
           {/* Settings card */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-slate-900 mb-4">Settings</h2>
 
             <div className="space-y-3">
@@ -248,7 +248,7 @@ export default function RestaurantDetailPage() {
           </div>
 
           {/* Hours */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
               <Clock className="h-4 w-4 text-slate-400" />
               Hours
@@ -276,12 +276,12 @@ export default function RestaurantDetailPage() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4">
             {[
-              { label: 'Comps This Week', value: weekComps, iconBg: 'bg-blue-50', iconColor: 'text-cc-accent', icon: <Gift className="h-5 w-5" /> },
-              { label: 'Comps All Time', value: totalComps, iconBg: 'bg-emerald-50', iconColor: 'text-emerald-500', icon: <CheckCircle2 className="h-5 w-5" /> },
-              { label: 'Menu Items', value: menuItems.length, iconBg: 'bg-violet-50', iconColor: 'text-violet-500', icon: <Package className="h-5 w-5" /> },
+              { label: 'Comps This Week', value: weekComps, icon: <Gift className="h-5 w-5" /> },
+              { label: 'Comps All Time', value: totalComps, icon: <CheckCircle2 className="h-5 w-5" /> },
+              { label: 'Menu Items', value: menuItems.length, icon: <Package className="h-5 w-5" /> },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
-                <div className={`inline-flex h-9 w-9 items-center justify-center rounded-lg ${stat.iconBg} ${stat.iconColor} mb-3`}>
+              <div key={stat.label} className="bg-white border border-slate-200 rounded-lg p-5">
+                <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-400 mb-3">
                   {stat.icon}
                 </div>
                 <div className="text-2xl font-black text-slate-900">{stat.value}</div>
@@ -291,11 +291,11 @@ export default function RestaurantDetailPage() {
           </div>
 
           {/* Menu Items */}
-          <div className="bg-white border border-slate-100 rounded-2xl shadow-sm">
-            <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
+          <div className="bg-white border border-slate-200 rounded-lg">
+            <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-200">
               <Package className="h-4 w-4 text-slate-400" />
               <h2 className="text-sm font-semibold text-slate-900">Menu Items</h2>
-              <span className="text-xs text-slate-400 font-medium bg-slate-50 border border-slate-100 rounded-full px-2 py-0.5 ml-1">
+              <span className="text-xs text-slate-400 font-medium border border-slate-200 rounded-md px-2 py-0.5 ml-1">
                 {menuItems.length}
               </span>
             </div>
@@ -304,8 +304,8 @@ export default function RestaurantDetailPage() {
             ) : (
               <ul>
                 {menuItems.map((item) => (
-                  <li key={item.id} className="flex items-center gap-3 px-5 py-3 border-b border-slate-50 last:border-0">
-                    <div className="h-8 w-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+                  <li key={item.id} className="flex items-center gap-3 px-5 py-3 border-b border-slate-100 last:border-0">
+                    <div className="h-8 w-8 rounded-lg border border-slate-200 flex items-center justify-center shrink-0">
                       <Package className="h-4 w-4 text-slate-400" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -318,11 +318,7 @@ export default function RestaurantDetailPage() {
                       <p className="text-xs text-slate-400">Max qty</p>
                       <p className="text-sm font-mono text-slate-700">{item.max_qty_per_order}</p>
                     </div>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${
-                      item.active
-                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                        : 'bg-slate-50 text-slate-500 border-slate-200'
-                    }`}>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border border-slate-200 text-slate-600">
                       {item.active ? 'Active' : 'Off'}
                     </span>
                   </li>
@@ -333,7 +329,7 @@ export default function RestaurantDetailPage() {
 
           {/* Deliverable Requirements */}
           {deliverable && (
-            <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+            <div className="bg-white border border-slate-200 rounded-lg p-5">
               <h2 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
                 <Hash className="h-4 w-4 text-slate-400" />
                 Deliverable Requirements
@@ -347,7 +343,7 @@ export default function RestaurantDetailPage() {
                   <span className="text-xs text-slate-400 block mb-2">Required Hashtags</span>
                   <div className="flex flex-wrap gap-1.5">
                     {deliverable.required_hashtags.map((h) => (
-                      <span key={h} className="text-xs bg-slate-100 rounded-full px-2.5 py-1 text-cc-accent font-mono">
+                      <span key={h} className="text-xs border border-slate-200 rounded-md px-2.5 py-1 text-slate-600 font-mono">
                         {h}
                       </span>
                     ))}
@@ -357,7 +353,7 @@ export default function RestaurantDetailPage() {
                   <span className="text-xs text-slate-400 block mb-2">Required Tags</span>
                   <div className="flex flex-wrap gap-1.5">
                     {deliverable.required_tags.map((t) => (
-                      <span key={t} className="text-xs bg-slate-100 rounded-full px-2.5 py-1 text-blue-500 font-mono">
+                      <span key={t} className="text-xs border border-slate-200 rounded-md px-2.5 py-1 text-slate-600 font-mono">
                         {t}
                       </span>
                     ))}
@@ -368,8 +364,8 @@ export default function RestaurantDetailPage() {
           )}
 
           {/* Recent Redemptions */}
-          <div className="bg-white border border-slate-100 rounded-2xl shadow-sm">
-            <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
+          <div className="bg-white border border-slate-200 rounded-lg">
+            <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-200">
               <Gift className="h-4 w-4 text-slate-400" />
               <h2 className="text-sm font-semibold text-slate-900">Recent Redemptions</h2>
             </div>
@@ -380,7 +376,7 @@ export default function RestaurantDetailPage() {
                 {recentOrders.map((order) => {
                   const creator = DEMO_CREATORS.find((c) => c.id === order.creator_id)
                   return (
-                    <li key={order.id} className="flex items-center gap-4 px-5 py-3 border-b border-slate-50 last:border-0">
+                    <li key={order.id} className="flex items-center gap-4 px-5 py-3 border-b border-slate-100 last:border-0">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-900">{creator?.name ?? 'Unknown Creator'}</p>
                         <p className="text-xs text-slate-400">
@@ -435,7 +431,7 @@ export default function RestaurantDetailPage() {
                   }))
                 }
                 placeholder="Unlimited"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
               />
             </div>
             <div>
@@ -498,7 +494,7 @@ export default function RestaurantDetailPage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-slate-200">
             <span className="text-sm font-medium text-slate-700">Pause Comps</span>
             <button
               onClick={() => setEditSettings((s) => ({ ...s, pause_comps: !s.pause_comps }))}

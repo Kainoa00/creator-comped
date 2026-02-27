@@ -118,8 +118,8 @@ export default function HistoryPage() {
   }
 
   const inputClass = cn(
-    'h-10 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm px-3',
-    'focus:outline-none focus:ring-2 focus:ring-cc-accent/10 focus:border-cc-accent',
+    'h-10 rounded-lg bg-white border border-slate-200 text-slate-900 text-sm px-3',
+    'focus:outline-none focus:border-cc-accent',
     'transition-colors duration-150'
   )
 
@@ -145,7 +145,7 @@ export default function HistoryPage() {
 
           <button
             onClick={() => exportCSV(filtered)}
-            className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors cursor-pointer"
           >
             <Download className="h-4 w-4" />
             Export CSV
@@ -153,7 +153,7 @@ export default function HistoryPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-4 mb-5">
+        <div className="border border-slate-200 rounded-lg p-4 mb-5">
           <div className="flex flex-wrap gap-3">
             {/* Search */}
             <div className="relative flex-1 min-w-[200px]">
@@ -191,10 +191,10 @@ export default function HistoryPage() {
                 key={f.value}
                 onClick={() => handleStatusFilter(f.value)}
                 className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-semibold transition-all border cursor-pointer',
+                  'px-3 py-1.5 rounded-md text-xs font-semibold transition-all border cursor-pointer',
                   statusFilter === f.value
-                    ? 'bg-blue-50 border-cc-accent text-cc-accent'
-                    : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
+                    ? 'bg-cc-accent text-white border-cc-accent'
+                    : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
                 )}
               >
                 {f.label}
@@ -206,7 +206,7 @@ export default function HistoryPage() {
         {/* Table / Empty */}
         {pageItems.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-20 text-center">
-            <div className="h-14 w-14 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+            <div className="h-14 w-14 rounded-lg border border-slate-200 flex items-center justify-center">
               <ClipboardList className="h-6 w-6 text-slate-400" />
             </div>
             <p className="font-semibold text-slate-900">No redemptions found</p>
@@ -215,7 +215,7 @@ export default function HistoryPage() {
         ) : (
           <>
             {/* Desktop Table */}
-            <div className="hidden md:block bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <div className="hidden md:block bg-white border border-slate-200 rounded-lg overflow-hidden">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-100 bg-slate-50/60">
@@ -334,7 +334,7 @@ export default function HistoryPage() {
                 const creator = getCreator(order.creator_id)
                 const proof = getProof(order.id)
                 return (
-                  <div key={order.id} className="bg-white border border-slate-100 rounded-2xl shadow-sm p-4">
+                  <div key={order.id} className="bg-white border border-slate-200 rounded-lg p-4">
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-3">
                         <Avatar

@@ -55,7 +55,7 @@ function PlatformPill({
       type="button"
       onClick={onClick}
       className={cn(
-        'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 font-bold text-sm transition-all',
+        'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border font-bold text-sm transition-all',
         selected
           ? 'border-cc-accent bg-cc-accent text-white'
           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
@@ -163,9 +163,9 @@ export default function ProofPage() {
       {/* Locked header */}
       <header className="flex items-center justify-between px-4 pt-5 pb-3 border-b border-slate-100">
         <CCLogoWithMark size="sm" />
-        <div className="flex items-center gap-1.5 bg-red-50 border border-red-200 rounded-full px-3 py-1">
-          <Lock className="h-3.5 w-3.5 text-red-500" />
-          <span className="text-xs font-bold text-red-500">Post Required</span>
+        <div className="flex items-center gap-1.5 border border-slate-200 rounded-md px-3 py-1">
+          <Lock className="h-3.5 w-3.5 text-slate-500" />
+          <span className="text-xs font-bold text-slate-600">Post Required</span>
         </div>
       </header>
 
@@ -195,7 +195,7 @@ export default function ProofPage() {
 
         {/* Items comped */}
         <div className="px-4">
-          <div className="bg-white border border-slate-100 rounded-2xl px-4 py-3 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg px-4 py-3">
             <p className="text-xs text-slate-400 uppercase tracking-wider mb-2.5 font-bold">
               Items you received
             </p>
@@ -213,8 +213,8 @@ export default function ProofPage() {
         {/* Deliverable box */}
         {deliverableType && (
           <div className="px-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
-              <p className="text-xs text-cc-accent uppercase tracking-wider mb-2 font-bold">
+            <div className="border border-slate-200 rounded-lg p-4">
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-2 font-bold">
                 What you need to post
               </p>
               <div className="flex items-center gap-2 flex-wrap">
@@ -242,7 +242,7 @@ export default function ProofPage() {
                   {order.deliverable_requirement!.required_hashtags.map((h) => (
                     <span
                       key={h}
-                      className="text-xs bg-white text-cc-accent border border-blue-200 rounded-full px-2.5 py-0.5 font-bold"
+                      className="text-xs bg-white text-slate-600 border border-slate-200 rounded-md px-2.5 py-0.5 font-bold"
                     >
                       {h}
                     </span>
@@ -317,7 +317,7 @@ export default function ProofPage() {
           onClick={handleSubmit}
           disabled={!urlValid || submitting}
           className={cn(
-            'w-full flex items-center justify-center gap-2 bg-cc-accent text-white font-bold rounded-xl py-3.5 text-sm transition-all',
+            'w-full flex items-center justify-center gap-2 bg-cc-accent text-white font-bold rounded-lg py-3.5 text-sm transition-all',
             'hover:bg-cc-accent-dark',
             (!urlValid || submitting) && 'opacity-50 cursor-not-allowed'
           )}

@@ -147,7 +147,7 @@ export default function CompMenuPage() {
           </div>
           <button
             onClick={openNew}
-            className="flex items-center gap-2 bg-cc-accent hover:bg-cc-accent-dark text-white rounded-xl px-4 py-2.5 text-sm font-bold transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-cc-accent hover:bg-cc-accent-dark text-white rounded-lg px-4 py-2.5 text-sm font-bold transition-colors cursor-pointer"
           >
             <Plus className="h-4 w-4" />
             Add Item
@@ -157,10 +157,10 @@ export default function CompMenuPage() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* ── Left: Items List ── */}
           <div className="lg:col-span-2">
-            <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
               {items.length === 0 ? (
                 <div className="flex flex-col items-center gap-3 py-16 text-center px-6">
-                  <div className="h-12 w-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center">
+                  <div className="h-12 w-12 rounded-lg border border-slate-200 flex items-center justify-center">
                     <Package className="h-5 w-5 text-slate-400" />
                   </div>
                   <p className="font-semibold text-slate-900 text-sm">No items yet</p>
@@ -176,7 +176,7 @@ export default function CompMenuPage() {
                           'flex items-center gap-3 px-4 py-4 cursor-pointer transition-all',
                           i < items.length - 1 && 'border-b border-slate-100',
                           selectedId === item.id
-                            ? 'border-l-2 border-cc-accent bg-blue-50/40'
+                            ? 'border-l-2 border-cc-accent bg-slate-50'
                             : 'hover:bg-slate-50'
                         )}
                         onClick={() => openEdit(item)}
@@ -208,7 +208,7 @@ export default function CompMenuPage() {
                         </div>
 
                         {!item.active && (
-                          <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Off</span>
+                          <span className="text-xs text-slate-400 border border-slate-200 px-2 py-0.5 rounded-md">Off</span>
                         )}
                       </li>
                     ))}
@@ -217,7 +217,7 @@ export default function CompMenuPage() {
                   {/* Add item shortcut */}
                   <button
                     onClick={openNew}
-                    className="w-full border-t-2 border-dashed border-slate-200 p-4 text-center text-sm font-semibold text-cc-accent hover:border-cc-accent hover:bg-blue-50/50 transition-all cursor-pointer"
+                    className="w-full border-t border-dashed border-slate-200 p-4 text-center text-sm font-semibold text-slate-500 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer"
                   >
                     <Plus className="h-4 w-4 inline mr-1.5" />
                     Add Item
@@ -230,7 +230,7 @@ export default function CompMenuPage() {
           {/* ── Right: Edit Form ── */}
           <div className="lg:col-span-3">
             {selectedId ? (
-              <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6">
+              <div className="bg-white border border-slate-200 rounded-lg p-6">
                 <h2 className="text-lg font-bold text-slate-900 mb-5">
                   {isNew ? 'New Item' : `Edit: ${editingItem?.name}`}
                 </h2>
@@ -264,7 +264,7 @@ export default function CompMenuPage() {
 
                   {/* Image preview */}
                   {formData.image_url && (
-                    <div className="rounded-xl overflow-hidden border border-slate-100 h-32 w-full bg-slate-50">
+                    <div className="rounded-lg overflow-hidden border border-slate-200 h-32 w-full bg-slate-50">
                       <img
                         src={formData.image_url}
                         alt="Preview"
@@ -293,8 +293,8 @@ export default function CompMenuPage() {
                           }))
                         }
                         className={cn(
-                          'w-full h-11 rounded-xl bg-white border text-slate-900 text-sm px-3',
-                          'focus:outline-none focus:ring-2 focus:ring-cc-accent/10 focus:border-cc-accent',
+                          'w-full h-11 rounded-lg bg-white border text-slate-900 text-sm px-3',
+                          'focus:outline-none focus:border-cc-accent',
                           'transition-colors duration-150',
                           formErrors.max_qty ? 'border-red-400' : 'border-slate-200'
                         )}
@@ -325,8 +325,8 @@ export default function CompMenuPage() {
                             }))
                           }
                           className={cn(
-                            'w-full h-11 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm pl-8 pr-3',
-                            'focus:outline-none focus:ring-2 focus:ring-cc-accent/10 focus:border-cc-accent',
+                            'w-full h-11 rounded-lg bg-white border border-slate-200 text-slate-900 text-sm pl-8 pr-3',
+                            'focus:outline-none focus:border-cc-accent',
                             'transition-colors duration-150'
                           )}
                         />
@@ -335,7 +335,7 @@ export default function CompMenuPage() {
                   </div>
 
                   {/* Active toggle */}
-                  <div className="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                  <div className="flex items-center justify-between rounded-lg px-4 py-3 border border-slate-200">
                     <div>
                       <p className="text-sm font-semibold text-slate-900">Active</p>
                       <p className="text-xs text-slate-400">Creators can select this item</p>
@@ -375,7 +375,7 @@ export default function CompMenuPage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-white border border-slate-100 rounded-2xl shadow-sm flex flex-col items-center justify-center gap-3 py-20 text-center px-6">
+              <div className="border border-slate-200 rounded-lg flex flex-col items-center justify-center gap-3 py-20 text-center px-6">
                 <div className="h-12 w-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center">
                   <Pencil className="h-5 w-5 text-slate-400" />
                 </div>

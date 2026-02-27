@@ -214,7 +214,7 @@ export default function CartPage() {
         <header className="border-b border-slate-100 shrink-0" style={{ height: '56px', display: 'flex', alignItems: 'center', padding: '0 16px', gap: '12px' }}>
           <button
             onClick={() => router.back()}
-            className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900 active:scale-95 transition-all shrink-0"
+            className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 active:scale-95 transition-all shrink-0"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -222,7 +222,7 @@ export default function CartPage() {
         </header>
         <div className="flex flex-col items-center justify-center gap-5 px-6 text-center" style={{ flex: 1, paddingBottom: '64px' }}>
           {/* Big icon container */}
-          <div className="w-20 h-20 rounded-3xl bg-cc-accent-subtle flex items-center justify-center shadow-inner">
+          <div className="w-20 h-20 rounded-lg border border-slate-200 flex items-center justify-center">
             <ShoppingCart className="h-9 w-9 text-cc-accent" />
           </div>
           <div>
@@ -233,7 +233,7 @@ export default function CartPage() {
           </div>
           <button
             onClick={() => router.push('/creator/discover')}
-            className="bg-cc-accent text-white font-black rounded-2xl px-8 py-3.5 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all shadow-sm shadow-cc-accent/30"
+            className="bg-cc-accent text-white font-black rounded-lg px-8 py-3.5 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all"
           >
             Browse Restaurants
           </button>
@@ -255,7 +255,7 @@ export default function CartPage() {
           </button>
           <h1 className="text-base font-black text-slate-900">Your Order</h1>
           {/* Item count badge */}
-          <span className="ml-auto bg-cc-accent text-white text-xs font-black rounded-full px-2.5 py-0.5">
+          <span className="ml-auto bg-cc-accent text-white text-xs font-black rounded-md px-2.5 py-0.5">
             {cartTotal} item{cartTotal !== 1 ? 's' : ''}
           </span>
         </div>

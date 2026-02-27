@@ -230,11 +230,11 @@ export default function StrikesPage() {
       </div>
 
       {/* Section 1: Active Issues */}
-      <div className="bg-white border border-slate-100 rounded-2xl shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-lg">
         <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
           <Zap className="h-4 w-4 text-red-500" />
           <h2 className="text-sm font-semibold text-slate-900">Active Issues</h2>
-          <span className="inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-full bg-red-100 text-red-700 text-xs font-bold">
+          <span className="inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-md border border-slate-200 text-slate-600 text-xs font-bold">
             {DEMO_ACTIVE_ISSUES.length}
           </span>
         </div>
@@ -258,12 +258,12 @@ export default function StrikesPage() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <p className="font-semibold text-slate-900">{creator.name}</p>
                       {creator.ban_state === 'permanent' && (
-                        <span className="bg-red-100 text-red-700 border border-red-200 rounded-full px-3 py-0.5 text-xs font-semibold">
+                        <span className="border border-slate-200 text-slate-600 rounded-md px-3 py-0.5 text-xs font-semibold">
                           Permanently Banned
                         </span>
                       )}
                       {creator.ban_state === 'temporary' && (
-                        <span className="bg-amber-100 text-amber-700 border border-amber-200 rounded-full px-3 py-0.5 text-xs font-semibold">
+                        <span className="border border-slate-200 text-slate-600 rounded-md px-3 py-0.5 text-xs font-semibold">
                           Temp Ban until {creator.ban_until ? formatDate(creator.ban_until) : '—'}
                         </span>
                       )}
@@ -297,7 +297,7 @@ export default function StrikesPage() {
                             setIssueCreatorId(creator.id)
                             setShowIssueModal(true)
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 text-amber-600 text-sm font-medium hover:bg-amber-50 transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
                         >
                           <Zap className="h-3.5 w-3.5" />
                           Strike
@@ -307,7 +307,7 @@ export default function StrikesPage() {
                             setBanCreator(creator)
                             setShowTempBanModal(true)
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-orange-300 text-orange-600 text-sm font-medium hover:bg-orange-50 transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
                         >
                           <Calendar className="h-3.5 w-3.5" />
                           Temp Ban
@@ -317,7 +317,7 @@ export default function StrikesPage() {
                             setPermBanCreator(creator)
                             setShowPermBanModal(true)
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-red-300 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
                         >
                           <Ban className="h-3.5 w-3.5" />
                           Perm Ban
@@ -330,7 +330,7 @@ export default function StrikesPage() {
                           setLiftCreator(creator)
                           setShowLiftModal(true)
                         }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-emerald-300 text-emerald-600 text-sm font-medium hover:bg-emerald-50 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
                       >
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         Lift Ban
@@ -345,7 +345,7 @@ export default function StrikesPage() {
                     {creator.strikes.map((strike, i) => (
                       <div
                         key={strike.id}
-                        className="flex items-start gap-2 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2"
+                        className="flex items-start gap-2 border border-slate-200 rounded-lg px-3 py-2"
                       >
                         <span className="text-xs font-bold text-red-500 shrink-0 mt-0.5">#{i + 1}</span>
                         <div className="flex-1 min-w-0">
@@ -368,12 +368,12 @@ export default function StrikesPage() {
       </div>
 
       {/* Section 2: Strike History Log */}
-      <div className="bg-white border border-slate-100 rounded-2xl shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-lg">
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-slate-400" />
             <h2 className="text-sm font-semibold text-slate-900">Strike History</h2>
-            <span className="text-xs text-slate-400 font-medium bg-slate-50 border border-slate-100 rounded-full px-2 py-0.5">
+            <span className="text-xs text-slate-500 font-medium border border-slate-200 rounded-md px-2 py-0.5">
               {ALL_STRIKES.length} total
             </span>
           </div>
@@ -385,7 +385,7 @@ export default function StrikesPage() {
                 placeholder="Filter by creator..."
                 value={historySearch}
                 onChange={(e) => setHistorySearch(e.target.value)}
-                className="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent w-48"
+                className="bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent w-48"
               />
             </div>
             <Button
@@ -430,7 +430,7 @@ export default function StrikesPage() {
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-red-50 text-red-600 text-xs font-bold border border-red-200">
+                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-md border border-slate-200 text-slate-600 text-xs font-bold">
                       {strikeNum}
                     </span>
                   </td>
@@ -470,7 +470,7 @@ export default function StrikesPage() {
             <select
               value={issueCreatorId}
               onChange={(e) => setIssueCreatorId(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-cc-accent"
             >
               <option value="">Select creator...</option>
               {[...DEMO_CREATORS, ...DEMO_ACTIVE_ISSUES.filter(c => !DEMO_CREATORS.find(dc => dc.id === c.id))].map((c) => (
@@ -486,7 +486,7 @@ export default function StrikesPage() {
             <select
               value={issueReason}
               onChange={(e) => setIssueReason(e.target.value as StrikeReason)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-cc-accent"
             >
               {STRIKE_REASONS.map((r) => (
                 <option key={r.value} value={r.value}>{r.label}</option>
@@ -503,11 +503,11 @@ export default function StrikesPage() {
               onChange={(e) => setIssueNotes(e.target.value)}
               placeholder="Document the violation..."
               rows={3}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
             />
           </div>
 
-          <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5">
+          <div className="flex items-start gap-2 border border-slate-200 rounded-lg px-3 py-2.5">
             <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
             <p className="text-xs text-slate-600">
               Strikes are cumulative. 2 strikes = 7-day ban. 3 strikes = permanent ban.
@@ -543,7 +543,7 @@ export default function StrikesPage() {
             type="date"
             value={banUntil}
             onChange={(e) => setBanUntil(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-cc-accent"
           />
         </div>
         <ModalFooter>
@@ -567,7 +567,7 @@ export default function StrikesPage() {
         title="Permanent Ban"
         description="This action cannot be undone without manual reversal."
       >
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+        <div className="p-4 border border-slate-200 rounded-lg">
           <p className="text-sm text-slate-600">
             You are about to permanently ban{' '}
             <span className="font-bold text-red-600">{permBanCreator?.name}</span>. They will lose

@@ -36,7 +36,7 @@ function Stat({
 }) {
   const isEmpty = value === '—' || value === null || value === undefined
   return (
-    <div className={cn('flex flex-col items-center gap-1 flex-1 py-6', border && 'border-l border-slate-100')}>
+    <div className={cn('flex flex-col items-center gap-1 flex-1 py-6', border && 'border-l border-slate-200')}>
       <span className={cn('text-3xl font-black leading-none', isEmpty ? 'text-slate-300' : 'text-slate-900')}>
         {value}
       </span>
@@ -80,7 +80,7 @@ function LeaderboardCard({
           </span>
         </div>
         {myRank && (
-          <span className="text-xs font-semibold text-cc-accent border border-cc-accent/30 rounded-full px-2.5 py-0.5">
+          <span className="text-xs font-semibold text-cc-accent border border-cc-accent/30 rounded-md px-2.5 py-0.5">
             #{myRank}
           </span>
         )}
@@ -103,7 +103,7 @@ function LeaderboardCard({
               <img
                 src={entry.creator_photo ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${entry.creator_id}`}
                 alt={entry.creator_name}
-                className="w-7 h-7 rounded-full object-cover ring-1 ring-slate-100"
+                className="w-7 h-7 rounded-full object-cover ring-1 ring-slate-200"
               />
               <span
                 className={cn(
@@ -113,7 +113,7 @@ function LeaderboardCard({
               >
                 {entry.creator_name}
                 {isMe && (
-                  <span className="ml-1.5 text-[10px] border border-cc-accent/30 text-cc-accent rounded-full px-1.5 py-0.5 font-medium align-middle">
+                  <span className="ml-1.5 text-[10px] border border-cc-accent/30 text-cc-accent rounded-md px-1.5 py-0.5 font-medium align-middle">
                     you
                   </span>
                 )}
@@ -187,7 +187,7 @@ export default function ProfilePage() {
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="text-xl font-black text-slate-900 leading-tight">{creator.name}</h2>
             {creator.verified && (
-              <span className="inline-flex items-center gap-1 border border-cc-accent/30 text-cc-accent text-[10px] font-semibold px-2 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 border border-cc-accent/30 text-cc-accent text-[10px] font-semibold px-2 py-0.5 rounded-md">
                 <CheckCircle2 className="h-2.5 w-2.5" />
                 Verified
               </span>

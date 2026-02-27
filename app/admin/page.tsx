@@ -140,7 +140,7 @@ export default function AdminDashboardPage() {
                 const order = DEMO_ORDERS.find((o) => o.id === proof.order_id)
                 const creator = DEMO_CREATORS.find((c) => c.id === proof.creator_id)
                 return (
-                  <li key={proof.id} className="flex items-center gap-3 px-5 py-3 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+                  <li key={proof.id} className="flex items-center gap-3 px-5 py-3 border-b border-slate-200 last:border-0 hover:bg-slate-50 transition-colors">
                     <Avatar
                       src={creator?.photo_url ?? null}
                       name={creator?.name ?? 'Unknown'}
@@ -184,7 +184,7 @@ export default function AdminDashboardPage() {
 
           <ul>
             {PENDING_CREATORS.map((c) => (
-              <li key={c.id} className="flex items-center gap-3 px-5 py-3 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+              <li key={c.id} className="flex items-center gap-3 px-5 py-3 border-b border-slate-200 last:border-0 hover:bg-slate-50 transition-colors">
                 <Avatar src={null} name={c.name} size="sm" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-900 truncate">{c.name}</p>
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
           </div>
           <ul>
             {ACTIVITY_LOG.map((event) => (
-              <li key={event.id} className="flex items-start gap-3 px-5 py-3 border-b border-slate-100 last:border-0">
+              <li key={event.id} className="flex items-start gap-3 px-5 py-3 border-b border-slate-200 last:border-0">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-slate-600 leading-snug">{event.text}</p>
                 </div>
@@ -249,7 +249,7 @@ export default function AdminDashboardPage() {
                         <span className="flex-1 text-sm text-slate-700 truncate">{entry.creator_name}</span>
                         <span className="text-xs font-semibold text-cc-accent">{formatNumber(entry.score)}</span>
                       </div>
-                      <div className="ml-6 h-1 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="ml-6 h-1 bg-slate-200 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-cc-accent rounded-full"
                           style={{ width: `${Math.round((entry.score / MAX_SCORE) * 100)}%` }}
@@ -261,7 +261,7 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="border-t border-slate-100" />
+            <div className="border-t border-slate-200" />
 
             <div>
               <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-3">TikTok</p>
@@ -276,7 +276,7 @@ export default function AdminDashboardPage() {
                         <span className="flex-1 text-sm text-slate-700 truncate">{entry.creator_name}</span>
                         <span className="text-xs font-semibold text-slate-500">{formatNumber(entry.score)}</span>
                       </div>
-                      <div className="ml-6 h-1 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="ml-6 h-1 bg-slate-200 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-slate-400 rounded-full"
                           style={{ width: `${Math.round((entry.score / MAX_SCORE) * 100)}%` }}
@@ -288,7 +288,7 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-3">
+            <div className="border-t border-slate-200 pt-3">
               <Link href="/admin/leaderboard">
                 <Button variant="outline" size="sm" className="w-full">
                   Lock Contest Snapshot

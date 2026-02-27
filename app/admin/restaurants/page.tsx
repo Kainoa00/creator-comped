@@ -94,7 +94,7 @@ export default function RestaurantsPage() {
   return (
     <div className="px-8 py-6 space-y-5">
       {/* Header */}
-      <div className="border-b border-slate-100 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-slate-200 pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-slate-900">Restaurants</h1>
@@ -120,12 +120,12 @@ export default function RestaurantsPage() {
           placeholder="Search restaurants..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent shadow-sm"
+          className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
         />
       </div>
 
       {/* Restaurants Table */}
-      <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
@@ -143,7 +143,7 @@ export default function RestaurantsPage() {
               <tr>
                 <td colSpan={7} className="px-5 py-16 text-center">
                   <div className="flex flex-col items-center gap-3">
-                    <div className="h-14 w-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">
+                    <div className="h-14 w-14 rounded-lg border border-slate-200 flex items-center justify-center">
                       <UtensilsCrossed className="h-6 w-6 text-slate-300" />
                     </div>
                     <p className="font-semibold text-slate-900">No restaurants found</p>
@@ -165,8 +165,8 @@ export default function RestaurantsPage() {
                   >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-9 w-9 rounded-xl bg-cc-accent/10 border border-cc-accent/20 flex items-center justify-center shrink-0">
-                          <UtensilsCrossed className="h-4 w-4 text-cc-accent" />
+                        <div className="h-9 w-9 rounded-lg border border-slate-200 flex items-center justify-center shrink-0">
+                          <UtensilsCrossed className="h-4 w-4 text-slate-400" />
                         </div>
                         <div>
                           <p className="font-semibold text-slate-900">{restaurant.name}</p>
@@ -236,8 +236,8 @@ export default function RestaurantsPage() {
                           }}
                           className={`p-1.5 rounded-lg transition-colors ${
                             isPaused
-                              ? 'text-emerald-500 hover:bg-emerald-50'
-                              : 'text-amber-500 hover:bg-amber-50'
+                              ? 'text-emerald-500 hover:bg-slate-50'
+                              : 'text-amber-500 hover:bg-slate-50'
                           }`}
                           title={isPaused ? 'Resume Comps' : 'Pause Comps'}
                         >
@@ -271,7 +271,7 @@ export default function RestaurantsPage() {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="e.g. Brick Oven Restaurant"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
             />
           </div>
 
@@ -284,7 +284,7 @@ export default function RestaurantsPage() {
               value={newAddress}
               onChange={(e) => setNewAddress(e.target.value)}
               placeholder="111 E 800 N, Provo, UT 84606"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
             />
           </div>
 
@@ -299,7 +299,7 @@ export default function RestaurantsPage() {
                 value={newLat}
                 onChange={(e) => setNewLat(e.target.value)}
                 placeholder="40.2477"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
               />
             </div>
             <div>
@@ -312,7 +312,7 @@ export default function RestaurantsPage() {
                 value={newLng}
                 onChange={(e) => setNewLng(e.target.value)}
                 placeholder="-111.6561"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
               />
             </div>
           </div>
@@ -327,7 +327,7 @@ export default function RestaurantsPage() {
               onChange={(e) => setNewPin(e.target.value.slice(0, 6))}
               placeholder="4–6 digit PIN"
               maxLength={6}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent font-mono tracking-widest"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent font-mono tracking-widest"
             />
           </div>
         </div>

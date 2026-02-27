@@ -133,16 +133,13 @@ interface StatCardProps {
   label: string
   value: string
   sub?: string
-  iconBg: string
-  iconColor: string
-  topBorder: string
 }
 
-function StatCard({ icon, label, value, sub, iconBg, iconColor, topBorder }: StatCardProps) {
+function StatCard({ icon, label, value, sub }: StatCardProps) {
   return (
-    <div className={cn('bg-white border border-slate-100 rounded-2xl shadow-sm p-5 border-t-4', topBorder)}>
-      <div className={cn('h-10 w-10 rounded-full flex items-center justify-center mb-3', iconBg)}>
-        <span className={iconColor}>{icon}</span>
+    <div className="bg-white border border-slate-200 rounded-lg p-5">
+      <div className="h-10 w-10 rounded-lg border border-slate-200 flex items-center justify-center mb-3 text-slate-400">
+        {icon}
       </div>
       <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
       <p className="text-3xl font-black text-slate-900">{value}</p>
@@ -175,7 +172,7 @@ export default function AnalyticsPage() {
           </div>
           <button
             onClick={exportAnalyticsCSV}
-            className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors cursor-pointer"
           >
             <Download className="h-4 w-4" />
             Export CSV
@@ -189,47 +186,35 @@ export default function AnalyticsPage() {
             label="Total Comps"
             value={String(confirmedOrders.length)}
             sub="this month"
-            iconBg="bg-blue-50"
-            iconColor="text-cc-accent"
-            topBorder="border-cc-accent"
           />
           <StatCard
             icon={<DollarSign className="h-5 w-5" />}
             label="Est. COGS"
             value={`$${totalCogs.toFixed(2)}`}
             sub="food cost"
-            iconBg="bg-red-50"
-            iconColor="text-red-500"
-            topBorder="border-red-400"
           />
           <StatCard
             icon={<Video className="h-5 w-5" />}
             label="Videos Delivered"
             value={String(videosDelivered)}
             sub="approved posts"
-            iconBg="bg-emerald-50"
-            iconColor="text-emerald-600"
-            topBorder="border-emerald-400"
           />
           <StatCard
             icon={<Eye className="h-5 w-5" />}
             label="Total Views"
             value={formatNumber(totalViews)}
             sub="est. reach"
-            iconBg="bg-purple-50"
-            iconColor="text-purple-500"
-            topBorder="border-purple-400"
           />
         </div>
 
         {/* ── Daily Comps Bar Chart ── */}
-        <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6 mb-5">
+        <div className="bg-white border border-slate-200 rounded-lg p-6 mb-5">
           <div className="flex items-center gap-2 mb-5">
             <BarChart3 className="h-5 w-5 text-cc-accent" />
             <h2 className="text-base font-bold text-slate-900">Daily Comps This Month</h2>
           </div>
 
-          <div className="flex items-end gap-1 h-32 bg-slate-50 rounded-xl p-3">
+          <div className="flex items-end gap-1 h-32 bg-slate-50 rounded-lg p-3">
             {dailyCompsData.map((count, idx) => {
               const day = idx + 1
               const isToday = day === today.getDate()
@@ -265,27 +250,27 @@ export default function AnalyticsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
           {/* ── Platform Split ── */}
-          <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6">
+          <div className="bg-white border border-slate-200 rounded-lg p-6">
             <h2 className="text-base font-bold text-slate-900 mb-5">Platform Split</h2>
 
             <div className="grid grid-cols-2 gap-4 mb-5">
-              <div className="text-center bg-slate-50 rounded-2xl p-4">
-                <div className="h-12 w-12 rounded-full bg-pink-50 flex items-center justify-center mx-auto mb-2">
-                  <Instagram className="h-6 w-6 text-pink-500" />
+              <div className="text-center border border-slate-200 rounded-lg p-4">
+                <div className="h-12 w-12 rounded-lg border border-slate-200 flex items-center justify-center mx-auto mb-2">
+                  <Instagram className="h-6 w-6 text-slate-400" />
                 </div>
                 <p className="text-2xl font-black text-slate-900">{igProofs}</p>
                 <p className="text-xs text-slate-400 mt-0.5">IG Reels</p>
-                <p className="text-sm font-bold text-pink-500 mt-0.5">
+                <p className="text-sm font-bold text-slate-500 mt-0.5">
                   {Math.round((igProofs / totalProofs) * 100)}%
                 </p>
               </div>
-              <div className="text-center bg-slate-50 rounded-2xl p-4">
-                <div className="h-12 w-12 rounded-full bg-cyan-50 flex items-center justify-center mx-auto mb-2">
-                  <Music2 className="h-6 w-6 text-cyan-500" />
+              <div className="text-center border border-slate-200 rounded-lg p-4">
+                <div className="h-12 w-12 rounded-lg border border-slate-200 flex items-center justify-center mx-auto mb-2">
+                  <Music2 className="h-6 w-6 text-slate-400" />
                 </div>
                 <p className="text-2xl font-black text-slate-900">{tikTokProofs}</p>
                 <p className="text-xs text-slate-400 mt-0.5">TikToks</p>
-                <p className="text-sm font-bold text-cyan-500 mt-0.5">
+                <p className="text-sm font-bold text-slate-500 mt-0.5">
                   {Math.round((tikTokProofs / totalProofs) * 100)}%
                 </p>
               </div>
@@ -305,19 +290,19 @@ export default function AnalyticsPage() {
           </div>
 
           {/* ── ROI ── */}
-          <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6">
+          <div className="bg-white border border-slate-200 rounded-lg p-6">
             <h2 className="text-base font-bold text-slate-900 mb-5">Estimated ROI</h2>
 
             <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center bg-slate-50 rounded-xl px-4 py-3">
+              <div className="flex justify-between items-center border border-slate-200 rounded-lg px-4 py-3">
                 <span className="text-sm text-slate-500">COGS spent</span>
                 <span className="text-base font-bold text-red-500">${totalCogs.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between items-center bg-slate-50 rounded-xl px-4 py-3">
+              <div className="flex justify-between items-center border border-slate-200 rounded-lg px-4 py-3">
                 <span className="text-sm text-slate-500">Est. reach (views)</span>
                 <span className="text-base font-bold text-emerald-600">{formatNumber(totalViews)}</span>
               </div>
-              <div className="flex justify-between items-center bg-slate-50 rounded-xl px-4 py-3">
+              <div className="flex justify-between items-center border border-slate-200 rounded-lg px-4 py-3">
                 <span className="text-sm text-slate-500">Cost per view</span>
                 <span className="text-base font-bold text-cc-accent">
                   {totalViews > 0 ? `$${cpv.toFixed(4)}` : '—'}
@@ -341,7 +326,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* ── Top Content ── */}
-        <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6">
+        <div className="bg-white border border-slate-200 rounded-lg p-6">
           <div className="flex items-center gap-2 mb-1">
             <TrendingUp className="h-5 w-5 text-cc-accent" />
             <h2 className="text-base font-bold text-slate-900">Top Content by Score</h2>

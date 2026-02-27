@@ -47,7 +47,7 @@ export default function RedeemPage() {
     return (
       <div style={{ position: 'fixed', inset: 0, background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '24px', padding: '0 24px 64px', textAlign: 'center', zIndex: 10 }}>
         {/* Big QR icon */}
-        <div className="w-24 h-24 rounded-3xl bg-cc-accent-subtle flex items-center justify-center shadow-inner">
+        <div className="w-24 h-24 rounded-lg border border-slate-200 flex items-center justify-center">
           <QrCode className="h-11 w-11 text-cc-accent" />
         </div>
         <div>
@@ -58,7 +58,7 @@ export default function RedeemPage() {
         </div>
         <button
           onClick={() => router.push('/creator/discover')}
-          className="flex items-center gap-2 bg-cc-accent text-white font-black rounded-2xl px-8 py-3.5 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all shadow-sm shadow-cc-accent/30"
+          className="flex items-center gap-2 bg-cc-accent text-white font-black rounded-lg px-8 py-3.5 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all"
         >
           Browse Restaurants
           <ArrowRight className="h-4 w-4" />
@@ -86,7 +86,7 @@ export default function RedeemPage() {
       <div className="border-b border-slate-200 pt-safe">
         <header className="flex items-center justify-between px-5 pt-5 pb-3">
           <CCLogoWithMark size="sm" />
-          <div className="flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1.5">
+          <div className="flex items-center gap-1.5 border border-slate-200 rounded-md px-3 py-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
             <span className="text-xs text-slate-700 font-medium truncate max-w-[120px]">
               {restaurantName}
@@ -112,7 +112,7 @@ export default function RedeemPage() {
         <div className="relative w-full">
           <div
             className={cn(
-              'bg-white border rounded-xl p-6 flex flex-col items-center mx-auto w-fit transition-all',
+              'bg-white border rounded-lg p-6 flex flex-col items-center mx-auto w-fit transition-all',
               expired ? 'border-red-200 opacity-40' : 'border-slate-200'
             )}
           >
@@ -209,7 +209,7 @@ export default function RedeemPage() {
             {items.map((item, i) => (
               <span
                 key={i}
-                className="inline-flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-full px-3 py-1.5 text-sm font-bold text-slate-700"
+                className="inline-flex items-center gap-2 border border-slate-200 rounded-md px-3 py-1.5 text-sm font-bold text-slate-700"
               >
                 {item.name}
                 {item.qty > 1 && (
@@ -234,7 +234,7 @@ export default function RedeemPage() {
       {/* Expired overlay */}
       {expired && (
         <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center gap-6 px-8 text-center">
-          <div className="w-24 h-24 rounded-3xl bg-red-50 border-2 border-red-200 flex items-center justify-center shadow-inner">
+          <div className="w-24 h-24 rounded-lg border border-slate-200 flex items-center justify-center">
             <AlertTriangle className="h-11 w-11 text-red-400" />
           </div>
           <div>
@@ -248,7 +248,7 @@ export default function RedeemPage() {
               clearRedemption()
               router.push('/creator/discover')
             }}
-            className="flex items-center gap-2.5 bg-cc-accent text-white font-black rounded-2xl px-8 py-4 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all shadow-sm shadow-cc-accent/30"
+            className="flex items-center gap-2.5 bg-cc-accent text-white font-black rounded-lg px-8 py-4 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all"
           >
             <RefreshCw className="h-4 w-4" />
             Start Over

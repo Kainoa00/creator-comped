@@ -89,7 +89,7 @@ export default function TicketPage() {
   if (!order) {
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center px-6">
-        <div className="h-20 w-20 rounded-full bg-red-50 border border-red-200 flex items-center justify-center">
+        <div className="h-20 w-20 rounded-lg border border-slate-200 flex items-center justify-center">
           <XCircle className="h-10 w-10 text-red-400" />
         </div>
         <p className="text-2xl font-black text-slate-900">Order Not Found</p>
@@ -251,12 +251,12 @@ export default function TicketPage() {
 
         {/* ── Already Confirmed State ── */}
         {isAlreadyConfirmed && (
-          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-8 mb-4 flex flex-col items-center gap-3 text-center">
-            <div className="h-16 w-16 rounded-full bg-emerald-100 flex items-center justify-center">
-              <CheckCircle2 className="h-10 w-10 text-emerald-500" />
+          <div className="border border-slate-200 rounded-lg p-8 mb-4 flex flex-col items-center gap-3 text-center">
+            <div className="h-16 w-16 rounded-lg border border-slate-200 bg-white flex items-center justify-center">
+              <CheckCircle2 className="h-10 w-10 text-slate-400" />
             </div>
-            <p className="text-2xl font-black text-emerald-600">Order Confirmed</p>
-            <p className="text-sm text-emerald-700 font-medium">
+            <p className="text-2xl font-black text-slate-900">Order Confirmed</p>
+            <p className="text-sm text-slate-500 font-medium">
               {order.confirmed_at
                 ? `Confirmed at ${formatTime(order.confirmed_at)}`
                 : 'This order has already been processed.'}
@@ -265,7 +265,7 @@ export default function TicketPage() {
         )}
 
         {/* ── Creator Identity Card ── */}
-        <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm mb-4">
+        <div className="bg-white border border-slate-200 rounded-lg p-6 mb-4">
           <div className="flex items-start gap-5">
             {/* Avatar — 64px per spec */}
             <div className="relative shrink-0">
@@ -286,12 +286,12 @@ export default function TicketPage() {
               <div className="flex items-center gap-2 flex-wrap mb-2">
                 <h1 className="text-xl font-black text-slate-900">{creator.name}</h1>
                 {creator.verified && (
-                  <span className="bg-blue-50 text-cc-accent rounded-full px-3 py-1 text-xs font-bold">
+                  <span className="border border-slate-200 text-slate-600 rounded-md px-3 py-1 text-xs font-bold">
                     Verified
                   </span>
                 )}
                 {creator.strike_count > 0 && (
-                  <span className="bg-red-50 text-red-600 rounded-full px-2 py-0.5 text-xs font-semibold">
+                  <span className="border border-slate-200 text-slate-600 rounded-md px-2 py-0.5 text-xs font-semibold">
                     {creator.strike_count} Strike{creator.strike_count !== 1 ? 's' : ''}
                   </span>
                 )}
@@ -319,7 +319,7 @@ export default function TicketPage() {
           </div>
 
           {/* Anti-fraud note */}
-          <div className="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+          <div className="mt-4 pt-4 border-t border-slate-200 flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-slate-400 shrink-0" />
             <p className="text-xs text-slate-400">
               Verify that the person in front of you matches the name and handles above.
@@ -328,16 +328,16 @@ export default function TicketPage() {
         </div>
 
         {/* ── Order Details ── */}
-        <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm mb-4">
+        <div className="bg-white border border-slate-200 rounded-lg p-6 mb-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-bold text-slate-900">Order Details</h2>
-            <span className="text-xs text-slate-400 font-mono bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-xl font-bold tracking-widest">
+            <span className="text-xs text-slate-400 font-mono bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg font-bold tracking-widest">
               #{order.redemption_code}
             </span>
           </div>
 
           {/* Restaurant */}
-          <div className="flex items-center gap-2 mb-4 bg-slate-50 rounded-xl px-3 py-2">
+          <div className="flex items-center gap-2 mb-4 border border-slate-200 rounded-lg px-3 py-2">
             <span className="text-xs text-slate-400 font-medium">Restaurant:</span>
             <span className="text-sm font-semibold text-slate-900">{order.restaurant_name}</span>
           </div>
@@ -347,17 +347,17 @@ export default function TicketPage() {
             {order.items.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-3 bg-white border border-slate-100 rounded-2xl px-4 py-3 shadow-sm"
+                className="flex items-center gap-3 border border-slate-200 rounded-lg px-4 py-3"
               >
                 {/* Item icon placeholder */}
-                <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center shrink-0">
                   <span className="text-lg">🍽️</span>
                 </div>
                 <span className="text-sm font-bold text-slate-900 flex-1">
                   {item.menu_item_name}
                 </span>
                 {item.qty > 1 && (
-                  <span className="bg-cc-accent text-white text-xs font-black rounded-full px-2.5 py-1 tabular-nums">
+                  <span className="bg-cc-accent text-white text-xs font-black rounded-md px-2.5 py-1 tabular-nums">
                     ×{item.qty}
                   </span>
                 )}
@@ -367,11 +367,11 @@ export default function TicketPage() {
 
           {/* Deliverable requirement */}
           {order.deliverable_requirement && (
-            <div className="border-t border-slate-100 pt-4">
+            <div className="border-t border-slate-200 pt-4">
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">
                 Content Requirement
               </p>
-              <div className="bg-blue-50 rounded-xl p-3">
+              <div className="border border-slate-200 rounded-lg p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <DeliverableIcon type={order.deliverable_requirement.allowed_types} />
                   <span className="text-sm font-semibold text-slate-900">
@@ -384,7 +384,7 @@ export default function TicketPage() {
                     {order.deliverable_requirement.required_hashtags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center gap-1 text-xs bg-white border border-blue-100 rounded-full px-2 py-0.5 text-cc-accent font-medium"
+                        className="inline-flex items-center gap-1 text-xs border border-slate-200 rounded-md px-2 py-0.5 text-slate-600 font-medium"
                       >
                         <Hash className="h-2.5 w-2.5" />
                         {tag.replace('#', '')}
@@ -398,7 +398,7 @@ export default function TicketPage() {
                     {order.deliverable_requirement.required_tags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center gap-1 text-xs bg-white border border-blue-100 rounded-full px-2 py-0.5 text-cc-accent font-medium"
+                        className="inline-flex items-center gap-1 text-xs border border-slate-200 rounded-md px-2 py-0.5 text-slate-600 font-medium"
                       >
                         <AtSign className="h-2.5 w-2.5" />
                         {tag.replace('@', '')}
@@ -412,7 +412,7 @@ export default function TicketPage() {
         </div>
 
         {/* ── Validation Checklist ── */}
-        <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm mb-5">
+        <div className="bg-white border border-slate-200 rounded-lg p-6 mb-5">
           <h2 className="text-base font-bold text-slate-900 mb-4">Validation</h2>
 
           <div className="flex flex-col gap-2">
@@ -420,7 +420,7 @@ export default function TicketPage() {
               <div
                 key={idx}
                 className={cn(
-                  'flex items-center gap-3 rounded-xl px-4 py-3',
+                  'flex items-center gap-3 rounded-lg px-4 py-3',
                   check.status === 'pass' && 'bg-emerald-50',
                   check.status === 'fail' && 'bg-red-50',
                   check.status === 'warn' && 'bg-amber-50'
@@ -454,7 +454,7 @@ export default function TicketPage() {
                 </div>
 
                 <span className={cn(
-                  'text-xs font-bold px-2 py-0.5 rounded-full shrink-0',
+                  'text-xs font-bold px-2 py-0.5 rounded-md shrink-0',
                   check.status === 'pass' && 'bg-emerald-100 text-emerald-700',
                   check.status === 'fail' && 'bg-red-100 text-red-600',
                   check.status === 'warn' && 'bg-amber-100 text-amber-700'
@@ -466,9 +466,9 @@ export default function TicketPage() {
           </div>
 
           {hasFail && (
-            <div className="mt-4 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+            <div className="mt-4 flex items-start gap-2 border border-slate-200 rounded-lg px-4 py-3">
               <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-              <p className="text-xs text-amber-700">
+              <p className="text-xs text-slate-600">
                 One or more checks failed. Review before confirming — you can still confirm manually.
               </p>
             </div>
@@ -482,10 +482,10 @@ export default function TicketPage() {
               onClick={handleConfirm}
               disabled={confirming || confirmed}
               className={cn(
-                'w-full py-4 rounded-2xl flex items-center justify-center gap-3 text-white font-bold text-base transition-all duration-150 cursor-pointer shadow-md',
+                'w-full py-4 rounded-lg flex items-center justify-center gap-3 text-white font-bold text-base transition-all duration-150 cursor-pointer',
                 allGreen
-                  ? 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20'
-                  : 'bg-emerald-400 hover:bg-emerald-500 shadow-emerald-400/20',
+                  ? 'bg-emerald-500 hover:bg-emerald-600'
+                  : 'bg-emerald-400 hover:bg-emerald-500',
                 (confirming || confirmed) && 'opacity-60 cursor-not-allowed'
               )}
             >
@@ -504,7 +504,7 @@ export default function TicketPage() {
 
             <button
               onClick={() => setShowRejectModal(true)}
-              className="w-full py-4 rounded-2xl border-2 border-red-200 bg-red-50 text-red-600 font-bold text-base hover:bg-red-100 hover:border-red-300 transition-colors cursor-pointer"
+              className="w-full py-4 rounded-lg border border-slate-200 text-red-500 font-bold text-base hover:bg-red-50 transition-colors cursor-pointer"
             >
               Reject Order
             </button>
@@ -526,10 +526,10 @@ export default function TicketPage() {
               key={reason}
               onClick={() => setRejectionReason(reason)}
               className={cn(
-                'w-full text-left px-4 py-4 rounded-xl border-2 transition-all text-sm font-medium cursor-pointer',
+                'w-full text-left px-4 py-4 rounded-lg border transition-all text-sm font-medium cursor-pointer',
                 rejectionReason === reason
-                  ? 'border-cc-accent bg-blue-50 text-cc-accent'
-                  : 'border-slate-200 bg-white text-slate-900 hover:border-cc-accent/40 hover:bg-blue-50/50'
+                  ? 'border-cc-accent bg-cc-accent text-white'
+                  : 'border-slate-200 bg-white text-slate-900 hover:border-slate-300'
               )}
             >
               {reason}

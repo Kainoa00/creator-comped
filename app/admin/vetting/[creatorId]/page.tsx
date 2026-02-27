@@ -181,7 +181,7 @@ export default function CreatorReviewPage() {
   return (
     <div className="px-8 py-6">
       {/* Back + header */}
-      <div className="border-b border-slate-100 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-slate-200 pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon-sm" onClick={() => router.back()}>
             <ArrowLeft className="h-4 w-4" />
@@ -202,7 +202,7 @@ export default function CreatorReviewPage() {
         {/* Left Column: Creator Info */}
         <div className="col-span-2 space-y-4">
           {/* Profile card */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg p-6">
             <div className="flex flex-col items-center text-center mb-6">
               <Avatar src={null} name={app.name} size="xl" />
               <h2 className="mt-4 text-2xl font-bold text-slate-900">{app.name}</h2>
@@ -259,7 +259,7 @@ export default function CreatorReviewPage() {
               {app.invite_code && (
                 <div className="flex items-center gap-3">
                   <Tag className="h-4 w-4 text-slate-400 shrink-0" />
-                  <span className="bg-slate-100 rounded-full px-3 py-1 text-sm font-mono text-slate-700">{app.invite_code}</span>
+                  <span className="border border-slate-200 rounded-md px-3 py-1 text-sm font-mono text-slate-700">{app.invite_code}</span>
                 </div>
               )}
               <div className="flex items-center gap-3">
@@ -271,21 +271,21 @@ export default function CreatorReviewPage() {
 
           {/* Why join */}
           {app.why_join && (
-            <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+            <div className="bg-white border border-slate-200 rounded-lg p-5">
               <h3 className="text-sm font-semibold text-slate-900 mb-2">Why they want to join</h3>
               <p className="text-sm text-slate-500 leading-relaxed">{app.why_join}</p>
             </div>
           )}
 
           {/* Admin notes */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg p-5">
             <h3 className="text-sm font-semibold text-slate-900 mb-2">Internal Notes</h3>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Add internal notes (not visible to applicant)..."
               rows={4}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:ring-2 focus:ring-cc-accent"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
             />
             {notes && (
               <Button variant="secondary" size="sm" className="mt-2">
@@ -298,17 +298,11 @@ export default function CreatorReviewPage() {
         {/* Right Column: Review Actions */}
         <div className="col-span-3 space-y-4">
           {/* DM Verification Section */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg p-6">
             <div className="flex items-center gap-2 mb-5">
               <Shield className="h-5 w-5 text-cc-accent" />
               <h2 className="text-base font-semibold text-slate-900">DM Verification</h2>
-              <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${
-                dmStatus === 'verified'
-                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                  : dmStatus === 'sent'
-                  ? 'bg-amber-50 text-amber-700 border-amber-200'
-                  : 'bg-slate-50 text-slate-500 border-slate-200'
-              }`}>
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md border border-slate-200 text-slate-600">
                 <span className={`h-1.5 w-1.5 rounded-full ${
                   dmStatus === 'verified' ? 'bg-emerald-500' : dmStatus === 'sent' ? 'bg-amber-500' : 'bg-slate-400'
                 }`} />
@@ -317,7 +311,7 @@ export default function CreatorReviewPage() {
             </div>
 
             {/* Verification code */}
-            <div className="bg-slate-900 text-white rounded-xl p-4 font-mono text-lg tracking-widest text-center mb-4">
+            <div className="bg-slate-900 text-white rounded-lg p-4 font-mono text-lg tracking-widest text-center mb-4">
               {app.dm_code}
               <button
                 onClick={copyCode}
@@ -332,11 +326,11 @@ export default function CreatorReviewPage() {
             </div>
 
             {/* Instructions */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-5 text-sm text-amber-700">
+            <div className="border border-slate-200 rounded-lg px-4 py-3 mb-5 text-sm text-slate-700">
               <p className="font-semibold mb-1">Instructions</p>
-              <p className="text-amber-600 leading-relaxed">
+              <p className="text-slate-500 leading-relaxed">
                 Send this code via Instagram DM to{' '}
-                <span className="font-medium text-amber-800">@{app.ig_handle?.replace('@', '')}</span>. Ask the
+                <span className="font-medium text-slate-700">@{app.ig_handle?.replace('@', '')}</span>. Ask the
                 creator to reply with the code to confirm ownership of the account.
               </p>
             </div>
@@ -392,17 +386,11 @@ export default function CreatorReviewPage() {
           </div>
 
           {/* Vetting Decision */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg p-6">
             <h2 className="text-base font-semibold text-slate-900 mb-4">Vetting Decision</h2>
 
             {appStatus !== 'pending' ? (
-              <div
-                className={`flex items-center gap-3 p-4 rounded-xl border ${
-                  appStatus === 'approved'
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                    : 'bg-red-50 border-red-200 text-red-700'
-                }`}
-              >
+              <div className="flex items-center gap-3 p-4 rounded-lg border border-slate-200 text-slate-700">
                 {appStatus === 'approved' ? (
                   <CheckCircle2 className="h-5 w-5" />
                 ) : (
@@ -413,7 +401,7 @@ export default function CreatorReviewPage() {
             ) : (
               <div className="space-y-3">
                 {dmStatus !== 'verified' && (
-                  <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-700">
+                  <div className="flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-600">
                     <Shield className="h-4 w-4 shrink-0" />
                     <span>Complete DM verification before approving.</span>
                   </div>
@@ -457,7 +445,7 @@ export default function CreatorReviewPage() {
         title="Approve Creator"
         description="This will grant the creator access to the network."
       >
-        <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+        <div className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg">
           <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
           <p className="text-sm text-slate-600">
             <span className="font-semibold text-slate-900">{app.name}</span> will be marked as verified and can
@@ -513,7 +501,7 @@ export default function CreatorReviewPage() {
           onChange={(e) => setMoreInfoMsg(e.target.value)}
           placeholder="What information do you need from the applicant?"
           rows={4}
-          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:ring-2 focus:ring-cc-accent"
+          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
         />
         <ModalFooter>
           <Button variant="ghost" onClick={() => setShowMoreInfoModal(false)}>Cancel</Button>

@@ -187,7 +187,7 @@ export default function VettingQueuePage() {
             </div>
           </div>
           {pendingCount > 0 && (
-            <span className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold px-3 py-1.5 rounded-full">
+            <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-600 text-sm font-bold px-3 py-1.5 rounded-md">
               <span className="h-2 w-2 rounded-full bg-amber-500 inline-block animate-pulse" />
               {pendingCount} pending review
             </span>
@@ -196,17 +196,17 @@ export default function VettingQueuePage() {
       </div>
 
       {/* Filter Row */}
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center gap-3 mb-4">
+      <div className="border border-slate-200 rounded-lg p-3 flex items-center gap-3 mb-4">
         {/* Status filter pills */}
         <div className="flex items-center gap-1.5">
           {(['all', 'pending', 'approved', 'rejected'] as StatusFilter[]).map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-all capitalize ${
+              className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-all capitalize ${
                 statusFilter === s
-                  ? 'bg-cc-accent text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-cc-accent'
+                  ? 'bg-cc-accent text-white'
+                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'
               }`}
             >
               {s}
@@ -222,13 +222,13 @@ export default function VettingQueuePage() {
             placeholder="Search by name, email, or handle..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cc-accent focus:border-cc-accent"
+            className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden min-h-[500px]">
+      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden min-h-[500px]">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
@@ -278,7 +278,7 @@ export default function VettingQueuePage() {
               <tr>
                 <td colSpan={8} className="px-4 py-20 text-center">
                   <div className="flex flex-col items-center gap-3">
-                    <div className="h-16 w-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center">
+                    <div className="h-16 w-16 rounded-lg border border-slate-200 flex items-center justify-center">
                       <UserCheck className="h-7 w-7 text-slate-300" />
                     </div>
                     <p className="font-bold text-slate-900">Queue is clear</p>
@@ -354,7 +354,7 @@ export default function VettingQueuePage() {
                       </Badge>
                     </td>
                     <td className="px-4 py-4">
-                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${dmCfg.bg} ${dmCfg.text} ${dmCfg.border}`}>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 text-slate-600">
                         <span className={`h-1.5 w-1.5 rounded-full ${dmCfg.dot} shrink-0`} />
                         {dmCfg.label}
                       </span>
@@ -365,7 +365,7 @@ export default function VettingQueuePage() {
                           e.stopPropagation()
                           router.push(`/admin/vetting/${app.id}`)
                         }}
-                        className="bg-cc-accent text-white rounded-xl px-3 py-1.5 text-xs font-bold hover:bg-cc-accent-dark transition-colors"
+                        className="bg-cc-accent text-white rounded-lg px-3 py-1.5 text-xs font-bold hover:bg-cc-accent-dark transition-colors"
                       >
                         Review
                       </button>

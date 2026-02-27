@@ -170,7 +170,7 @@ export default function LeaderboardPage() {
           </div>
           <div className="flex items-center gap-3">
             {locked && (
-              <span className="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 text-slate-600 text-sm font-medium px-3 py-1.5 rounded-full">
+              <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-600 text-sm font-medium px-3 py-1.5 rounded-md">
                 <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
                 Locked Snapshot
               </span>
@@ -193,7 +193,7 @@ export default function LeaderboardPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMonthKey(prevMonth(monthKey))}
-            className="p-2 rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors shadow-sm"
+            className="p-2 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -206,7 +206,7 @@ export default function LeaderboardPage() {
           <button
             onClick={() => setMonthKey(nextMonth(monthKey))}
             disabled={monthKey >= currentMonthKey()}
-            className="p-2 rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors shadow-sm disabled:opacity-30 disabled:pointer-events-none"
+            className="p-2 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors disabled:opacity-30 disabled:pointer-events-none"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -215,7 +215,7 @@ export default function LeaderboardPage() {
         {/* Prize tiers */}
         <div className="flex items-center gap-3">
           {PRIZE_TIERS.map((t) => (
-            <div key={t.rank} className="flex items-center gap-1.5 bg-white border border-slate-100 rounded-xl px-3 py-1.5 shadow-sm">
+            <div key={t.rank} className="flex items-center gap-1.5 border border-slate-200 rounded-lg px-3 py-1.5">
               <span className="text-sm">{t.icon}</span>
               <span className="text-sm font-semibold text-slate-900 font-mono">{t.amount}</span>
             </div>
@@ -224,24 +224,24 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Platform Tabs */}
-      <div className="flex gap-1.5 bg-slate-50 border border-slate-100 rounded-xl p-1.5 w-fit">
+      <div className="flex gap-1.5 border border-slate-200 rounded-lg p-1 w-fit">
         {(['IG_REEL', 'TIKTOK'] as ProofPlatform[]).map((platform) => (
           <button
             key={platform}
             onClick={() => setActiveTab(platform)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
               activeTab === platform
-                ? 'bg-cc-accent text-white shadow-sm'
+                ? 'bg-cc-accent text-white'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            {platform === 'IG_REEL' ? '📸 IG Reel' : '🎵 TikTok'}
+            {platform === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
           </button>
         ))}
       </div>
 
       {/* Leaderboard Table */}
-      <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden min-h-[500px]">
+      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden min-h-[500px]">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
@@ -315,15 +315,15 @@ export default function LeaderboardPage() {
                     </td>
                     <td className="px-4 py-4">
                       {entry.disqualified ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-slate-200 text-slate-500">
                           Disqualified
                         </span>
                       ) : entry.eligible ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-slate-200 text-slate-600">
                           Eligible
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-slate-200 text-slate-500">
                           Ineligible
                         </span>
                       )}
@@ -339,10 +339,10 @@ export default function LeaderboardPage() {
                       {prize && !entry.disqualified && entry.eligible ? (
                         <button
                           onClick={() => togglePayment(entry.id)}
-                          className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border transition-colors ${
+                          className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md border transition-colors ${
                             payStatus === 'paid'
-                              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                              : 'bg-amber-50 border-amber-200 text-amber-700 hover:border-amber-300'
+                              ? 'border-slate-200 text-slate-600'
+                              : 'border-slate-200 text-slate-500 hover:border-slate-300'
                           }`}
                         >
                           <CreditCard className="h-3 w-3" />
@@ -393,7 +393,7 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Payout note */}
-      <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl px-4 py-3 shadow-sm text-sm text-slate-500">
+      <div className="flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-500">
         <CreditCard className="h-4 w-4 text-slate-400 shrink-0" />
         <span>
           <strong className="text-slate-900">Stripe integration coming in v2.</strong> Payments are currently tracked manually. Use the payment toggle above to mark winners.
@@ -413,7 +413,7 @@ export default function LeaderboardPage() {
         title="Lock Contest Snapshot"
         description="Freeze scores at this moment for final standings."
       >
-        <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+        <div className="flex items-start gap-3 p-4 border border-slate-200 rounded-lg">
           <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
           <p className="text-sm text-slate-600">
             Locking the contest will freeze the current scores. New proofs can still be submitted,
@@ -440,7 +440,7 @@ export default function LeaderboardPage() {
           onChange={(e) => setDqReason(e.target.value)}
           placeholder="Reason for disqualification..."
           rows={3}
-          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:ring-2 focus:ring-red-400"
+          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
         />
         <ModalFooter>
           <Button variant="ghost" onClick={() => setShowDQModal(false)}>Cancel</Button>

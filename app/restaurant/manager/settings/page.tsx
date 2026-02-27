@@ -115,8 +115,8 @@ export default function SettingsPage() {
   }
 
   const inputClass = cn(
-    'w-full h-11 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm px-3',
-    'focus:outline-none focus:ring-2 focus:ring-cc-accent/10 focus:border-cc-accent',
+    'w-full h-11 rounded-lg bg-white border border-slate-200 text-slate-900 text-sm px-3',
+    'focus:outline-none focus:border-cc-accent',
     'transition-colors duration-150'
   )
 
@@ -138,24 +138,13 @@ export default function SettingsPage() {
         </div>
 
         {/* ── Pause / Resume Banner ── */}
-        <div className={cn(
-          'rounded-2xl p-5 mb-6 border',
-          settings.pause_comps
-            ? 'bg-red-50 border-red-200'
-            : 'bg-emerald-50 border-emerald-200'
-        )}>
+        <div className="rounded-lg p-5 mb-6 border border-slate-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className={cn(
-                'text-base font-bold',
-                settings.pause_comps ? 'text-red-700' : 'text-emerald-700'
-              )}>
+              <p className="text-base font-bold text-slate-900">
                 {settings.pause_comps ? 'Comps PAUSED' : 'Comps Active'}
               </p>
-              <p className={cn(
-                'text-xs mt-0.5',
-                settings.pause_comps ? 'text-red-600' : 'text-emerald-600'
-              )}>
+              <p className="text-xs mt-0.5 text-slate-500">
                 {settings.pause_comps
                   ? 'No new redemptions are being accepted'
                   : 'Creators can redeem normally'}
@@ -164,7 +153,7 @@ export default function SettingsPage() {
             <button
               onClick={handleTogglePause}
               className={cn(
-                'flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all cursor-pointer min-h-[44px]',
+                'flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all cursor-pointer min-h-[44px]',
                 settings.pause_comps
                   ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
                   : 'bg-red-500 hover:bg-red-600 text-white'
@@ -181,7 +170,7 @@ export default function SettingsPage() {
 
         {/* ── Blackout Hours ── */}
         <SectionHeader label="Redemption Hours" />
-        <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
             <Clock className="h-4 w-4 text-slate-400" />
             <p className="text-sm font-semibold text-slate-900">Blackout Hours</p>
@@ -215,7 +204,7 @@ export default function SettingsPage() {
               </div>
             </div>
             {settings.blackout_start && settings.blackout_end && (
-              <div className="mt-3 flex items-center gap-2 text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+              <div className="mt-3 flex items-center gap-2 text-xs text-slate-600 border border-slate-200 rounded-lg px-3 py-2">
                 <Clock className="h-3.5 w-3.5 shrink-0" />
                 Active: {settings.blackout_start} – {settings.blackout_end}
               </div>
@@ -231,7 +220,7 @@ export default function SettingsPage() {
 
         {/* ── Caps & Limits ── */}
         <SectionHeader label="Caps & Limits" />
-        <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
             <BarChart2 className="h-4 w-4 text-slate-400" />
             <p className="text-sm font-semibold text-slate-900">Caps &amp; Limits</p>
@@ -297,10 +286,10 @@ export default function SettingsPage() {
                     key={opt.value}
                     onClick={() => setCooldownMode(opt.value)}
                     className={cn(
-                      'px-4 py-2 rounded-xl border text-sm font-medium transition-colors cursor-pointer min-h-[40px]',
+                      'px-4 py-2 rounded-lg border text-sm font-medium transition-colors cursor-pointer min-h-[40px]',
                       cooldownMode === opt.value
-                        ? 'bg-blue-50 border-cc-accent text-cc-accent'
-                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
+                        ? 'bg-cc-accent text-white border-cc-accent'
+                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
                     )}
                   >
                     {opt.label}
@@ -327,7 +316,7 @@ export default function SettingsPage() {
 
         {/* ── Content Requirements ── */}
         <SectionHeader label="Content Requirements" />
-        <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
             <Zap className="h-4 w-4 text-slate-400" />
             <p className="text-sm font-semibold text-slate-900">What creators must post</p>
@@ -344,10 +333,10 @@ export default function SettingsPage() {
                       key={opt.value}
                       onClick={() => setPlatform(opt.value)}
                       className={cn(
-                        'flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all cursor-pointer text-left min-h-[48px]',
+                        'flex items-center gap-2 px-4 py-3 rounded-lg border text-sm font-medium transition-all cursor-pointer text-left min-h-[48px]',
                         platform === opt.value
-                          ? 'bg-blue-50 border-cc-accent text-cc-accent'
-                          : 'bg-white border-slate-200 text-slate-700 hover:border-slate-400'
+                          ? 'bg-cc-accent text-white border-cc-accent'
+                          : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
                       )}
                     >
                       {Icon && <Icon className="h-4 w-4 shrink-0" />}
@@ -365,7 +354,7 @@ export default function SettingsPage() {
                 {hashtags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1 text-xs bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1 text-slate-700"
+                    className="inline-flex items-center gap-1 text-xs border border-slate-200 rounded-md px-2.5 py-1 text-slate-700"
                   >
                     <Hash className="h-3 w-3 text-slate-400" />
                     {tag.replace('#', '')}
@@ -391,7 +380,7 @@ export default function SettingsPage() {
                 />
                 <button
                   onClick={() => addTag(hashtagInput, hashtags, setHashtags, setHashtagInput, '#')}
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl px-4 text-sm font-semibold transition-colors cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg px-4 text-sm font-semibold transition-colors cursor-pointer"
                 >
                   Add
                 </button>
@@ -405,7 +394,7 @@ export default function SettingsPage() {
                 {mentions.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1 text-xs bg-blue-50 border border-blue-100 rounded-full px-2.5 py-1 text-cc-accent"
+                    className="inline-flex items-center gap-1 text-xs border border-slate-200 rounded-md px-2.5 py-1 text-slate-700"
                   >
                     @{tag.replace('@', '')}
                     <button
@@ -430,7 +419,7 @@ export default function SettingsPage() {
                 />
                 <button
                   onClick={() => addTag(mentionInput, mentions, setMentions, setMentionInput, '@')}
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl px-4 text-sm font-semibold transition-colors cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg px-4 text-sm font-semibold transition-colors cursor-pointer"
                 >
                   Add
                 </button>
@@ -444,7 +433,7 @@ export default function SettingsPage() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="w-full min-h-[56px] bg-cc-accent hover:bg-cc-accent-dark text-white rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-60"
+            className="w-full min-h-[56px] bg-cc-accent hover:bg-cc-accent-dark text-white rounded-lg font-bold text-base flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-60"
           >
             {saving ? (
               <div className="h-5 w-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />

@@ -158,22 +158,22 @@ export default function LandingPage() {
 
       {/* ── Hero ───────────────────────────────────────────── */}
       <section className="bg-white border-b border-slate-100 overflow-hidden">
-        <div className="cc-container pt-24 pb-0">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end gap-16 pb-0">
+        <div className="cc-container py-16 lg:py-24">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
             {/* Left: Typography */}
-            <div className="flex-1 min-w-0 pb-24">
-              <p className="anim-1 text-xs font-semibold text-cc-accent uppercase tracking-widest mb-6">
+            <div className="flex-1 min-w-0">
+              <p className="anim-1 text-xs font-semibold text-cc-accent uppercase tracking-widest mb-5">
                 Now Live · Utah County
               </p>
 
-              <h1 className="anim-2 text-[56px] sm:text-[72px] lg:text-[80px] font-black leading-[1.0] tracking-tight mb-7 text-slate-900">
+              <h1 className="anim-2 text-[44px] sm:text-[56px] lg:text-[64px] font-black leading-[1.0] tracking-tight mb-6 text-slate-900">
                 Get Comped.<br />
                 <span className="text-cc-accent">Create.</span><br />
                 Win.
               </h1>
 
-              <p className="anim-3 text-lg text-slate-500 leading-relaxed max-w-md mb-10">
+              <p className="anim-3 text-base text-slate-500 leading-relaxed max-w-sm mb-8">
                 The invite-only network where local creators get free meals at restaurants in exchange for authentic Instagram Reels and TikToks.
               </p>
 
@@ -195,18 +195,17 @@ export default function LandingPage() {
             </div>
 
             {/* Right: Phone mockup */}
-            <div className="anim-5 shrink-0 w-full lg:w-auto flex justify-center lg:justify-end pb-0 self-end">
+            <div className="anim-5 shrink-0 w-full lg:w-auto flex justify-center lg:justify-end">
               {/* Phone frame */}
               <div
                 style={{
-                  width: '280px',
-                  height: '540px',
+                  width: '260px',
+                  height: '460px',
                   background: '#ffffff',
                   border: '1px solid #e2e8f0',
-                  borderBottom: 'none',
-                  borderRadius: '28px 28px 0 0',
+                  borderRadius: '24px',
                   overflow: 'hidden',
-                  boxShadow: '0 -8px 40px rgba(0,0,0,0.06), 0 -2px 8px rgba(0,0,0,0.04)',
+                  boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
                   position: 'relative',
                   flexShrink: 0,
                 }}
@@ -217,7 +216,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* App content: Map-style discover page */}
-                <div style={{ position: 'relative', height: 'calc(100% - 50px)', background: '#f1f5f9' }}>
+                <div style={{ position: 'relative', height: 'calc(100% - 46px)', background: '#f1f5f9' }}>
                   {/* Map placeholder */}
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #e8eef5 0%, #dde6f0 100%)' }} />
 

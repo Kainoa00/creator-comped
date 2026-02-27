@@ -26,39 +26,35 @@ import type { DeliverableType } from '@/lib/types'
 // ── Deliverable platform reminder ─────────────────────────────
 
 function DeliverableReminder({ type }: { type: DeliverableType }) {
-  const configs: Record<DeliverableType, { icon: React.ReactNode; label: string; bgClass: string }> = {
+  const configs: Record<DeliverableType, { icon: React.ReactNode; label: string }> = {
     IG_REEL: {
-      icon: <Instagram className="h-5 w-5 text-white" />,
+      icon: <Instagram className="h-4 w-4 text-slate-400" />,
       label: 'Post 1 Instagram Reel within 48 hours',
-      bgClass: 'from-pink-500 to-rose-500',
     },
     TIKTOK: {
-      icon: <Music2 className="h-5 w-5 text-white" />,
+      icon: <Music2 className="h-4 w-4 text-slate-400" />,
       label: 'Post 1 TikTok Video within 48 hours',
-      bgClass: 'from-slate-700 to-slate-900',
     },
     CHOICE: {
-      icon: <CheckCircle2 className="h-5 w-5 text-white" />,
+      icon: <CheckCircle2 className="h-4 w-4 text-slate-400" />,
       label: 'Post 1 IG Reel OR 1 TikTok within 48 hours',
-      bgClass: 'from-cc-accent to-cc-accent-dark',
     },
     BOTH: {
-      icon: <Zap className="h-5 w-5 text-white" />,
+      icon: <Zap className="h-4 w-4 text-slate-400" />,
       label: 'Post IG Reel AND TikTok within 48 hours',
-      bgClass: 'from-amber-400 to-orange-500',
     },
   }
 
-  const { icon, label, bgClass } = configs[type]
+  const { icon, label } = configs[type]
 
   return (
-    <div className={cn('bg-gradient-to-r rounded-2xl p-4 flex items-start gap-3.5 shadow-sm', bgClass)}>
-      <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+    <div className="border border-slate-200 rounded-lg p-4 flex items-start gap-3">
+      <div className="shrink-0 text-slate-400">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-black text-white">{label}</p>
-        <p className="text-xs text-white/70 mt-0.5 font-medium">
+        <p className="text-sm font-semibold text-slate-900">{label}</p>
+        <p className="text-xs text-slate-400 mt-0.5">
           Failure to post = strike + account block
         </p>
       </div>
@@ -85,15 +81,15 @@ function AgreementCheck({
     >
       <div
         className={cn(
-          'w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all duration-150',
+          'w-5 h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 transition-colors',
           checked
-            ? 'bg-cc-accent border-cc-accent shadow-sm shadow-cc-accent/30'
-            : 'bg-white border-slate-200 group-hover:border-slate-300 group-active:scale-95'
+            ? 'bg-cc-accent border-cc-accent'
+            : 'bg-white border-slate-200 group-hover:border-slate-300'
         )}
       >
-        {checked && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
+        {checked && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
       </div>
-      <span className="text-sm text-slate-700 leading-relaxed">{children}</span>
+      <span className="text-sm text-slate-600 leading-relaxed">{children}</span>
     </button>
   )
 }
@@ -121,20 +117,20 @@ function CartItemRow({
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={onDecrease}
-          className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-700 hover:border-slate-300 active:scale-95 transition-all"
+          className="w-7 h-7 rounded border border-slate-200 flex items-center justify-center text-slate-500 hover:border-slate-300 transition-colors"
         >
-          <Minus className="h-3.5 w-3.5" />
+          <Minus className="h-3 w-3" />
         </button>
-        <span className="w-5 text-center text-sm font-black text-slate-900 tabular-nums">{qty}</span>
+        <span className="w-5 text-center text-sm font-semibold text-slate-900 tabular-nums">{qty}</span>
         <button
           onClick={onIncrease}
-          className="w-8 h-8 rounded-full bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark active:scale-95 transition-all shadow-sm shadow-cc-accent/30"
+          className="w-7 h-7 rounded border border-cc-accent bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark transition-colors"
         >
-          <Plus className="h-3.5 w-3.5" />
+          <Plus className="h-3 w-3" />
         </button>
         <button
           onClick={onRemove}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:text-red-400 active:scale-95 transition-all ml-0.5"
+          className="w-7 h-7 flex items-center justify-center text-slate-300 hover:text-red-400 transition-colors ml-0.5"
         >
           <Trash2 className="h-3.5 w-3.5" />
         </button>
@@ -268,27 +264,25 @@ export default function CartPage() {
       <div className="flex-1 overflow-y-auto pb-36 space-y-5 pt-4">
         {/* Restaurant info card */}
         <div className="px-4">
-          <div className="bg-gradient-to-r from-cc-accent-subtle to-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cc-accent/10 flex items-center justify-center shrink-0">
-              <MapPin className="h-5 w-5 text-cc-accent" />
-            </div>
+          <div className="border border-slate-200 rounded-lg p-4 flex items-center gap-3">
+            <MapPin className="h-4 w-4 text-slate-400 shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-cc-accent font-bold uppercase tracking-wider mb-0.5">Comping at</p>
-              <p className="text-sm font-black text-slate-900 truncate">{restaurant.name}</p>
+              <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Comping at</p>
+              <p className="text-sm font-semibold text-slate-900 truncate">{restaurant.name}</p>
             </div>
             {deliverableReq && (
-              <div className="shrink-0 opacity-70">
+              <div className="shrink-0">
                 {deliverableReq.allowed_types === 'IG_REEL' && (
-                  <Instagram className="h-4 w-4 text-pink-500" />
+                  <Instagram className="h-4 w-4 text-slate-400" />
                 )}
                 {deliverableReq.allowed_types === 'TIKTOK' && (
-                  <Music2 className="h-4 w-4 text-slate-500" />
+                  <Music2 className="h-4 w-4 text-slate-400" />
                 )}
                 {deliverableReq.allowed_types === 'CHOICE' && (
-                  <CheckCircle2 className="h-4 w-4 text-cc-accent" />
+                  <CheckCircle2 className="h-4 w-4 text-slate-400" />
                 )}
                 {deliverableReq.allowed_types === 'BOTH' && (
-                  <Zap className="h-4 w-4 text-amber-500" />
+                  <Zap className="h-4 w-4 text-slate-400" />
                 )}
               </div>
             )}
@@ -304,10 +298,10 @@ export default function CartPage() {
 
         {/* Items list */}
         <div className="px-4 pt-4">
-          <p className="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest px-0.5">
+          <p className="text-[10px] font-semibold text-slate-400 mb-2 uppercase tracking-widest px-0.5">
             Items
           </p>
-          <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
             <ul className="divide-y divide-slate-50">
               {items.map((ci) => (
                 <li key={ci.menu_item.id}>
@@ -328,10 +322,10 @@ export default function CartPage() {
 
         {/* Agreements */}
         <div className="px-4 py-4">
-          <p className="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest px-0.5">
+          <p className="text-[10px] font-semibold text-slate-400 mb-2 uppercase tracking-widest px-0.5">
             Before you continue
           </p>
-          <div className="bg-white border border-slate-100 rounded-2xl px-4 shadow-sm divide-y divide-slate-50">
+          <div className="bg-white border border-slate-200 rounded-lg px-4 divide-y divide-slate-100">
             <AgreementCheck checked={agree1} onChange={setAgree1}>
               I agree to post within <strong className="text-slate-900 font-black">48 hours</strong> of redemption.
             </AgreementCheck>
@@ -353,14 +347,14 @@ export default function CartPage() {
       </div>
 
       {/* Fixed bottom CTA */}
-      <div className="fixed bottom-16 left-0 right-0 z-30 px-4 pb-3 max-w-sm mx-auto bg-white/95 backdrop-blur-md border-t border-slate-100 pt-3">
+      <div className="fixed bottom-16 left-0 right-0 z-30 px-4 pb-3 max-w-sm mx-auto bg-white border-t border-slate-200 pt-3">
         <button
           onClick={handlePlaceOrder}
           disabled={!canPlace || placing}
           className={cn(
-            'w-full flex items-center justify-center gap-2.5 bg-cc-accent text-white font-black rounded-2xl py-4 text-sm transition-all',
-            'hover:bg-cc-accent-dark active:scale-[0.98]',
-            (!canPlace || placing) && 'opacity-50 cursor-not-allowed'
+            'w-full flex items-center justify-center gap-2 bg-cc-accent text-white font-semibold rounded-lg py-3.5 text-sm transition-colors',
+            'hover:bg-cc-accent-dark',
+            (!canPlace || placing) && 'opacity-40 cursor-not-allowed'
           )}
         >
           {placing ? (

@@ -169,17 +169,17 @@ export default function RestaurantStaffPage() {
       <style>{shakeStyle}</style>
 
       <div className="p-6 min-h-full">
-        {/* ── Status Bar / Greeting Header ── */}
+        {/* Header */}
         <div className="mb-8">
           <div className="flex items-end justify-between mb-1">
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">Staff Mode</p>
-              <h1 className="text-2xl font-black text-slate-900">
+              <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-1">Staff Mode</p>
+              <h1 className="text-xl font-black text-slate-900">
                 {getGreeting()}, {restaurant.name}
               </h1>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-black text-slate-900 tabular-nums leading-none">
+              <p className="text-2xl font-black text-slate-900 tabular-nums leading-none">
                 <LiveClock />
               </p>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -191,9 +191,9 @@ export default function RestaurantStaffPage() {
 
         {/* Pause banner */}
         {restaurant.settings.pause_comps && (
-          <div className="mb-6 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
-            <AlertCircle className="h-5 w-5 text-amber-600 shrink-0" />
-            <p className="text-sm font-semibold text-amber-700">
+          <div className="mb-6 flex items-center gap-3 border border-amber-200 rounded-lg px-4 py-3">
+            <AlertCircle className="h-4 w-4 text-amber-500 shrink-0" />
+            <p className="text-sm text-amber-700">
               Comps are currently paused. Contact your manager to resume.
             </p>
           </div>
@@ -204,26 +204,15 @@ export default function RestaurantStaffPage() {
           {/* ── LEFT: Scan + Manual Entry ── */}
           <div className="flex flex-col gap-5 h-full">
 
-            {/* Big scan button with animated scan line */}
+            {/* Scan button */}
             <button
               onClick={() => setShowScanner(true)}
-              className="relative w-full min-h-[200px] rounded-2xl bg-cc-accent hover:bg-cc-accent-dark active:scale-[0.99] transition-all flex flex-col items-center justify-center gap-4 text-white shadow-lg shadow-cc-accent/20 cursor-pointer select-none overflow-hidden"
+              className="w-full min-h-[180px] rounded-lg bg-cc-accent hover:bg-cc-accent-dark active:scale-[0.99] transition-colors flex flex-col items-center justify-center gap-3 text-white cursor-pointer select-none"
             >
-              {/* Subtle grid pattern background */}
-              <div className="scan-pulse absolute inset-0 opacity-10" style={{
-                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px), repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px)'
-              }} />
-
-              {/* Animated scan line */}
-              <div className="scan-line absolute left-6 right-6 h-0.5 bg-gradient-to-r from-transparent via-white to-transparent rounded-full top-8" />
-
-              {/* Icon + text */}
-              <div className="relative z-10 h-20 w-20 rounded-full bg-white/20 border border-white/30 flex items-center justify-center backdrop-blur-sm">
-                <Camera className="h-10 w-10 text-white" />
-              </div>
-              <div className="relative z-10 text-center">
-                <p className="text-2xl font-black tracking-tight">Scan QR Code</p>
-                <p className="text-sm text-white/75 mt-1 font-medium">Point camera at creator&apos;s screen</p>
+              <Camera className="h-8 w-8 text-white/90" />
+              <div className="text-center">
+                <p className="text-lg font-bold">Scan QR Code</p>
+                <p className="text-sm text-white/70 mt-0.5">Point camera at creator&apos;s screen</p>
               </div>
             </button>
 
@@ -234,10 +223,10 @@ export default function RestaurantStaffPage() {
               <div className="flex-1 border-t border-slate-200" />
             </div>
 
-            {/* Manual code entry card */}
-            <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-7">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest text-center mb-5">5-Digit Redemption Code</p>
-              <div className={cn('flex gap-4 justify-center', shaking && 'shake')}>
+            {/* Manual code entry */}
+            <div className="border border-slate-200 rounded-lg p-6">
+              <p className="text-xs font-medium text-slate-400 uppercase tracking-widest text-center mb-5">5-Digit Redemption Code</p>
+              <div className={cn('flex gap-3 justify-center', shaking && 'shake')}>
                 {codeDigits.map((digit, idx) => (
                   <input
                     key={idx}
@@ -249,10 +238,10 @@ export default function RestaurantStaffPage() {
                     onChange={(e) => handleDigitChange(idx, e.target.value)}
                     onKeyDown={(e) => handleDigitKeyDown(idx, e)}
                     className={cn(
-                      'w-16 h-16 text-center text-3xl font-black rounded-2xl bg-slate-50 border-2 text-slate-900',
-                      'focus:outline-none focus:border-cc-accent focus:bg-white focus:shadow-sm',
-                      'transition-all duration-150',
-                      codeError ? 'border-red-400 bg-red-50' : 'border-slate-200'
+                      'w-14 h-14 text-center text-2xl font-black rounded-lg bg-slate-50 border text-slate-900',
+                      'focus:outline-none focus:border-cc-accent focus:bg-white',
+                      'transition-colors',
+                      codeError ? 'border-red-300 bg-red-50' : 'border-slate-200'
                     )}
                   />
                 ))}
@@ -268,13 +257,13 @@ export default function RestaurantStaffPage() {
 
               {/* Demo shortcuts */}
               <div className="mt-4 pt-4 border-t border-slate-100 text-center">
-                <p className="text-xs text-slate-400 mb-2.5 font-medium">Demo — try a code:</p>
+                <p className="text-xs text-slate-400 mb-2.5">Demo — try a code:</p>
                 <div className="flex gap-2 justify-center flex-wrap">
                   {DEMO_ORDERS.map((o) => (
                     <button
                       key={o.id}
                       onClick={() => router.push(`/restaurant/ticket/${o.id}`)}
-                      className="text-xs font-mono bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-cc-accent hover:border-cc-accent hover:bg-blue-50 transition-colors font-bold"
+                      className="text-xs font-mono border border-slate-200 rounded-lg px-2.5 py-1.5 text-cc-accent hover:border-cc-accent hover:bg-slate-50 transition-colors font-semibold"
                     >
                       {o.redemption_code}
                     </button>
@@ -283,9 +272,9 @@ export default function RestaurantStaffPage() {
               </div>
             </div>
 
-            {/* ── How it works card ── */}
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 mt-auto">
-              <p className="text-sm font-bold text-slate-900 mb-4">How it works</p>
+            {/* How it works */}
+            <div className="border border-slate-200 rounded-lg p-5 mt-auto">
+              <p className="text-sm font-semibold text-slate-900 mb-4">How it works</p>
               <div className="flex flex-col gap-3">
                 {[
                   'Creator opens the app and selects items',
@@ -294,26 +283,24 @@ export default function RestaurantStaffPage() {
                   'The comp is applied — no cash needed',
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-cc-accent text-white text-xs font-bold flex items-center justify-center shrink-0">
-                      {i + 1}
-                    </div>
-                    <p className="text-sm text-cc-text-secondary leading-snug">{step}</p>
+                    <span className="text-xs font-semibold text-cc-accent shrink-0 tabular-nums mt-0.5">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className="text-sm text-slate-500 leading-snug">{step}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* ── RIGHT: Recent Redemptions ── */}
-          <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-              <div className="flex items-center gap-2.5">
-                <div className="h-8 w-8 rounded-xl bg-slate-50 flex items-center justify-center">
-                  <Clock className="h-4 w-4 text-slate-400" />
-                </div>
-                <h2 className="text-base font-bold text-slate-900">Today&apos;s Redemptions</h2>
+          {/* Right: Recent Redemptions */}
+          <div className="border border-slate-200 rounded-lg overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-slate-400" />
+                <h2 className="text-sm font-semibold text-slate-900">Today&apos;s Redemptions</h2>
               </div>
-              <span className="bg-blue-50 text-cc-accent text-xs font-black rounded-full px-3 py-1 tabular-nums">
+              <span className="text-xs text-slate-400 font-medium tabular-nums">
                 {RECENT_REDEMPTIONS.length}
               </span>
             </div>

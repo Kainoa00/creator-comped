@@ -7,14 +7,11 @@ import {
   MapPin,
   ArrowRight,
   Zap,
-  Clock,
   Trophy,
   Camera,
-  Star,
   CheckCircle2,
 } from 'lucide-react'
 
-// ── Portal cards data ──────────────────────────────────────────
 const portals = [
   {
     icon: Video,
@@ -24,9 +21,7 @@ const portals = [
     href: '/creator',
     cta: 'Open Creator App',
     badge: 'Most Popular',
-    iconBg: 'bg-cc-accent-subtle text-cc-accent',
     features: ['Map discovery', 'QR redemption', 'Monthly contests'],
-    borderAccent: 'hover:border-cc-accent',
   },
   {
     icon: UtensilsCrossed,
@@ -36,9 +31,7 @@ const portals = [
     href: '/restaurant',
     cta: 'Open Dashboard',
     badge: null,
-    iconBg: 'bg-emerald-50 text-emerald-600',
     features: ['QR scanner', 'Order confirmation', 'Analytics'],
-    borderAccent: 'hover:border-emerald-400',
   },
   {
     icon: Shield,
@@ -48,21 +41,17 @@ const portals = [
     href: '/admin',
     cta: 'Open Admin Panel',
     badge: null,
-    iconBg: 'bg-slate-100 text-slate-600',
     features: ['Creator vetting', 'Proof review', 'Leaderboard'],
-    borderAccent: 'hover:border-slate-400',
   },
 ]
 
-// ── Feature cards data ─────────────────────────────────────────
 const features = [
   {
     icon: Camera,
     title: 'For Creators',
     description:
-      'Get your meals fully comped at partner restaurants. All we ask is that you post authentic, engaging content about your experience.',
-    points: ['Free meals at 18+ restaurants', 'Flexible posting window (48h)', 'Monthly cash prize pool'],
-    accent: 'bg-cc-accent-subtle text-cc-accent',
+      'Get your meals fully comped at partner restaurants. Post authentic content about your experience within 48 hours.',
+    points: ['Free meals at 18+ restaurants', 'Flexible 48-hour posting window', 'Monthly cash prize pool'],
   },
   {
     icon: UtensilsCrossed,
@@ -70,107 +59,95 @@ const features = [
     description:
       'Drive organic UGC from real creators with established audiences. No ads, no agencies — just authentic word-of-mouth.',
     points: ['Verified creator network', 'Real-time order management', 'Performance analytics'],
-    accent: 'bg-emerald-50 text-emerald-600',
   },
   {
     icon: Trophy,
-    title: 'For Everyone',
+    title: 'Monthly Prizes',
     description:
-      'Monthly leaderboards rank creators by content quality and reach. Top performers earn real cash prizes every month.',
-    points: ['Monthly cash prizes', 'Fair ranking system', 'Community of creators'],
-    accent: 'bg-amber-50 text-amber-600',
+      'Leaderboards rank creators by content quality and reach every month. Top performers earn real cash prizes.',
+    points: ['Separate IG Reel & TikTok boards', 'Fair engagement-based scoring', 'Real cash prizes monthly'],
   },
 ]
 
-// ── How it works steps ─────────────────────────────────────────
 const steps = [
   {
     number: '01',
     title: 'Discover',
-    description: 'Browse the map to find partner restaurants near you. Filter by cuisine, distance, or comp value.',
-    icon: MapPin,
+    description: 'Browse an interactive map of partner restaurants near you. See comp value and posting requirements before you go.',
   },
   {
     number: '02',
     title: 'Redeem',
-    description: 'Add items to your cart, generate your QR code, and show it to the restaurant staff to get comped.',
-    icon: Zap,
+    description: 'Add items to your cart and generate a QR code. Show it to restaurant staff — no cash, no hassle.',
   },
   {
     number: '03',
     title: 'Post & Win',
-    description: 'Post your content within 48 hours, submit proof, and climb the monthly leaderboard to win prizes.',
-    icon: Trophy,
+    description: 'Post within 48 hours, submit your proof, and watch your leaderboard rank climb toward the monthly prize.',
   },
 ]
 
-// ── Stats ──────────────────────────────────────────────────────
 const stats = [
-  { value: '120+', label: 'Active Creators' },
-  { value: '18', label: 'Partner Restaurants' },
-  { value: '340+', label: 'Comps This Month' },
-  { value: '48h', label: 'To Post Content' },
+  { value: '120+', label: 'Active creators' },
+  { value: '18', label: 'Partner restaurants' },
+  { value: '340+', label: 'Comps this month' },
+  { value: '$2,400', label: 'Monthly prize pool' },
 ]
 
 export default function LandingPage() {
   return (
-    <div className="min-h-dvh bg-white flex flex-col">
+    <div className="min-h-dvh bg-white flex flex-col font-[family-name:var(--font-manrope)]">
 
-      {/* Custom animations */}
       <style>{`
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes float-slow-2 {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-6px); }
-        }
-        .animate-float-slow { animation: float-slow 3s ease-in-out infinite; }
-        .animate-float-slow-2 { animation: float-slow-2 3.5s ease-in-out infinite 0.5s; }
+        .anim-1 { animation: fadeUp 0.6s ease-out 0.1s both; }
+        .anim-2 { animation: fadeUp 0.6s ease-out 0.25s both; }
+        .anim-3 { animation: fadeUp 0.6s ease-out 0.4s both; }
+        .anim-4 { animation: fadeUp 0.6s ease-out 0.55s both; }
+        .anim-5 { animation: fadeUp 0.6s ease-out 0.7s both; }
       `}</style>
 
-      {/* Demo Mode Banner */}
-      <div className="bg-cc-accent-subtle border-b border-blue-100">
+      {/* Demo Banner */}
+      <div className="bg-slate-900">
         <div className="cc-container py-2 flex items-center justify-center gap-2">
-          <Zap className="h-3.5 w-3.5 text-cc-accent" />
-          <span className="text-xs font-semibold text-cc-accent tracking-wide uppercase">
-            Demo Mode Active
-          </span>
-          <span className="text-xs text-cc-text-muted">
-            — All data is simulated. No real transactions.
-          </span>
+          <span className="text-[11px] font-medium text-slate-400 tracking-wide uppercase">Demo Mode</span>
+          <span className="text-slate-700">·</span>
+          <span className="text-[11px] text-slate-500">All data is simulated. No real transactions.</span>
         </div>
       </div>
 
-      {/* ── Sticky Header ─────────────────────────────────────── */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div className="cc-container h-16 flex items-center justify-between">
-          {/* Logo */}
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+        <div className="cc-container h-14 flex items-center justify-between">
           <CCLogoWithMark size="md" />
 
-          {/* Nav links — hidden on mobile */}
-          <nav className="hidden md:flex items-center gap-1">
-            {['Features', 'How It Works', 'Community', 'Portals'].map((item) => (
+          <nav className="hidden md:flex items-center gap-7">
+            {[
+              { label: 'Features', href: '#features' },
+              { label: 'How It Works', href: '#how-it-works' },
+              { label: 'Portals', href: '#portals' },
+            ].map((item) => (
               <a
-                key={item}
-                href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                className="px-3 py-1.5 text-sm font-medium text-cc-text-secondary hover:text-cc-text hover:bg-slate-50 rounded-lg transition-colors"
+                key={item.label}
+                href={item.href}
+                className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
               >
-                {item}
+                {item.label}
               </a>
             ))}
           </nav>
 
-          {/* Right actions */}
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:flex items-center gap-1.5 text-xs text-cc-text-muted">
-              <span className="h-2 w-2 rounded-full bg-cc-success animate-pulse" />
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               Utah County
             </span>
             <Link
               href="/creator"
-              className="inline-flex items-center gap-1.5 bg-cc-accent text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-cc-accent-dark transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 bg-cc-accent text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-cc-accent-dark transition-colors"
             >
               Get Started
               <ArrowRight className="h-3.5 w-3.5" />
@@ -179,179 +156,192 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* ── Hero ──────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-white">
-        <div className="cc-container pt-24 pb-28 flex flex-col items-center text-center">
+      {/* ── Hero ───────────────────────────────────────────── */}
+      <section className="bg-white border-b border-slate-100 overflow-hidden">
+        <div className="cc-container pt-24 pb-0">
+          <div className="flex flex-col lg:flex-row items-start lg:items-end gap-16 pb-0">
 
-          {/* Pill badge */}
-          <div className="inline-flex items-center gap-2 bg-cc-accent-subtle border border-blue-200 rounded-full px-4 py-1.5 mb-6">
-            <Star className="h-3.5 w-3.5 text-cc-accent fill-cc-accent" />
-            <span className="text-xs font-semibold text-cc-accent uppercase tracking-wider">
-              Now Live in Utah County
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-[72px] font-black leading-[1.05] tracking-tight mb-5 text-cc-text">
-            Get Comped.{' '}
-            <span className="text-cc-accent">Create Content.</span>{' '}
-            Win Prizes.
-          </h1>
-
-          {/* Subheadline */}
-          <p className="text-lg text-cc-text-secondary leading-relaxed max-w-lg mx-auto mb-8">
-            The invite-only creator network where local creators get free meals at restaurants
-            in exchange for authentic Instagram Reels and TikToks.
-          </p>
-
-          {/* CTA buttons */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            <Link
-              href="/creator"
-              className="inline-flex items-center gap-2 bg-cc-accent text-white font-bold px-7 py-3.5 rounded-full hover:bg-cc-accent-dark transition-colors shadow-sm text-base"
-            >
-              Start Creating Now
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/restaurant"
-              className="inline-flex items-center gap-2 bg-white text-cc-text font-bold px-7 py-3.5 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors text-base"
-            >
-              View Demo
-            </Link>
-          </div>
-
-          {/* Social proof */}
-          <div className="flex items-center justify-center gap-3 mb-14">
-            <div className="flex -space-x-2">
-              {['A', 'B', 'C', 'D', 'E'].map((letter, i) => (
-                <div
-                  key={letter}
-                  className="h-8 w-8 rounded-full bg-cc-accent-subtle border-2 border-white flex items-center justify-center text-xs font-bold text-cc-accent"
-                  style={{ zIndex: 5 - i }}
-                >
-                  {letter}
-                </div>
-              ))}
-            </div>
-            <div className="text-left">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
-                ))}
-              </div>
-              <p className="text-xs text-cc-text-muted">
-                <span className="font-semibold text-cc-text">120+ creators</span> already earning comps
+            {/* Left: Typography */}
+            <div className="flex-1 min-w-0 pb-24">
+              <p className="anim-1 text-xs font-semibold text-cc-accent uppercase tracking-widest mb-6">
+                Now Live · Utah County
               </p>
-            </div>
-          </div>
 
-          {/* Centered app mockup card */}
-          <div className="relative w-full max-w-md mx-auto">
-            {/* Blue radial glow behind card */}
-            <div
-              aria-hidden
-              className="absolute -inset-8 blur-3xl bg-cc-accent/10 rounded-full"
-            />
-            {/* Main card */}
-            <div className="relative bg-white border border-slate-200 rounded-3xl shadow-2xl shadow-slate-200/80 p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-cc-text">Active Comp</span>
-                <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                  ● Confirmed
-                </span>
+              <h1 className="anim-2 text-[56px] sm:text-[72px] lg:text-[80px] font-black leading-[1.0] tracking-tight mb-7 text-slate-900">
+                Get Comped.<br />
+                <span className="text-cc-accent">Create.</span><br />
+                Win.
+              </h1>
+
+              <p className="anim-3 text-lg text-slate-500 leading-relaxed max-w-md mb-10">
+                The invite-only network where local creators get free meals at restaurants in exchange for authentic Instagram Reels and TikToks.
+              </p>
+
+              <div className="anim-4 flex flex-wrap gap-3">
+                <Link
+                  href="/creator"
+                  className="inline-flex items-center gap-2 bg-cc-accent text-white font-semibold px-6 py-3 rounded-lg hover:bg-cc-accent-dark transition-colors text-sm"
+                >
+                  Start Creating
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/restaurant"
+                  className="inline-flex items-center gap-2 border border-slate-200 text-slate-700 font-semibold px-6 py-3 rounded-lg hover:border-slate-300 hover:bg-slate-50 transition-colors text-sm"
+                >
+                  View Demo
+                </Link>
               </div>
-              <div className="bg-slate-50 rounded-2xl p-4 text-left">
-                <p className="text-xs text-cc-text-muted mb-1">Restaurant</p>
-                <p className="font-bold text-cc-text text-base">The Local Kitchen</p>
-                <p className="text-sm text-cc-text-secondary mt-0.5">Utah County</p>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-cc-accent-subtle rounded-2xl p-4 text-left">
-                  <p className="text-xs text-cc-text-muted mb-1">Comp Value</p>
-                  <p className="font-black text-cc-accent text-2xl">$28.50</p>
+            </div>
+
+            {/* Right: Phone mockup */}
+            <div className="anim-5 shrink-0 w-full lg:w-auto flex justify-center lg:justify-end pb-0 self-end">
+              {/* Phone frame */}
+              <div
+                style={{
+                  width: '280px',
+                  height: '540px',
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  borderBottom: 'none',
+                  borderRadius: '28px 28px 0 0',
+                  overflow: 'hidden',
+                  boxShadow: '0 -8px 40px rgba(0,0,0,0.06), 0 -2px 8px rgba(0,0,0,0.04)',
+                  position: 'relative',
+                  flexShrink: 0,
+                }}
+              >
+                {/* Phone notch */}
+                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '14px', paddingBottom: '8px', background: 'white' }}>
+                  <div style={{ width: '90px', height: '26px', background: '#0f172a', borderRadius: '16px' }} />
                 </div>
-                <div className="bg-amber-50 rounded-2xl p-4 text-left">
-                  <p className="text-xs text-cc-text-muted mb-1">Time Left</p>
-                  <p className="font-black text-amber-600 text-2xl">44h 12m</p>
+
+                {/* App content: Map-style discover page */}
+                <div style={{ position: 'relative', height: 'calc(100% - 50px)', background: '#f1f5f9' }}>
+                  {/* Map placeholder */}
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #e8eef5 0%, #dde6f0 100%)' }} />
+
+                  {/* Grid lines mimicking map */}
+                  <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.5 }} viewBox="0 0 280 400" preserveAspectRatio="none">
+                    {[0,60,120,180,240,300,360,420].map(y => (
+                      <line key={`h${y}`} x1="0" y1={y} x2="280" y2={y} stroke="#c8d8e8" strokeWidth="1" />
+                    ))}
+                    {[0,50,100,150,200,250,300].map(x => (
+                      <line key={`v${x}`} x1={x} y1="0" x2={x} y2="500" stroke="#c8d8e8" strokeWidth="1" />
+                    ))}
+                    {/* Roads */}
+                    <path d="M 0 200 Q 100 190 180 220 Q 240 240 280 230" stroke="#d0dcea" strokeWidth="5" fill="none" />
+                    <path d="M 60 0 Q 70 120 100 200 Q 130 280 120 400" stroke="#d0dcea" strokeWidth="5" fill="none" />
+                    <path d="M 0 120 L 280 130" stroke="#d8e4ef" strokeWidth="3" fill="none" />
+                    <path d="M 140 0 L 150 400" stroke="#d8e4ef" strokeWidth="3" fill="none" />
+                  </svg>
+
+                  {/* Map pins */}
+                  {[
+                    { x: 90, y: 110 },
+                    { x: 155, y: 165 },
+                    { x: 200, y: 90 },
+                    { x: 70, y: 200 },
+                    { x: 220, y: 210 },
+                  ].map((pin, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        position: 'absolute',
+                        left: pin.x,
+                        top: pin.y,
+                        transform: 'translate(-50%, -100%)',
+                        width: '28px',
+                        height: '28px',
+                        background: i === 1 ? '#5c8ebf' : '#ffffff',
+                        border: `2px solid ${i === 1 ? '#5c8ebf' : '#cbd5e1'}`,
+                        borderRadius: '50% 50% 50% 0',
+                        transform: 'translate(-50%, -100%) rotate(-45deg)',
+                        boxShadow: i === 1 ? '0 2px 8px rgba(92,142,191,0.4)' : '0 1px 4px rgba(0,0,0,0.08)',
+                      }}
+                    />
+                  ))}
+
+                  {/* Bottom sheet card */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'white',
+                    borderTop: '1px solid #e2e8f0',
+                    borderRadius: '16px 16px 0 0',
+                    padding: '16px',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                      <div>
+                        <p style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '2px' }}>Cubby&apos;s Chicago Dogs</p>
+                        <p style={{ fontSize: '11px', color: '#94a3b8' }}>840 N 1200 W, Orem</p>
+                      </div>
+                      <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '4px 8px' }}>
+                        <p style={{ fontSize: '11px', fontWeight: 700, color: '#5c8ebf' }}>$28 comp</p>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ flex: 1, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '6px 10px' }}>
+                        <p style={{ fontSize: '10px', color: '#94a3b8', marginBottom: '1px' }}>Required</p>
+                        <p style={{ fontSize: '11px', fontWeight: 700, color: '#0f172a' }}>1 IG Reel</p>
+                      </div>
+                      <div style={{ background: '#5c8ebf', borderRadius: '8px', padding: '6px 14px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                        <p style={{ fontSize: '11px', fontWeight: 700, color: 'white' }}>View Menu</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-cc-text-muted border-t border-slate-100 pt-4">
-                <Clock className="h-3.5 w-3.5 text-cc-accent shrink-0" />
-                Post your Reel before the deadline to earn points
-              </div>
-            </div>
-
-            {/* Floating leaderboard badge */}
-            <div className="animate-float-slow absolute -top-3 -right-6 bg-cc-accent text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
-              #3 on Leaderboard
-            </div>
-
-            {/* Floating notification */}
-            <div className="animate-float-slow-2 absolute -bottom-3 -left-6 bg-white border border-slate-100 rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
-              <div className="h-8 w-8 bg-emerald-50 rounded-full flex items-center justify-center shrink-0">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-cc-text">Proof Approved!</p>
-                <p className="text-xs text-cc-text-muted">+120 points earned</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Stats Bar ─────────────────────────────────────────── */}
-      <section className="border-y border-slate-100 bg-slate-50">
-        <div className="cc-container py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
+      {/* Stats */}
+      <section className="border-b border-slate-100">
+        <div className="cc-container">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-100">
             {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center text-center px-6 py-2">
-                <span className="text-4xl font-black text-cc-text">{stat.value}</span>
-                <span className="text-sm text-cc-text-muted mt-1">{stat.label}</span>
+              <div key={stat.label} className="flex flex-col items-center text-center px-6 py-10">
+                <span className="text-4xl font-black text-slate-900 tracking-tight">{stat.value}</span>
+                <span className="text-xs text-slate-400 mt-1.5 uppercase tracking-wider">{stat.label}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Features ──────────────────────────────────────────── */}
-      <section id="features" className="bg-slate-50 py-20">
+      {/* Features */}
+      <section id="features" className="py-28 border-b border-slate-100">
         <div className="cc-container">
-          {/* Section header */}
-          <div className="text-center mb-10">
-            <span className="inline-block text-xs font-bold text-cc-accent uppercase tracking-widest mb-3">
-              Platform Core
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-cc-text tracking-tight mb-3">
-              Everything restaurants and creators need
-            </h2>
-            <p className="text-base text-cc-text-secondary leading-relaxed max-w-xl mx-auto">
-              A complete platform connecting content creators with local restaurants — built for
-              authentic, measurable results.
+          <div className="mb-16">
+            <p className="text-xs font-semibold text-cc-accent uppercase tracking-widest mb-4">
+              Why CreatorComped
             </p>
+            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.05]">
+              A better deal for<br />creators and restaurants.
+            </h2>
           </div>
 
-          {/* Feature cards */}
           <div className="grid md:grid-cols-3 gap-6">
-            {features.map((feature) => {
+            {features.map((feature, i) => {
               const Icon = feature.icon
               return (
                 <div
                   key={feature.title}
-                  className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+                  className="border border-slate-200 rounded-xl p-7 flex flex-col hover:border-slate-300 transition-colors"
                 >
-                  <div className={`h-14 w-14 rounded-xl flex items-center justify-center mb-5 ${feature.accent}`}>
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-cc-text mb-2">{feature.title}</h3>
-                  <p className="text-base text-cc-text-secondary leading-relaxed mb-4">
+                  <Icon className="h-5 w-5 text-slate-400 mb-5" />
+                  <h3 className="text-base font-bold text-slate-900 mb-3">{feature.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-6 flex-1">
                     {feature.description}
                   </p>
-                  <ul className="space-y-2">
+                  <ul className="space-y-2.5 border-t border-slate-100 pt-5">
                     {feature.points.map((point) => (
-                      <li key={point} className="flex items-center gap-2 text-sm text-cc-text-secondary">
-                        <CheckCircle2 className="h-4 w-4 text-cc-accent shrink-0" />
+                      <li key={point} className="flex items-start gap-2.5 text-sm text-slate-500">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-cc-accent shrink-0 mt-0.5" />
                         {point}
                       </li>
                     ))}
@@ -363,157 +353,105 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── How It Works ──────────────────────────────────────── */}
-      <section id="how-it-works" className="bg-white py-20">
+      {/* How It Works */}
+      <section id="how-it-works" className="py-28 border-b border-slate-100">
         <div className="cc-container">
-          <div className="text-center mb-10">
-            <span className="inline-block text-xs font-bold text-cc-accent uppercase tracking-widest mb-3">
-              How It Works
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-cc-text tracking-tight mb-3">
-              Three simple steps
-            </h2>
-            <p className="text-base text-cc-text-secondary leading-relaxed max-w-xl mx-auto">
-              From discovery to payout — CreatorComped makes it seamless.
+          <div className="mb-16">
+            <p className="text-xs font-semibold text-cc-accent uppercase tracking-widest mb-4">
+              The Process
             </p>
+            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.05]">
+              Simple from start<br />to payout.
+            </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-10">
-            {steps.map((step, i) => {
-              const Icon = step.icon
-              return (
-                <div key={step.number} className="flex flex-col items-center text-center relative">
-                  {/* Connector line */}
-                  {i < steps.length - 1 && (
-                    <div className="hidden md:block absolute top-8 left-1/2 w-full h-px bg-slate-200" />
-                  )}
-                  {/* Icon circle */}
-                  <div className="relative z-10 h-16 w-16 rounded-full bg-cc-accent-subtle border-2 border-cc-accent/20 flex items-center justify-center mb-5">
-                    <Icon className="h-6 w-6 text-cc-accent" />
-                  </div>
-                  <span className="text-xs font-bold text-cc-accent uppercase tracking-wider mb-2">
-                    Step {step.number}
-                  </span>
-                  <h3 className="text-xl font-bold text-cc-text mb-2">{step.title}</h3>
-                  <p className="text-base text-cc-text-secondary leading-relaxed max-w-xs">
-                    {step.description}
-                  </p>
-                </div>
-              )
-            })}
+            {steps.map((step) => (
+              <div key={step.number} className="flex flex-col">
+                <span className="text-5xl font-black text-slate-100 mb-6 leading-none tabular-nums">{step.number}</span>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{step.title}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{step.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── Creator CTA Banner ────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, #5c8ebf 0%, #3a6fa3 60%, #2c5f8f 100%)',
-        }}
-      >
-        <div className="relative cc-container py-16 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/20 border border-white/30 px-4 py-1.5 mb-6">
-            <Star className="h-3.5 w-3.5 text-white fill-white" />
-            <span className="text-xs font-bold text-white uppercase tracking-wider">
+      {/* CTA */}
+      <section className="bg-slate-900">
+        <div className="cc-container py-28">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-6">
               Invite-Only Network
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-4">
-            Ready to eat for free and get paid?
-          </h2>
-          <p className="text-white/80 text-lg leading-relaxed max-w-xl mx-auto mb-8">
-            Join 120+ creators already earning comps at Utah&apos;s best restaurants. Apply now — new spots open every month.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/creator"
-              className="inline-flex items-center gap-2 bg-white text-cc-accent font-black px-8 py-4 rounded-full hover:bg-slate-50 transition-colors shadow-lg text-base"
-            >
-              Apply as a Creator
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/restaurant"
-              className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-bold px-8 py-4 rounded-full hover:bg-white/20 transition-colors text-base"
-            >
-              I&apos;m a Restaurant
-            </Link>
-          </div>
-          {/* Trust indicators */}
-          <div className="flex items-center justify-center gap-8 mt-10 text-white/60 text-sm">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-white/70" />
-              Free to join
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-white/70" />
-              No commitments
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-white/70" />
-              Real cash prizes
+            </p>
+            <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-[1.05] mb-6">
+              Ready to eat for free<br />and get paid?
+            </h2>
+            <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-md">
+              Join 120+ creators already earning comps at Utah&apos;s best restaurants. Apply now — new spots open every month.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/creator"
+                className="inline-flex items-center gap-2 bg-white text-slate-900 font-semibold px-7 py-3.5 rounded-lg hover:bg-slate-100 transition-colors text-sm"
+              >
+                Apply as a Creator
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/restaurant"
+                className="inline-flex items-center gap-2 border border-slate-700 text-slate-400 font-semibold px-7 py-3.5 rounded-lg hover:border-slate-600 hover:text-slate-300 transition-colors text-sm"
+              >
+                I&apos;m a Restaurant
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Portals / CTA cards ───────────────────────────────── */}
-      <section id="portals" className="bg-slate-50 py-20">
+      {/* Portals */}
+      <section id="portals" className="py-28 border-b border-slate-100">
         <div className="cc-container">
-          <div className="text-center mb-10">
-            <span className="inline-block text-xs font-bold text-cc-accent uppercase tracking-widest mb-3">
-              Get Started
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-cc-text tracking-tight mb-3">
-              Choose your portal
-            </h2>
-            <p className="text-base text-cc-text-secondary leading-relaxed max-w-xl mx-auto">
-              CreatorComped has dedicated experiences for creators, restaurant staff, and administrators.
+          <div className="mb-16">
+            <p className="text-xs font-semibold text-cc-accent uppercase tracking-widest mb-4">
+              Three Portals
             </p>
+            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.05]">
+              Built for everyone<br />on the platform.
+            </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-5">
             {portals.map((portal) => {
               const Icon = portal.icon
               return (
                 <Link
                   key={portal.href}
                   href={portal.href}
-                  className={`group relative flex flex-col bg-white border border-slate-100 rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all duration-200 hover:-translate-y-1 text-left ${portal.borderAccent}`}
+                  className="group relative flex flex-col border border-slate-200 rounded-xl p-7 hover:border-cc-accent transition-colors"
                 >
-                  {/* Badge */}
                   {portal.badge && (
-                    <div className="absolute -top-2.5 left-5 bg-cc-accent text-white text-[10px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="absolute top-5 right-5 bg-cc-accent text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                       {portal.badge}
-                    </div>
+                    </span>
                   )}
 
-                  {/* Icon */}
-                  <div className={`h-14 w-14 rounded-xl flex items-center justify-center mb-5 ${portal.iconBg}`}>
-                    <Icon className="h-6 w-6" />
-                  </div>
+                  <Icon className="h-5 w-5 text-slate-400 mb-6" />
+                  <h3 className="text-sm font-bold text-slate-900 mb-2">{portal.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-6 flex-1">{portal.description}</p>
 
-                  {/* Content */}
-                  <h3 className="text-base font-bold text-cc-text mb-2">{portal.title}</h3>
-                  <p className="text-base text-cc-text-secondary leading-relaxed mb-4 flex-1">
-                    {portal.description}
-                  </p>
-
-                  {/* Feature list */}
-                  <ul className="space-y-1.5 mb-5">
+                  <ul className="space-y-1.5 mb-6 border-t border-slate-100 pt-5">
                     {portal.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-xs text-cc-text-muted">
-                        <span className="h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0" />
+                      <li key={f} className="flex items-center gap-2 text-xs text-slate-400">
+                        <span className="h-px w-3 bg-slate-300 shrink-0" />
                         {f}
                       </li>
                     ))}
                   </ul>
 
-                  {/* CTA with animated arrow */}
-                  <div className="flex items-center gap-1.5 text-sm font-bold text-cc-accent">
-                    <span>{portal.cta}</span>
-                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  <div className="flex items-center gap-1.5 text-sm font-semibold text-cc-accent">
+                    {portal.cta}
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                   </div>
                 </Link>
               )
@@ -522,74 +460,56 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Footer ────────────────────────────────────────────── */}
-      <footer className="bg-white border-t border-slate-100">
-        <div className="cc-container py-12">
-          <div className="grid md:grid-cols-4 gap-8 mb-10">
-            {/* Brand */}
+      {/* Footer */}
+      <footer>
+        <div className="cc-container py-16">
+          <div className="grid md:grid-cols-4 gap-10 mb-12">
             <div className="md:col-span-1">
               <CCLogoWithMark size="sm" className="mb-4" />
-              <p className="text-sm text-cc-text-muted leading-relaxed">
+              <p className="text-sm text-slate-400 leading-relaxed">
                 The invite-only creator network for local restaurants in Utah.
               </p>
             </div>
 
-            {/* Creators */}
-            <div>
-              <h4 className="text-sm font-bold text-cc-text mb-3">Creators</h4>
-              <ul className="space-y-2">
-                {['Discover Restaurants', 'Redeem Comps', 'Submit Proof', 'Leaderboard'].map((item) => (
-                  <li key={item}>
-                    <Link href="/creator" className="text-sm text-cc-text-muted hover:text-cc-text transition-colors">
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Restaurants */}
-            <div>
-              <h4 className="text-sm font-bold text-cc-text mb-3">Restaurants</h4>
-              <ul className="space-y-2">
-                {['Scan QR Codes', 'Manage Orders', 'Analytics', 'Settings'].map((item) => (
-                  <li key={item}>
-                    <Link href="/restaurant" className="text-sm text-cc-text-muted hover:text-cc-text transition-colors">
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Platform */}
-            <div>
-              <h4 className="text-sm font-bold text-cc-text mb-3">Platform</h4>
-              <ul className="space-y-2">
-                {['Admin Panel', 'Proof Review', 'Creator Vetting', 'Strikes'].map((item) => (
-                  <li key={item}>
-                    <Link href="/admin" className="text-sm text-cc-text-muted hover:text-cc-text transition-colors">
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {[
+              {
+                heading: 'Creators',
+                links: ['Discover Restaurants', 'Redeem Comps', 'Submit Proof', 'Leaderboard'],
+                href: '/creator',
+              },
+              {
+                heading: 'Restaurants',
+                links: ['Scan QR Codes', 'Manage Orders', 'Analytics', 'Settings'],
+                href: '/restaurant',
+              },
+              {
+                heading: 'Platform',
+                links: ['Admin Panel', 'Proof Review', 'Creator Vetting', 'Strikes'],
+                href: '/admin',
+              },
+            ].map((col) => (
+              <div key={col.heading}>
+                <h4 className="text-[10px] font-semibold text-slate-900 uppercase tracking-widest mb-4">{col.heading}</h4>
+                <ul className="space-y-2.5">
+                  {col.links.map((item) => (
+                    <li key={item}>
+                      <Link href={col.href} className="text-sm text-slate-400 hover:text-slate-700 transition-colors">
+                        {item}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
-          {/* Bottom bar */}
           <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-sm text-cc-text-muted">
-              <MapPin className="h-4 w-4 text-cc-accent" />
-              <span>
-                Serving{' '}
-                <span className="font-semibold text-cc-text">Utah County</span>
-                {' '}&amp;{' '}
-                <span className="font-semibold text-cc-text">Salt Lake County</span>
-              </span>
+            <div className="flex items-center gap-2 text-sm text-slate-400">
+              <MapPin className="h-3.5 w-3.5" />
+              Serving <span className="text-slate-600 mx-1">Utah County</span> &amp; <span className="text-slate-600 ml-1">Salt Lake County</span>
             </div>
-            <p className="text-xs text-cc-text-muted">
-              &copy; {new Date().getFullYear()} CreatorComped &mdash; Invite-only network
+            <p className="text-xs text-slate-400">
+              &copy; {new Date().getFullYear()} CreatorComped
             </p>
           </div>
         </div>

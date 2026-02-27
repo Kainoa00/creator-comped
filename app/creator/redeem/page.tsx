@@ -82,13 +82,13 @@ export default function RedeemPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col max-w-sm mx-auto">
-      {/* ── Top gradient band ── */}
-      <div className="bg-gradient-to-b from-cc-accent-subtle to-white pt-safe">
+      {/* Header */}
+      <div className="border-b border-slate-200 pt-safe">
         <header className="flex items-center justify-between px-5 pt-5 pb-3">
           <CCLogoWithMark size="sm" />
-          <div className="flex items-center gap-1.5 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1.5 border border-slate-100 shadow-sm">
+          <div className="flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-            <span className="text-xs text-slate-700 font-bold truncate max-w-[120px]">
+            <span className="text-xs text-slate-700 font-medium truncate max-w-[120px]">
               {restaurantName}
             </span>
           </div>
@@ -96,8 +96,8 @@ export default function RedeemPage() {
 
         {/* Restaurant name + instruction */}
         <div className="text-center px-5 pb-5">
-          <h1 className="text-xl font-black text-slate-900">{restaurantName}</h1>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+          <h1 className="text-lg font-bold text-slate-900">{restaurantName}</h1>
+          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-1.5">
             Show to Restaurant Staff
           </p>
           <p className="text-sm text-slate-500 mt-1.5 leading-snug">
@@ -112,8 +112,8 @@ export default function RedeemPage() {
         <div className="relative w-full">
           <div
             className={cn(
-              'bg-white border-2 rounded-3xl p-7 shadow-md flex flex-col items-center mx-auto w-fit transition-all',
-              expired ? 'border-red-200 opacity-40' : 'border-cc-accent/20 shadow-cc-accent/10'
+              'bg-white border rounded-xl p-6 flex flex-col items-center mx-auto w-fit transition-all',
+              expired ? 'border-red-200 opacity-40' : 'border-slate-200'
             )}
           >
             <QRCodeSVG
@@ -158,17 +158,17 @@ export default function RedeemPage() {
           </p>
         </div>
 
-        {/* Countdown timer — dramatic, urgency-colored */}
+        {/* Countdown timer */}
         <div
           className={cn(
-            'rounded-2xl px-6 py-4 flex flex-col items-center gap-1 w-full max-w-xs border',
+            'rounded-lg px-6 py-4 flex flex-col items-center gap-1 w-full max-w-xs border',
             expired
-              ? 'bg-red-50 border-red-200'
+              ? 'border-red-200'
               : secsLeft < 43200
-              ? 'bg-red-50 border-red-200'
+              ? 'border-red-200'
               : secsLeft < 86400
-              ? 'bg-amber-50 border-amber-200'
-              : 'bg-emerald-50 border-emerald-200'
+              ? 'border-amber-200'
+              : 'border-slate-200'
           )}
         >
           <div className="flex items-center gap-2 mb-1">
@@ -200,8 +200,8 @@ export default function RedeemPage() {
           )}
         </div>
 
-        {/* Items ordered — chip pills */}
-        <div className="w-full bg-white border border-slate-100 rounded-2xl px-4 py-4 shadow-sm">
+        {/* Items ordered */}
+        <div className="w-full border border-slate-200 rounded-lg px-4 py-4">
           <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-3 font-black">
             Items ordered
           </p>
@@ -223,9 +223,9 @@ export default function RedeemPage() {
         </div>
 
         {/* Warning */}
-        <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3.5 w-full">
-          <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-          <p className="text-xs text-amber-700 font-bold leading-relaxed">
+        <div className="flex items-start gap-2.5 border border-slate-200 rounded-lg px-4 py-3 w-full">
+          <AlertTriangle className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" />
+          <p className="text-xs text-slate-500 leading-relaxed">
             Do not leave this screen until staff confirms your order.
           </p>
         </div>

@@ -66,32 +66,28 @@ function LeaderboardCard({
   const isIG = platform === 'IG_REEL'
 
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+    <div className="border border-slate-200 rounded-lg overflow-hidden">
       {/* Card header */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-slate-100">
+      <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-200">
         <div className="flex items-center gap-2">
           {isIG ? (
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-pink-500 to-rose-400 flex items-center justify-center">
-              <Instagram className="h-3.5 w-3.5 text-white" />
-            </div>
+            <Instagram className="h-4 w-4 text-slate-400" />
           ) : (
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-800 to-slate-600 flex items-center justify-center">
-              <Music2 className="h-3.5 w-3.5 text-white" />
-            </div>
+            <Music2 className="h-4 w-4 text-slate-400" />
           )}
-          <span className="text-sm font-black text-slate-900">
+          <span className="text-sm font-semibold text-slate-900">
             {isIG ? 'Instagram' : 'TikTok'}
           </span>
         </div>
         {myRank && (
-          <span className="bg-cc-accent text-white text-xs font-black rounded-full px-3 py-0.5">
+          <span className="text-xs font-semibold text-cc-accent border border-cc-accent/30 rounded-full px-2.5 py-0.5">
             #{myRank}
           </span>
         )}
       </div>
 
       {/* Leaderboard rows */}
-      <ul className="divide-y divide-slate-50">
+      <ul className="divide-y divide-slate-100">
         {ranked.slice(0, 3).map((entry, i) => {
           const isMe = entry.creator_id === creatorId
           const medals = ['🥇', '🥈', '🥉']
@@ -100,7 +96,7 @@ function LeaderboardCard({
               key={entry.id}
               className={cn(
                 'flex items-center gap-3 px-4 py-3 transition-colors',
-                isMe && 'bg-cc-accent-subtle'
+                isMe && 'bg-slate-50'
               )}
             >
               <span className="text-base w-6 text-center leading-none">{medals[i]}</span>
@@ -111,13 +107,13 @@ function LeaderboardCard({
               />
               <span
                 className={cn(
-                  'text-sm flex-1 truncate font-semibold',
-                  isMe ? 'font-black text-cc-accent' : 'text-slate-700'
+                  'text-sm flex-1 truncate',
+                  isMe ? 'font-semibold text-cc-accent' : 'text-slate-700'
                 )}
               >
                 {entry.creator_name}
                 {isMe && (
-                  <span className="ml-1.5 text-[10px] bg-cc-accent text-white rounded-full px-1.5 py-0.5 font-bold align-middle">
+                  <span className="ml-1.5 text-[10px] border border-cc-accent/30 text-cc-accent rounded-full px-1.5 py-0.5 font-medium align-middle">
                     you
                   </span>
                 )}
@@ -162,40 +158,37 @@ export default function ProfilePage() {
       : null
 
   return (
-    <div className="min-h-screen bg-slate-50 max-w-sm mx-auto">
+    <div className="min-h-screen bg-white max-w-sm mx-auto">
       {/* Sticky header */}
-      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-100">
+      <header className="sticky top-0 z-20 bg-white border-b border-slate-200">
         <div className="flex items-center justify-between h-14 px-4">
-          <h1 className="text-lg font-black text-slate-900">Profile</h1>
+          <h1 className="text-base font-bold text-slate-900">Profile</h1>
         </div>
       </header>
 
       <div className="pb-24">
-        {/* ── Hero gradient band ── */}
-        <div className="bg-gradient-to-b from-cc-accent-subtle to-white h-24 w-full" />
-
         {/* ── Avatar + identity card ── */}
-        <section className="bg-white px-5 pb-6 pt-6 -mt-12">
-          {/* Avatar overlapping hero */}
+        <section className="bg-white px-5 pb-6 pt-6">
+          {/* Avatar */}
           <div className="relative shrink-0 w-fit mb-5">
             <img
               src={creator.photo_url ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.id}`}
               alt={creator.name}
-              className="w-24 h-24 rounded-full object-cover ring-4 ring-white shadow-lg"
+              className="w-20 h-20 rounded-full object-cover border border-slate-200"
             />
             {creator.verified && (
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-cc-accent flex items-center justify-center ring-2 ring-white shadow-sm">
-                <BadgeCheck className="h-4 w-4 text-white" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-cc-accent flex items-center justify-center border-2 border-white">
+                <BadgeCheck className="h-3.5 w-3.5 text-white" />
               </div>
             )}
           </div>
 
           {/* Name + verified badge */}
           <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-2xl font-black text-slate-900 leading-tight">{creator.name}</h2>
+            <h2 className="text-xl font-black text-slate-900 leading-tight">{creator.name}</h2>
             {creator.verified && (
-              <span className="inline-flex items-center gap-1 bg-cc-accent-subtle text-cc-accent text-xs font-black px-2 py-0.5 rounded-full">
-                <CheckCircle2 className="h-3 w-3" />
+              <span className="inline-flex items-center gap-1 border border-cc-accent/30 text-cc-accent text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                <CheckCircle2 className="h-2.5 w-2.5" />
                 Verified
               </span>
             )}
@@ -219,9 +212,9 @@ export default function ProfilePage() {
 
           {/* Ban state */}
           {creator.ban_state !== 'none' && (
-            <div className="mt-4 flex items-center gap-2 bg-red-50 border border-red-200 rounded-2xl px-3 py-3">
-              <XCircle className="h-4 w-4 text-red-400 shrink-0" />
-              <p className="text-xs text-red-600 font-bold">
+            <div className="mt-4 flex items-center gap-2 border border-red-200 rounded-lg px-3 py-2.5">
+              <XCircle className="h-3.5 w-3.5 text-red-400 shrink-0" />
+              <p className="text-xs text-red-500">
                 {creator.ban_state === 'permanent'
                   ? 'Permanently banned'
                   : `Temporarily banned${creator.ban_until ? ` until ${formatDate(creator.ban_until)}` : ''}`}
@@ -231,23 +224,23 @@ export default function ProfilePage() {
 
           {/* Strike indicator */}
           {creator.strike_count > 0 && (
-            <div className="mt-3 bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center gap-3">
+            <div className="mt-3 border border-red-200 rounded-lg p-3 flex items-center gap-3">
               <div className="flex items-center gap-1.5">
                 {[0, 1, 2].map((i) => (
                   <div
                     key={i}
                     className={cn(
-                      'w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-black',
+                      'w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold',
                       i < creator.strike_count
-                        ? 'bg-red-100 border-red-400 text-red-500'
-                        : 'bg-white border-slate-200 text-slate-300'
+                        ? 'border-red-300 text-red-400'
+                        : 'border-slate-200 text-slate-300'
                     )}
                   >
                     {i < creator.strike_count ? '✕' : '○'}
                   </div>
                 ))}
               </div>
-              <span className="text-xs text-red-600 font-black">
+              <span className="text-xs text-red-400">
                 {creator.strike_count}/3 strikes
               </span>
             </div>
@@ -255,7 +248,7 @@ export default function ProfilePage() {
         </section>
 
         {/* ── Stats row ── */}
-        <section className="bg-white border-t border-b border-slate-100 mx-0 mt-3 shadow-sm">
+        <section className="bg-white border-t border-b border-slate-200 mx-0 mt-3">
           <div className="flex items-stretch">
             <Stat label="Total Comps" value={totalComps} />
             <Stat label="Approved" value={approvedPosts} border />
@@ -267,12 +260,10 @@ export default function ProfilePage() {
         <section className="px-4 pt-6 pb-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center">
-                <Trophy className="h-3.5 w-3.5 text-amber-500" />
-              </div>
-              <h2 className="text-base font-black text-slate-900">This Month&apos;s Standings</h2>
+              <Trophy className="h-4 w-4 text-slate-400" />
+              <h2 className="text-sm font-semibold text-slate-900">This Month&apos;s Standings</h2>
             </div>
-            <span className="text-xs text-slate-400 font-bold bg-slate-100 rounded-full px-2.5 py-0.5">{month}</span>
+            <span className="text-xs text-slate-400">{month}</span>
           </div>
           <div className="space-y-4">
             <LeaderboardCard
@@ -290,27 +281,21 @@ export default function ProfilePage() {
 
         {/* ── Comp History ── */}
         <section className="px-4 pt-6 pb-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-cc-accent-subtle flex items-center justify-center">
-                <BarChart3 className="h-3.5 w-3.5 text-cc-accent" />
-              </div>
-              <h2 className="text-base font-black text-slate-900">Comp History</h2>
-            </div>
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="h-4 w-4 text-slate-400" />
+            <h2 className="text-sm font-semibold text-slate-900">Comp History</h2>
           </div>
 
           {recentOrders.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-12 text-center bg-white rounded-2xl border border-slate-100 shadow-sm">
-              <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center">
-                <BarChart3 className="h-6 w-6 text-slate-300" />
-              </div>
+            <div className="flex flex-col items-center gap-3 py-10 text-center border border-slate-200 rounded-lg">
+              <BarChart3 className="h-6 w-6 text-slate-300" />
               <div>
-                <p className="font-black text-slate-900 text-sm">No history yet</p>
+                <p className="text-sm font-medium text-slate-900">No history yet</p>
                 <p className="text-xs text-slate-400 mt-0.5">Your completed comps will appear here</p>
               </div>
             </div>
           ) : (
-            <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+            <div className="border border-slate-200 rounded-lg overflow-hidden">
               <ul className="divide-y divide-slate-50">
                 {recentOrders.map((order) => (
                   <li key={order.id} className="flex items-center gap-3 py-4 px-4">
@@ -348,30 +333,24 @@ export default function ProfilePage() {
 
         {/* ── Settings ── */}
         <section className="px-4 pb-6">
-          <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+          <div className="border border-slate-200 rounded-lg overflow-hidden">
             <button
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-slate-50 active:bg-slate-100 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-slate-50 transition-colors"
               onClick={() => {}}
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
-                  <Settings className="h-4 w-4 text-slate-500" />
-                </div>
-                <span className="text-sm font-bold text-slate-900">Edit Profile</span>
+                <Settings className="h-4 w-4 text-slate-400" />
+                <span className="text-sm text-slate-700">Edit Profile</span>
               </div>
               <ChevronRight className="h-4 w-4 text-slate-300" />
             </button>
-            <div className="h-px bg-slate-100 mx-4" />
+            <div className="h-px bg-slate-200" />
             <button
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-red-50 active:bg-red-100 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-slate-50 transition-colors"
               onClick={() => router.push('/')}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center">
-                  <LogOut className="h-4 w-4 text-red-400" />
-                </div>
-                <span className="text-sm font-bold text-red-500">Sign Out</span>
-              </div>
+              <LogOut className="h-4 w-4 text-red-400" />
+              <span className="text-sm text-red-500">Sign Out</span>
             </button>
           </div>
         </section>

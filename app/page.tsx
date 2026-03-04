@@ -1,514 +1,388 @@
+'use client'
+
 import Link from 'next/link'
-import { CCLogoWithMark } from '@/components/cc-logo'
+import { useState } from 'react'
 import {
-  Video,
-  UtensilsCrossed,
-  Shield,
   MapPin,
-  ArrowRight,
-  Zap,
+  ShoppingBag,
+  QrCode,
+  Link2,
   Trophy,
-  Camera,
-  CheckCircle2,
+  BarChart3,
+  ArrowRight,
+  Smartphone,
+  Menu,
+  X,
 } from 'lucide-react'
 
-const portals = [
-  {
-    icon: Video,
-    title: 'Creator App',
-    description:
-      'Discover restaurants, browse menus, get your meal comped, and post content to win monthly cash prizes.',
-    href: '/creator',
-    cta: 'Open Creator App',
-    badge: 'Most Popular',
-    features: ['Map discovery', 'QR redemption', 'Monthly contests'],
-  },
-  {
-    icon: UtensilsCrossed,
-    title: 'Restaurant Dashboard',
-    description:
-      'Scan creator QR codes, confirm orders, and manage your restaurant comp program with real-time analytics.',
-    href: '/restaurant',
-    cta: 'Open Dashboard',
-    badge: null,
-    features: ['QR scanner', 'Order confirmation', 'Analytics'],
-  },
-  {
-    icon: Shield,
-    title: 'Admin Panel',
-    description:
-      'Vet creator applications, review proof submissions, issue strikes, and manage monthly leaderboards.',
-    href: '/admin',
-    cta: 'Open Admin Panel',
-    badge: null,
-    features: ['Creator vetting', 'Proof review', 'Leaderboard'],
-  },
-]
+export default function HomePage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-const features = [
-  {
-    icon: Camera,
-    title: 'For Creators',
-    description:
-      'Get your meals fully comped at partner restaurants. Post authentic content about your experience within 48 hours.',
-    points: ['Free meals at 18+ restaurants', 'Flexible 48-hour posting window', 'Monthly cash prize pool'],
-  },
-  {
-    icon: UtensilsCrossed,
-    title: 'For Restaurants',
-    description:
-      'Drive organic UGC from real creators with established audiences. No ads, no agencies — just authentic word-of-mouth.',
-    points: ['Verified creator network', 'Real-time order management', 'Performance analytics'],
-  },
-  {
-    icon: Trophy,
-    title: 'Monthly Prizes',
-    description:
-      'Leaderboards rank creators by content quality and reach every month. Top performers earn real cash prizes.',
-    points: ['Separate IG Reel & TikTok boards', 'Fair engagement-based scoring', 'Real cash prizes monthly'],
-  },
-]
-
-const steps = [
-  {
-    number: '01',
-    title: 'Discover',
-    description: 'Browse an interactive map of partner restaurants near you. See comp value and posting requirements before you go.',
-  },
-  {
-    number: '02',
-    title: 'Redeem',
-    description: 'Add items to your cart and generate a QR code. Show it to restaurant staff — no cash, no hassle.',
-  },
-  {
-    number: '03',
-    title: 'Post & Win',
-    description: 'Post within 48 hours, submit your proof, and watch your leaderboard rank climb toward the monthly prize.',
-  },
-]
-
-const stats = [
-  { value: '120+', label: 'Active creators' },
-  { value: '18', label: 'Partner restaurants' },
-  { value: '340+', label: 'Comps this month' },
-  { value: '$2,400', label: 'Monthly prize pool' },
-]
-
-export default function LandingPage() {
   return (
-    <div className="min-h-dvh bg-white flex flex-col font-[family-name:var(--font-manrope)]">
-
-      <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .anim-1 { animation: fadeUp 0.6s ease-out 0.1s both; }
-        .anim-2 { animation: fadeUp 0.6s ease-out 0.25s both; }
-        .anim-3 { animation: fadeUp 0.6s ease-out 0.4s both; }
-        .anim-4 { animation: fadeUp 0.6s ease-out 0.55s both; }
-        .anim-5 { animation: fadeUp 0.6s ease-out 0.7s both; }
-      `}</style>
-
-      {/* Demo Banner */}
-      <div className="bg-slate-900">
-        <div className="cc-container py-2 flex items-center justify-center gap-2">
-          <span className="text-[11px] font-medium text-slate-400 tracking-wide uppercase">Demo Mode</span>
-          <span className="text-slate-700">·</span>
-          <span className="text-[11px] text-slate-500">All data is simulated. No real transactions.</span>
-        </div>
-      </div>
-
+    <div className="bg-[#0a0a0a] text-white min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div className="cc-container h-14 flex items-center justify-between">
-          <CCLogoWithMark size="md" />
+      <header className="sticky top-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-white/5">
+        <nav className="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
+          <div className="text-2xl font-semibold">Creator Comped</div>
 
-          <nav className="hidden md:flex items-center gap-7">
-            {[
-              { label: 'Features', href: '#features' },
-              { label: 'How It Works', href: '#how-it-works' },
-              { label: 'Portals', href: '#portals' },
-            ].map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-white/70 hover:text-white transition">Features</a>
+            <a href="#how-it-works" className="text-white/70 hover:text-white transition">How it works</a>
+            <a href="#faq" className="text-white/70 hover:text-white transition">FAQ</a>
+            <a href="#resources" className="text-white/70 hover:text-white transition">Resources</a>
+          </div>
 
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Utah County
-            </span>
+          <div className="hidden md:flex items-center gap-4">
             <Link
-              href="/creator"
-              className="inline-flex items-center gap-1.5 bg-cc-accent text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-cc-accent-dark transition-colors"
+              href="/restaurant-admin/login"
+              className="px-6 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 text-white font-medium hover:opacity-90 transition"
             >
-              Get Started
-              <ArrowRight className="h-3.5 w-3.5" />
+              Login
             </Link>
           </div>
-        </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </nav>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-white/5 bg-[#0a0a0a]">
+            <div className="px-8 py-4 flex flex-col gap-4">
+              <a href="#features" className="text-white/70 hover:text-white transition">Features</a>
+              <a href="#how-it-works" className="text-white/70 hover:text-white transition">How it works</a>
+              <a href="#faq" className="text-white/70 hover:text-white transition">FAQ</a>
+              <a href="#resources" className="text-white/70 hover:text-white transition">Resources</a>
+              <Link
+                href="/restaurant-admin/login"
+                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 text-white font-medium hover:opacity-90 transition text-center"
+              >
+                Login
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
-      {/* ── Hero ───────────────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 overflow-hidden">
-        <div className="cc-container py-16 lg:py-24">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-
-            {/* Left: Typography */}
-            <div className="flex-1 min-w-0">
-              <p className="anim-1 text-xs font-semibold text-cc-accent uppercase tracking-widest mb-5">
-                Now Live · Utah County
-              </p>
-
-              <h1 className="anim-2 text-[44px] sm:text-[56px] lg:text-[64px] font-black leading-[1.0] tracking-tight mb-6 text-slate-900">
-                Get Comped.<br />
-                <span className="text-cc-accent">Create.</span><br />
-                Win.
-              </h1>
-
-              <p className="anim-3 text-base text-slate-500 leading-relaxed max-w-sm mb-8">
-                The invite-only network where local creators get free meals at restaurants in exchange for authentic Instagram Reels and TikToks.
-              </p>
-
-              <div className="anim-4 flex flex-wrap gap-3">
-                <Link
-                  href="/creator"
-                  className="inline-flex items-center gap-2 bg-cc-accent text-white font-semibold px-6 py-3 rounded-lg hover:bg-cc-accent-dark transition-colors text-sm"
-                >
-                  Start Creating
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/restaurant"
-                  className="inline-flex items-center gap-2 border border-slate-200 text-slate-700 font-semibold px-6 py-3 rounded-lg hover:border-slate-300 hover:bg-slate-50 transition-colors text-sm"
-                >
-                  View Demo
-                </Link>
+      {/* Hero Section */}
+      <section className="max-w-[1440px] mx-auto px-8 py-24">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              Get your food comped.
+              <br />
+              Create content.
+              <br />
+              Win rewards.
+            </h1>
+            <p className="text-xl text-white/70 mb-8 leading-relaxed">
+              Creator Comped connects content creators with local restaurants.
+              Redeem complimentary meals, create authentic content, and compete
+              for monthly prizes while restaurants gain exposure.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button className="px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 text-white font-semibold hover:opacity-90 transition text-lg">
+                Download / Join as Creator
+              </button>
+              <button className="px-8 py-4 rounded-full bg-white/10 text-white font-semibold hover:bg-white/20 transition text-lg">
+                Join as Restaurant
+              </button>
+            </div>
+          </div>
+          <div className="relative">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-500/10 bg-white/5 border border-white/10 h-96 flex items-center justify-center">
+              <div className="text-center text-white/30">
+                <Smartphone className="w-24 h-24 mx-auto mb-4" />
+                <p className="text-lg">Creator Comped App</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Right: Phone mockup */}
-            <div className="anim-5 shrink-0 w-full lg:w-auto flex justify-center lg:justify-end">
-              {/* Phone frame */}
-              <div
-                style={{
-                  width: '260px',
-                  height: '460px',
-                  background: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '24px',
-                  overflow: 'hidden',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-                  position: 'relative',
-                  flexShrink: 0,
-                }}
-              >
-                {/* Phone notch */}
-                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '14px', paddingBottom: '8px', background: 'white' }}>
-                  <div style={{ width: '90px', height: '26px', background: '#0f172a', borderRadius: '16px' }} />
-                </div>
+      {/* Features Section */}
+      <section id="features" className="max-w-[1440px] mx-auto px-8 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4">Everything you need</h2>
+          <p className="text-xl text-white/70">
+            Powerful features for creators and restaurants
+          </p>
+        </div>
 
-                {/* App content: Map-style discover page */}
-                <div style={{ position: 'relative', height: 'calc(100% - 46px)', background: '#f1f5f9' }}>
-                  {/* Map placeholder */}
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #e8eef5 0%, #dde6f0 100%)' }} />
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/10 transition border border-white/5">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center mb-6">
+              <MapPin className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">Discovery Map & List</h3>
+            <p className="text-white/70 leading-relaxed">
+              Find participating restaurants near you with an interactive map
+              and list view showing all available comps in your area.
+            </p>
+          </div>
 
-                  {/* Grid lines mimicking map */}
-                  <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.5 }} viewBox="0 0 280 400" preserveAspectRatio="none">
-                    {[0,60,120,180,240,300,360,420].map(y => (
-                      <line key={`h${y}`} x1="0" y1={y} x2="280" y2={y} stroke="#c8d8e8" strokeWidth="1" />
-                    ))}
-                    {[0,50,100,150,200,250,300].map(x => (
-                      <line key={`v${x}`} x1={x} y1="0" x2={x} y2="500" stroke="#c8d8e8" strokeWidth="1" />
-                    ))}
-                    {/* Roads */}
-                    <path d="M 0 200 Q 100 190 180 220 Q 240 240 280 230" stroke="#d0dcea" strokeWidth="5" fill="none" />
-                    <path d="M 60 0 Q 70 120 100 200 Q 130 280 120 400" stroke="#d0dcea" strokeWidth="5" fill="none" />
-                    <path d="M 0 120 L 280 130" stroke="#d8e4ef" strokeWidth="3" fill="none" />
-                    <path d="M 140 0 L 150 400" stroke="#d8e4ef" strokeWidth="3" fill="none" />
-                  </svg>
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/10 transition border border-white/5">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center mb-6">
+              <ShoppingBag className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">Simple Ordering</h3>
+            <p className="text-white/70 leading-relaxed">
+              Select menu items within restaurant-defined limits. Clear pricing
+              and restrictions ensure transparency for both parties.
+            </p>
+          </div>
 
-                  {/* Map pins */}
-                  {[
-                    { x: 90, y: 110 },
-                    { x: 155, y: 165 },
-                    { x: 200, y: 90 },
-                    { x: 70, y: 200 },
-                    { x: 220, y: 210 },
-                  ].map((pin, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        position: 'absolute',
-                        left: pin.x,
-                        top: pin.y,
-                        width: '28px',
-                        height: '28px',
-                        background: i === 1 ? '#5c8ebf' : '#ffffff',
-                        border: `2px solid ${i === 1 ? '#5c8ebf' : '#cbd5e1'}`,
-                        borderRadius: '50% 50% 50% 0',
-                        transform: 'translate(-50%, -100%) rotate(-45deg)',
-                        boxShadow: i === 1 ? '0 2px 8px rgba(92,142,191,0.4)' : '0 1px 4px rgba(0,0,0,0.08)',
-                      }}
-                    />
-                  ))}
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/10 transition border border-white/5">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center mb-6">
+              <QrCode className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">QR Code Redemption</h3>
+            <p className="text-white/70 leading-relaxed">
+              Redeem your comp instantly with a QR code scan at the restaurant.
+              Backup 5-digit codes ensure smooth redemption every time.
+            </p>
+          </div>
 
-                  {/* Bottom sheet card */}
-                  <div style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    background: 'white',
-                    borderTop: '1px solid #e2e8f0',
-                    borderRadius: '16px 16px 0 0',
-                    padding: '16px',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                      <div>
-                        <p style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '2px' }}>Cubby&apos;s Chicago Dogs</p>
-                        <p style={{ fontSize: '11px', color: '#94a3b8' }}>840 N 1200 W, Orem</p>
-                      </div>
-                      <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '4px 8px' }}>
-                        <p style={{ fontSize: '11px', fontWeight: 700, color: '#5c8ebf' }}>$28 comp</p>
-                      </div>
-                    </div>
-                    <div style={{ display: 'flex', gap: '6px' }}>
-                      <div style={{ flex: 1, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '6px 10px' }}>
-                        <p style={{ fontSize: '10px', color: '#94a3b8', marginBottom: '1px' }}>Required</p>
-                        <p style={{ fontSize: '11px', fontWeight: 700, color: '#0f172a' }}>1 IG Reel</p>
-                      </div>
-                      <div style={{ background: '#5c8ebf', borderRadius: '8px', padding: '6px 14px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                        <p style={{ fontSize: '11px', fontWeight: 700, color: 'white' }}>View Menu</p>
-                      </div>
-                    </div>
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/10 transition border border-white/5">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center mb-6">
+              <Link2 className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">Post Submission</h3>
+            <p className="text-white/70 leading-relaxed">
+              Submit your Instagram and TikTok post links for verification.
+              Track your content performance and deliverable compliance.
+            </p>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/10 transition border border-white/5">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center mb-6">
+              <Trophy className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">Monthly Leaderboard</h3>
+            <p className="text-white/70 leading-relaxed">
+              Compete with other creators for monthly prizes. Top performers
+              earn rewards based on engagement and content quality.
+            </p>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/10 transition border border-white/5">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center mb-6">
+              <BarChart3 className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">Business Analytics</h3>
+            <p className="text-white/70 leading-relaxed">
+              Restaurants track spend, monitor comp usage, analyze creator
+              performance, and measure ROI with comprehensive dashboards.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works" className="max-w-[1440px] mx-auto px-8 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4">How it works</h2>
+          <p className="text-xl text-white/70">Simple process for creators and restaurants</p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* For Creators */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-10 border border-white/5">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center">
+                <Smartphone className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-bold">For Creators</h3>
+            </div>
+            <div className="space-y-6">
+              {[
+                { n: 1, title: 'Choose a restaurant', desc: 'Browse the map or list to find participating restaurants near you' },
+                { n: 2, title: 'Select menu items', desc: "Choose items within the restaurant's defined limits and restrictions" },
+                { n: 3, title: 'Get comped via QR code', desc: 'Show your QR code at the restaurant to redeem your complimentary meal' },
+                { n: 4, title: 'Submit post links', desc: 'Share your Instagram and TikTok posts to complete the comp' },
+              ].map((step) => (
+                <div key={step.n} className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center font-semibold">
+                    {step.n}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1">{step.title}</h4>
+                    <p className="text-white/70">{step.desc}</p>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Stats */}
-      <section className="border-b border-slate-100">
-        <div className="cc-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-100">
-            {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center text-center px-6 py-10">
-                <span className="text-4xl font-black text-slate-900 tracking-tight">{stat.value}</span>
-                <span className="text-xs text-slate-400 mt-1.5 uppercase tracking-wider">{stat.label}</span>
+          {/* For Restaurants */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-10 border border-white/5">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center">
+                <BarChart3 className="w-6 h-6" />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section id="features" className="py-28 border-b border-slate-100">
-        <div className="cc-container">
-          <div className="mb-16">
-            <p className="text-xs font-semibold text-cc-accent uppercase tracking-widest mb-4">
-              Why CreatorComped
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.05]">
-              A better deal for<br />creators and restaurants.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {features.map((feature, i) => {
-              const Icon = feature.icon
-              return (
-                <div
-                  key={feature.title}
-                  className="border border-slate-200 rounded-xl p-7 flex flex-col hover:border-slate-300 transition-colors"
-                >
-                  <Icon className="h-5 w-5 text-slate-400 mb-5" />
-                  <h3 className="text-base font-bold text-slate-900 mb-3">{feature.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed mb-6 flex-1">
-                    {feature.description}
-                  </p>
-                  <ul className="space-y-2.5 border-t border-slate-100 pt-5">
-                    {feature.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2.5 text-sm text-slate-500">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-cc-accent shrink-0 mt-0.5" />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section id="how-it-works" className="py-28 border-b border-slate-100">
-        <div className="cc-container">
-          <div className="mb-16">
-            <p className="text-xs font-semibold text-cc-accent uppercase tracking-widest mb-4">
-              The Process
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.05]">
-              Simple from start<br />to payout.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {steps.map((step) => (
-              <div key={step.number} className="flex flex-col">
-                <span className="text-5xl font-black text-slate-100 mb-6 leading-none tabular-nums">{step.number}</span>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{step.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-slate-900">
-        <div className="cc-container py-28">
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-6">
-              Invite-Only Network
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-[1.05] mb-6">
-              Ready to eat for free<br />and get paid?
-            </h2>
-            <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-md">
-              Join 120+ creators already earning comps at Utah&apos;s best restaurants. Apply now — new spots open every month.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/creator"
-                className="inline-flex items-center gap-2 bg-white text-slate-900 font-semibold px-7 py-3.5 rounded-lg hover:bg-slate-100 transition-colors text-sm"
-              >
-                Apply as a Creator
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/restaurant"
-                className="inline-flex items-center gap-2 border border-slate-700 text-slate-400 font-semibold px-7 py-3.5 rounded-lg hover:border-slate-600 hover:text-slate-300 transition-colors text-sm"
-              >
-                I&apos;m a Restaurant
-              </Link>
+              <h3 className="text-2xl font-bold">For Restaurants</h3>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Portals */}
-      <section id="portals" className="py-28 border-b border-slate-100">
-        <div className="cc-container">
-          <div className="mb-16">
-            <p className="text-xs font-semibold text-cc-accent uppercase tracking-widest mb-4">
-              Three Portals
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.05]">
-              Built for everyone<br />on the platform.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            {portals.map((portal) => {
-              const Icon = portal.icon
-              return (
-                <Link
-                  key={portal.href}
-                  href={portal.href}
-                  className="group relative flex flex-col border border-slate-200 rounded-xl p-7 hover:border-cc-accent transition-colors"
-                >
-                  {portal.badge && (
-                    <span className="absolute top-5 right-5 bg-cc-accent text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
-                      {portal.badge}
-                    </span>
-                  )}
-
-                  <Icon className="h-5 w-5 text-slate-400 mb-6" />
-                  <h3 className="text-sm font-bold text-slate-900 mb-2">{portal.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed mb-6 flex-1">{portal.description}</p>
-
-                  <ul className="space-y-1.5 mb-6 border-t border-slate-100 pt-5">
-                    {portal.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-xs text-slate-400">
-                        <span className="h-px w-3 bg-slate-300 shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="flex items-center gap-1.5 text-sm font-semibold text-cc-accent">
-                    {portal.cta}
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            <div className="space-y-6">
+              {[
+                { n: 1, title: 'Set menu + limits', desc: 'Upload your menu, set pricing, and define per-item and category limits' },
+                { n: 2, title: 'Set deliverables', desc: 'Define content requirements, hashtags, and posting guidelines' },
+                { n: 3, title: 'Employees scan QR', desc: 'Staff quickly validate and redeem comps with built-in QR scanner' },
+                { n: 4, title: 'Track spend + analytics', desc: 'Monitor your investment, creator performance, and content reach' },
+              ].map((step) => (
+                <div key={step.n} className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center font-semibold">
+                    {step.n}
                   </div>
-                </Link>
-              )
-            })}
+                  <div>
+                    <h4 className="font-semibold mb-1">{step.title}</h4>
+                    <p className="text-white/70">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* Social Proof Section */}
+      <section className="max-w-[1440px] mx-auto px-8 py-24">
+        <div className="bg-gradient-to-br from-orange-500/10 to-blue-600/10 backdrop-blur-sm rounded-3xl p-16 text-center border border-white/5">
+          <h2 className="text-3xl font-bold mb-4">Trusted by local restaurants</h2>
+          <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
+            Join hundreds of restaurants and thousands of creators already using
+            Creator Comped to drive authentic engagement and build community.
+          </p>
+          <div className="flex flex-wrap justify-center gap-12 items-center opacity-50">
+            <div className="text-2xl font-semibold">Restaurant Logo</div>
+            <div className="text-2xl font-semibold">Restaurant Logo</div>
+            <div className="text-2xl font-semibold">Restaurant Logo</div>
+            <div className="text-2xl font-semibold">Restaurant Logo</div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="max-w-[1440px] mx-auto px-8 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4">Frequently asked questions</h2>
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-6">
+          {[
+            {
+              q: 'How do I become a creator?',
+              a: 'Download the Creator Comped app, create an account with your Instagram and TikTok profiles, and start browsing participating restaurants immediately.',
+            },
+            {
+              q: 'How do restaurants benefit?',
+              a: 'Restaurants gain authentic content, increased social media exposure, and detailed analytics tracking ROI—all while controlling their budget and comp limits.',
+            },
+            {
+              q: 'What are the posting requirements?',
+              a: 'Each restaurant sets their own deliverables. Typically, creators must post within 48 hours and include specified hashtags and restaurant tags.',
+            },
+            {
+              q: 'How does the leaderboard work?',
+              a: 'Creators earn points based on engagement (views, likes, comments) across their Instagram and TikTok posts. Top performers each month win prizes from the prize pool.',
+            },
+          ].map((item) => (
+            <div key={item.q} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
+              <h3 className="text-xl font-semibold mb-3">{item.q}</h3>
+              <p className="text-white/70 leading-relaxed">{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section id="contact" className="max-w-[1440px] mx-auto px-8 py-24">
+        <div className="bg-gradient-to-r from-orange-500 to-blue-600 rounded-3xl p-16 text-center">
+          <h2 className="text-4xl font-bold mb-4">Ready to get started?</h2>
+          <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            Join Creator Comped today and start connecting with your local food community.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button className="px-8 py-4 rounded-full bg-white text-gray-900 font-semibold hover:bg-white/90 transition text-lg">
+              Download the App
+            </button>
+            <button className="px-8 py-4 rounded-full bg-white/20 text-white font-semibold hover:bg-white/30 transition text-lg backdrop-blur-sm">
+              Contact Sales
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Resources Section */}
+      <section id="resources" className="max-w-[1440px] mx-auto px-8 py-24 border-t border-white/5">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">Resources</h2>
+          <p className="text-xl text-white/70">Everything you need to know about Creator Comped</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {[
+            { title: 'Rules', desc: 'Platform guidelines and policies' },
+            { title: 'Support', desc: 'Get help from our team' },
+            { title: 'Terms of Service', desc: 'Legal terms and conditions' },
+            { title: 'Privacy Policy', desc: 'How we protect your data' },
+          ].map((r) => (
+            <a
+              key={r.title}
+              href="#"
+              className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition text-center"
+            >
+              <h3 className="font-semibold mb-2">{r.title}</h3>
+              <p className="text-white/70 text-sm">{r.desc}</p>
+            </a>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Link
+            href="/internal-admin/login"
+            className="inline-block text-white/50 hover:text-white transition text-sm"
+          >
+            Admin Dashboard →
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer>
-        <div className="cc-container py-16">
-          <div className="grid md:grid-cols-4 gap-10 mb-12">
-            <div className="md:col-span-1">
-              <CCLogoWithMark size="sm" className="mb-4" />
-              <p className="text-sm text-slate-400 leading-relaxed">
-                The invite-only creator network for local restaurants in Utah.
+      <footer className="border-t border-white/5 bg-[#0a0a0a]">
+        <div className="max-w-[1440px] mx-auto px-8 py-12">
+          <div className="flex flex-wrap gap-8 justify-between mb-8">
+            <div>
+              <div className="text-xl font-semibold mb-4">Creator Comped</div>
+              <p className="text-white/50 max-w-xs">
+                Connect creators with restaurants for authentic content and comped meals.
               </p>
             </div>
-
-            {[
-              {
-                heading: 'Creators',
-                links: ['Discover Restaurants', 'Redeem Comps', 'Submit Proof', 'Leaderboard'],
-                href: '/creator',
-              },
-              {
-                heading: 'Restaurants',
-                links: ['Scan QR Codes', 'Manage Orders', 'Analytics', 'Settings'],
-                href: '/restaurant',
-              },
-              {
-                heading: 'Platform',
-                links: ['Admin Panel', 'Proof Review', 'Creator Vetting', 'Strikes'],
-                href: '/admin',
-              },
-            ].map((col) => (
-              <div key={col.heading}>
-                <h4 className="text-[10px] font-semibold text-slate-900 uppercase tracking-widest mb-4">{col.heading}</h4>
-                <ul className="space-y-2.5">
-                  {col.links.map((item) => (
-                    <li key={item}>
-                      <Link href={col.href} className="text-sm text-slate-400 hover:text-slate-700 transition-colors">
-                        {item}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            <div className="flex flex-wrap gap-12">
+              <div>
+                <h4 className="font-medium mb-3">Resources</h4>
+                <div className="flex flex-col gap-2">
+                  <a href="#" className="text-white/50 hover:text-white transition">Rules</a>
+                  <a href="#" className="text-white/50 hover:text-white transition">Support</a>
+                  <a href="#" className="text-white/50 hover:text-white transition">FAQ</a>
+                </div>
               </div>
-            ))}
-          </div>
-
-          <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-sm text-slate-400">
-              <MapPin className="h-3.5 w-3.5" />
-              Serving <span className="text-slate-600 mx-1">Utah County</span> &amp; <span className="text-slate-600 ml-1">Salt Lake County</span>
+              <div>
+                <h4 className="font-medium mb-3">Legal</h4>
+                <div className="flex flex-col gap-2">
+                  <a href="#" className="text-white/50 hover:text-white transition">Terms of Service</a>
+                  <a href="#" className="text-white/50 hover:text-white transition">Privacy Policy</a>
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-slate-400">
-              &copy; {new Date().getFullYear()} CreatorComped
-            </p>
+          </div>
+          <div className="pt-8 border-t border-white/5 text-white/50 text-sm">
+            © 2026 Liaison Technologies. All rights reserved.
           </div>
         </div>
       </footer>

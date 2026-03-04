@@ -34,7 +34,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={manrope.variable}>
-      <body suppressHydrationWarning className="bg-white text-cc-text antialiased min-h-dvh font-[family-name:var(--font-manrope)]">
+      <body suppressHydrationWarning className="antialiased min-h-dvh font-[family-name:var(--font-manrope)]">
         <ToastProvider>
           {children}
         </ToastProvider>

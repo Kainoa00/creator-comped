@@ -64,6 +64,23 @@ body {
   color: #0f172a;
 }
 
+/* Dark theme for admin/marketing pages */
+.dark-page {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+/* Scrollbar styling for dark backgrounds */
+.dark-page ::-webkit-scrollbar-track {
+  background: #111111;
+}
+.dark-page ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+}
+.dark-page ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;

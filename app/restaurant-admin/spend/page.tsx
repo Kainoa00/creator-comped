@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { FilterSelector } from '@/components/admin-ui/FilterSelector'
+import { DarkHeader } from '@/components/restaurant-ui/DarkHeader'
 import { TrendingUp, DollarSign, Users, Instagram, Music2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 type FilterType = 'Month' | 'Year' | 'All time'
+
+const FILTERS: FilterType[] = ['Month', 'Year', 'All time']
 
 const spendData = [
   { month: 'Sep', amount: 3200 },
@@ -16,11 +19,11 @@ const spendData = [
 ]
 
 const topCreators = [
-  { rank: 1, name: '@foodie_sarah', spend: 842, comps: 18, instagram: 'instagram.com/foodie_sarah', tiktok: 'tiktok.com/@foodie_sarah' },
-  { rank: 2, name: '@tastemaker_mike', spend: 756, comps: 16, instagram: 'instagram.com/tastemaker_mike', tiktok: 'tiktok.com/@tastemaker_mike' },
-  { rank: 3, name: '@eats_with_emma', spend: 698, comps: 15, instagram: 'instagram.com/eats_with_emma', tiktok: 'tiktok.com/@eats_with_emma' },
-  { rank: 4, name: '@chef_chronicles', spend: 624, comps: 14, instagram: 'instagram.com/chef_chronicles', tiktok: 'tiktok.com/@chef_chronicles' },
-  { rank: 5, name: '@downtown_diner', spend: 582, comps: 13, instagram: 'instagram.com/downtown_diner', tiktok: 'tiktok.com/@downtown_diner' },
+  { rank: 1, name: '@foodie_sarah', spend: 842, comps: 18 },
+  { rank: 2, name: '@tastemaker_mike', spend: 756, comps: 16 },
+  { rank: 3, name: '@eats_with_emma', spend: 698, comps: 15 },
+  { rank: 4, name: '@chef_chronicles', spend: 624, comps: 14 },
+  { rank: 5, name: '@downtown_diner', spend: 582, comps: 13 },
 ]
 
 const maxAmount = Math.max(...spendData.map((d) => d.amount))
@@ -29,131 +32,85 @@ export default function SpendPage() {
   const [filter, setFilter] = useState<FilterType>('Month')
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Spend</h1>
-          <p className="text-white/70">Track your comp spending and budget</p>
-        </div>
-        <FilterSelector value={filter} onChange={setFilter} />
+    <div className="px-4 pt-6 pb-20">
+      <DarkHeader title="Spend" subtitle="Budget & spending overview" />
+
+      {/* Filter Pills */}
+      <div className="flex gap-2 mb-5">
+        {FILTERS.map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={cn(
+              'px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border',
+              filter === f
+                ? 'bg-white/10 border-white/20 text-white'
+                : 'border-white/[0.08] text-white/40 hover:text-white/60'
+            )}
+          >
+            {f}
+          </button>
+        ))}
       </div>
 
       {/* KPI Cards */}
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center">
-              <DollarSign className="w-5 h-5" />
+      <div className="grid grid-cols-3 gap-3 mb-5">
+        {[
+          { icon: DollarSign, label: 'Total Spent', value: '$4,892', sub: '+12% vs last mo', up: true },
+          { icon: Users, label: 'Creators', value: '48', sub: '+8 this month', up: true },
+          { icon: DollarSign, label: 'Avg Comp', value: '$31', sub: 'per redemption', up: false },
+        ].map(({ icon: Icon, label, value, sub, up }) => (
+          <div key={label} className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-3">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 via-rose-500 to-blue-600 flex items-center justify-center mb-2">
+              <Icon className="h-4 w-4 text-white" />
             </div>
-            <div className="text-white/70">Total Spend</div>
+            <p className="text-lg font-bold text-white leading-none">{value}</p>
+            <p className="text-[10px] text-white/40 mt-0.5 leading-tight">{label}</p>
+            <p className={cn('text-[10px] mt-1 leading-tight flex items-center gap-0.5', up ? 'text-emerald-400' : 'text-white/30')}>
+              {up && <TrendingUp className="h-2.5 w-2.5" />}{sub}
+            </p>
           </div>
-          <div className="text-3xl font-bold mb-1">$4,892</div>
-          <div className="flex items-center gap-2 text-sm text-green-500">
-            <TrendingUp className="w-4 h-4" />
-            <span>+12% from last month</span>
-          </div>
-        </div>
-
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center">
-              <Users className="w-5 h-5" />
-            </div>
-            <div className="text-white/70">Active Creators</div>
-          </div>
-          <div className="text-3xl font-bold mb-1">48</div>
-          <div className="flex items-center gap-2 text-sm text-green-500">
-            <TrendingUp className="w-4 h-4" />
-            <span>+8 from last month</span>
-          </div>
-        </div>
-
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center">
-              <DollarSign className="w-5 h-5" />
-            </div>
-            <div className="text-white/70">Avg Comp Value</div>
-          </div>
-          <div className="text-3xl font-bold mb-1">$31.36</div>
-          <div className="flex items-center gap-2 text-sm text-white/50">
-            <span>Per redemption</span>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Spend Chart (SVG bar chart) */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5 mb-8">
-        <h3 className="text-lg font-semibold mb-6">Spend Over Time</h3>
-        <div className="h-64 flex items-end gap-4 px-4">
+      {/* Spend Chart */}
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4 mb-5">
+        <p className="text-sm font-semibold text-white mb-4">Spend Over Time</p>
+        <div className="h-40 flex items-end gap-2">
           {spendData.map((d) => {
             const heightPct = (d.amount / maxAmount) * 100
             return (
-              <div key={d.month} className="flex-1 flex flex-col items-center gap-2">
-                <div className="text-xs text-white/70">${(d.amount / 1000).toFixed(1)}k</div>
+              <div key={d.month} className="flex-1 flex flex-col items-center gap-1.5">
+                <p className="text-[9px] text-white/40">${(d.amount / 1000).toFixed(1)}k</p>
                 <div
-                  className="w-full rounded-t-lg bg-gradient-to-t from-orange-500 to-blue-600 transition-all"
+                  className="w-full rounded-t-lg bg-gradient-to-t from-orange-500 via-rose-500 to-blue-600 transition-all"
                   style={{ height: `${heightPct}%`, minHeight: '4px' }}
                 />
-                <div className="text-xs text-white/50">{d.month}</div>
+                <p className="text-[9px] text-white/40">{d.month}</p>
               </div>
             )
           })}
         </div>
       </div>
 
-      {/* Top 5 Creators */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-        <h3 className="text-lg font-semibold mb-6">Top 5 Creators by Spend</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/5">
-                <th className="text-left py-3 px-4 text-sm font-medium text-white/70">Rank</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-white/70">Creator</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-white/70">Total Spend</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-white/70">Comps</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-white/70">Links</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {topCreators.map((creator) => (
-                <tr key={creator.rank} className="hover:bg-white/5 transition">
-                  <td className="py-4 px-4">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center font-semibold">
-                      {creator.rank}
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 font-medium">{creator.name}</td>
-                  <td className="py-4 px-4 font-semibold text-lg">
-                    ${creator.spend.toLocaleString()}
-                  </td>
-                  <td className="py-4 px-4 text-white/70">{creator.comps} comps</td>
-                  <td className="py-4 px-4">
-                    <div className="flex gap-3">
-                      <a
-                        href={`https://${creator.instagram}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-orange-500 hover:text-orange-400 transition"
-                      >
-                        <Instagram className="w-5 h-5" />
-                      </a>
-                      <a
-                        href={`https://${creator.tiktok}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:text-blue-400 transition"
-                      >
-                        <Music2 className="w-5 h-5" />
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {/* Top Creators */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Top Creators by Spend</p>
+      <div className="flex flex-col gap-2">
+        {topCreators.map((creator) => (
+          <div key={creator.rank} className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 via-rose-500 to-blue-600 flex items-center justify-center text-xs font-bold text-white shrink-0">
+              {creator.rank}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-white truncate">{creator.name}</p>
+              <div className="flex items-center gap-3 mt-0.5">
+                <span className="text-xs text-white/40 flex items-center gap-1"><Instagram className="h-3 w-3" /><Music2 className="h-3 w-3" /></span>
+                <span className="text-xs text-white/40">{creator.comps} comps</span>
+              </div>
+            </div>
+            <p className="text-sm font-bold text-white shrink-0">${creator.spend.toLocaleString()}</p>
+          </div>
+        ))}
       </div>
     </div>
   )

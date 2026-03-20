@@ -2,22 +2,9 @@
 
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Modal, ModalFooter } from '@/components/ui/modal'
 import { useToast } from '@/components/ui/toast'
-import { Textarea } from '@/components/ui/input'
-import {
-  DEMO_ORDERS,
-  DEMO_CREATORS,
-  DEMO_RESTAURANTS,
-} from '@/lib/demo-data'
-import {
-  isExpired,
-  isInBlackout,
-  formatTime,
-  cn,
-  sleep,
-} from '@/lib/utils'
+import { DEMO_ORDERS, DEMO_CREATORS, DEMO_RESTAURANTS } from '@/lib/demo-data'
+import { isExpired, isInBlackout, formatTime, cn, sleep } from '@/lib/utils'
 import {
   CheckCircle2,
   XCircle,
@@ -52,22 +39,6 @@ interface ValidationCheck {
   icon: React.ReactNode
 }
 
-function DeliverableIcon({ type }: { type: string }) {
-  if (type === 'IG_REEL') return <Instagram className="h-4 w-4" />
-  if (type === 'TIKTOK') return <Music2 className="h-4 w-4" />
-  return <span className="text-xs font-bold">CC</span>
-}
-
-function DeliverableLabel({ type }: { type: string }) {
-  const labels: Record<string, string> = {
-    IG_REEL: 'Instagram Reel',
-    TIKTOK: 'TikTok Video',
-    BOTH: 'IG Reel + TikTok',
-    CHOICE: 'IG Reel or TikTok',
-  }
-  return <>{labels[type] ?? type}</>
-}
-
 export default function TicketPage() {
   const params = useParams()
   const router = useRouter()
@@ -80,25 +51,20 @@ export default function TicketPage() {
 
   const [confirming, setConfirming] = useState(false)
   const [confirmed, setConfirmed] = useState(false)
-  const [showRejectModal, setShowRejectModal] = useState(false)
+  const [showRejectSheet, setShowRejectSheet] = useState(false)
   const [rejectionReason, setRejectionReason] = useState<string | null>(null)
   const [otherText, setOtherText] = useState('')
   const [rejecting, setRejecting] = useState(false)
-  const [showSuccessFlash, setShowSuccessFlash] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
-  if (!order) {
+  if (!order || !creator) {
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center px-6">
-        <div className="h-20 w-20 rounded-lg border border-slate-200 flex items-center justify-center">
-          <XCircle className="h-10 w-10 text-red-400" />
-        </div>
-        <p className="text-2xl font-black text-slate-900">Order Not Found</p>
-        <p className="text-sm text-slate-500">
-          The order ID &quot;{orderId}&quot; does not exist in the system.
-        </p>
+        <XCircle className="h-12 w-12 text-red-400/60" />
+        <p className="text-xl font-bold text-white">Order Not Found</p>
         <button
           onClick={() => router.push('/restaurant')}
-          className="flex items-center gap-2 text-cc-accent hover:text-cc-accent-dark text-sm font-semibold transition-colors mt-2"
+          className="flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Scanner
@@ -107,107 +73,61 @@ export default function TicketPage() {
     )
   }
 
-  if (!creator) {
-    return (
-      <div className="flex flex-col items-center gap-4 py-24 text-center px-6">
-        <p className="text-2xl font-black text-slate-900">Creator Not Found</p>
-        <button
-          onClick={() => router.push('/restaurant')}
-          className="flex items-center gap-2 text-cc-accent hover:text-cc-accent-dark text-sm font-semibold transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </button>
-      </div>
-    )
-  }
-
-  // ── Validation Checks ──
+  // Validation
   const codeValid = order.status !== 'expired' && order.status !== 'rejected'
   const notExpired = !isExpired(order.expires_at) || order.status === 'confirmed'
-  const notInBlackout = !isInBlackout(
-    restaurant.settings.blackout_start,
-    restaurant.settings.blackout_end
-  )
-  const capOk = true
-  const cooldownOk = true
-
-  const timeRemaining = Math.max(
-    0,
-    Math.round((new Date(order.expires_at).getTime() - Date.now()) / 60000)
-  )
-
-  const blackoutStr =
-    restaurant.settings.blackout_start && restaurant.settings.blackout_end
-      ? `${restaurant.settings.blackout_start} – ${restaurant.settings.blackout_end}`
-      : 'None configured'
+  const notInBlackout = !isInBlackout(restaurant.settings.blackout_start, restaurant.settings.blackout_end)
+  const timeRemaining = Math.max(0, Math.round((new Date(order.expires_at).getTime() - Date.now()) / 60000))
 
   const checks: ValidationCheck[] = [
     {
-      label: 'Code valid?',
+      label: 'Code valid',
       status: codeValid ? 'pass' : 'fail',
-      detail: codeValid ? `Code: ${order.redemption_code}` : `Status: ${order.status}`,
+      detail: codeValid ? `#${order.redemption_code}` : `Status: ${order.status}`,
       icon: <ShieldCheck className="h-4 w-4" />,
     },
     {
-      label: 'Not expired?',
+      label: 'Not expired',
       status: notExpired ? 'pass' : 'fail',
       detail: notExpired
-        ? order.status === 'confirmed'
-          ? 'Already scanned — no expiry'
-          : `${timeRemaining} min remaining`
+        ? order.status === 'confirmed' ? 'Already confirmed' : `${timeRemaining} min left`
         : 'Code expired',
       icon: <Clock className="h-4 w-4" />,
     },
     {
-      label: 'Within redemption hours?',
+      label: 'Within hours',
       status: notInBlackout ? 'pass' : 'fail',
-      detail: notInBlackout
-        ? 'No active blackout'
-        : `Blackout: ${blackoutStr}`,
+      detail: notInBlackout ? 'No active blackout' : `Blackout: ${restaurant.settings.blackout_start}–${restaurant.settings.blackout_end}`,
       icon: <Ban className="h-4 w-4" />,
     },
     {
-      label: 'Daily cap not reached?',
-      status: capOk ? 'pass' : 'warn',
-      detail: capOk
-        ? `Cap: ${restaurant.settings.daily_comp_cap ?? 'Unlimited'}/day`
-        : 'Daily cap reached',
+      label: 'Daily cap',
+      status: 'pass',
+      detail: `Cap: ${restaurant.settings.daily_comp_cap ?? 'Unlimited'}/day`,
       icon: <Users className="h-4 w-4" />,
     },
     {
-      label: 'Cooldown period clear?',
-      status: cooldownOk ? 'pass' : 'warn',
-      detail: cooldownOk
-        ? `${restaurant.settings.cooldown_days}-day cooldown clear`
-        : 'Cooldown active',
+      label: 'Cooldown clear',
+      status: 'pass',
+      detail: `${restaurant.settings.cooldown_days}-day cooldown clear`,
       icon: <Clock className="h-4 w-4" />,
     },
   ]
 
   const allGreen = checks.every((c) => c.status === 'pass')
   const hasFail = checks.some((c) => c.status === 'fail')
-
-  // Check if already confirmed/approved
-  const isAlreadyConfirmed =
-    order.status === 'confirmed' ||
-    order.status === 'approved' ||
-    order.status === 'proof_submitted'
+  const isAlreadyConfirmed = ['confirmed', 'approved', 'proof_submitted'].includes(order.status)
 
   async function handleConfirm() {
     setConfirming(true)
     await sleep(800)
     setConfirming(false)
-    setShowSuccessFlash(true)
-    await sleep(1200)
-    setShowSuccessFlash(false)
+    setShowSuccess(true)
+    await sleep(1500)
+    setShowSuccess(false)
     setConfirmed(true)
-    toast({
-      type: 'success',
-      title: 'Comp confirmed!',
-      message: 'Creator has been notified. They have 48 hours to post.',
-    })
-    await sleep(800)
+    toast({ type: 'success', title: 'Comp confirmed!', message: 'Creator has 48h to post.' })
+    await sleep(500)
     router.push('/restaurant')
   }
 
@@ -216,354 +136,274 @@ export default function TicketPage() {
     setRejecting(true)
     await sleep(600)
     setRejecting(false)
-    setShowRejectModal(false)
-    toast({
-      type: 'warning',
-      title: 'Order rejected',
-      message: `Reason: ${rejectionReason === 'Other' ? otherText || 'Other' : rejectionReason}`,
-    })
+    setShowRejectSheet(false)
+    toast({ type: 'warning', title: 'Order rejected', message: rejectionReason === 'Other' ? otherText : rejectionReason })
     router.push('/restaurant')
   }
 
-  if (showSuccessFlash) {
+  if (showSuccess) {
     return (
       <div className="fixed inset-0 z-50 bg-emerald-500 flex flex-col items-center justify-center gap-6">
-        <div className="h-32 w-32 rounded-full bg-white/20 flex items-center justify-center">
-          <CheckCircle2 className="h-20 w-20 text-white" />
+        <div className="h-28 w-28 rounded-full bg-white/20 flex items-center justify-center">
+          <CheckCircle2 className="h-16 w-16 text-white" />
         </div>
-        <p className="text-5xl font-black text-white">Comp Confirmed!</p>
-        <p className="text-xl text-white/80 font-medium">Notifying creator...</p>
+        <p className="text-4xl font-bold text-white">Comp Confirmed!</p>
+        <p className="text-lg text-white/80">Notifying creator...</p>
       </div>
     )
   }
 
+  function checkColor(s: CheckStatus) {
+    if (s === 'pass') return { bg: 'bg-emerald-500/10', text: 'text-emerald-400', badge: 'bg-emerald-500/20 text-emerald-400' }
+    if (s === 'fail') return { bg: 'bg-red-500/10', text: 'text-red-400', badge: 'bg-red-500/20 text-red-400' }
+    return { bg: 'bg-amber-500/10', text: 'text-amber-400', badge: 'bg-amber-500/20 text-amber-400' }
+  }
+
   return (
-    <div className="p-6 pb-10">
-      <div className="max-w-2xl mx-auto">
-        {/* Back button */}
-        <button
-          onClick={() => router.push('/restaurant')}
-          className="flex items-center gap-2 text-slate-400 hover:text-slate-900 transition-colors mb-6 text-sm font-semibold"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Scanner
-        </button>
+    <div className="px-4 pt-5 pb-10">
+      {/* Back */}
+      <button
+        onClick={() => router.push('/restaurant')}
+        className="flex items-center gap-2 text-white/40 hover:text-white text-sm font-medium transition-colors mb-6"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Scanner
+      </button>
 
-        {/* ── Already Confirmed State ── */}
-        {isAlreadyConfirmed && (
-          <div className="border border-slate-200 rounded-lg p-8 mb-4 flex flex-col items-center gap-3 text-center">
-            <div className="h-16 w-16 rounded-lg border border-slate-200 bg-white flex items-center justify-center">
-              <CheckCircle2 className="h-10 w-10 text-slate-400" />
-            </div>
-            <p className="text-2xl font-black text-slate-900">Order Confirmed</p>
-            <p className="text-sm text-slate-500 font-medium">
-              {order.confirmed_at
-                ? `Confirmed at ${formatTime(order.confirmed_at)}`
-                : 'This order has already been processed.'}
-            </p>
+      {/* Already confirmed */}
+      {isAlreadyConfirmed && (
+        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-5 mb-4 flex items-center gap-3">
+          <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />
+          <div>
+            <p className="font-semibold text-white">Order Confirmed</p>
+            {order.confirmed_at && (
+              <p className="text-sm text-white/50 mt-0.5">at {formatTime(order.confirmed_at)}</p>
+            )}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* ── Creator Identity Card ── */}
-        <div className="bg-white border border-slate-200 rounded-lg p-6 mb-4">
-          <div className="flex items-start gap-5">
-            {/* Avatar — 64px per spec */}
-            <div className="relative shrink-0">
-              <img
-                src={creator.photo_url ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.id}`}
-                alt={creator.name}
-                className="h-16 w-16 rounded-full object-cover border-2 border-slate-200 bg-slate-50"
-              />
+      {/* Creator Card */}
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 mb-4">
+        <div className="flex items-start gap-4">
+          <div className="relative shrink-0">
+            <img
+              src={creator.photo_url ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.id}`}
+              alt={creator.name}
+              className="h-16 w-16 rounded-2xl object-cover"
+            />
+            {creator.verified && (
+              <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-gradient-to-br from-orange-500 to-blue-600 flex items-center justify-center border-2 border-[#0a0a0a]">
+                <BadgeCheck className="h-3 w-3 text-white" />
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-2">
+              <h1 className="text-lg font-bold text-white">{creator.name}</h1>
               {creator.verified && (
-                <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-cc-accent flex items-center justify-center border-2 border-white">
-                  <BadgeCheck className="h-3.5 w-3.5 text-white" />
-                </div>
+                <span className="text-xs bg-white/10 text-white/60 rounded-lg px-2 py-0.5 font-medium">Verified</span>
               )}
-            </div>
-
-            {/* Name + handles */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap mb-2">
-                <h1 className="text-xl font-black text-slate-900">{creator.name}</h1>
-                {creator.verified && (
-                  <span className="border border-slate-200 text-slate-600 rounded-md px-3 py-1 text-xs font-bold">
-                    Verified
-                  </span>
-                )}
-                {creator.strike_count > 0 && (
-                  <span className="border border-slate-200 text-slate-600 rounded-md px-2 py-0.5 text-xs font-semibold">
-                    {creator.strike_count} Strike{creator.strike_count !== 1 ? 's' : ''}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-1.5 mt-1">
-                {creator.ig_handle && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shrink-0">
-                      <Instagram className="h-3.5 w-3.5 text-white" />
-                    </div>
-                    <span className="font-semibold text-slate-700">{creator.ig_handle}</span>
-                  </div>
-                )}
-                {creator.tiktok_handle && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <div className="h-6 w-6 rounded-lg bg-slate-900 flex items-center justify-center shrink-0">
-                      <Music2 className="h-3.5 w-3.5 text-white" />
-                    </div>
-                    <span className="font-semibold text-slate-700">{creator.tiktok_handle}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Anti-fraud note */}
-          <div className="mt-4 pt-4 border-t border-slate-200 flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-slate-400 shrink-0" />
-            <p className="text-xs text-slate-400">
-              Verify that the person in front of you matches the name and handles above.
-            </p>
-          </div>
-        </div>
-
-        {/* ── Order Details ── */}
-        <div className="bg-white border border-slate-200 rounded-lg p-6 mb-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-bold text-slate-900">Order Details</h2>
-            <span className="text-xs text-slate-400 font-mono bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg font-bold tracking-widest">
-              #{order.redemption_code}
-            </span>
-          </div>
-
-          {/* Restaurant */}
-          <div className="flex items-center gap-2 mb-4 border border-slate-200 rounded-lg px-3 py-2">
-            <span className="text-xs text-slate-400 font-medium">Restaurant:</span>
-            <span className="text-sm font-semibold text-slate-900">{order.restaurant_name}</span>
-          </div>
-
-          {/* Items */}
-          <div className="flex flex-col gap-2.5 mb-5">
-            {order.items.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-3 border border-slate-200 rounded-lg px-4 py-3"
-              >
-                {/* Item icon placeholder */}
-                <div className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center shrink-0">
-                  <span className="text-lg">🍽️</span>
-                </div>
-                <span className="text-sm font-bold text-slate-900 flex-1">
-                  {item.menu_item_name}
+              {creator.strike_count > 0 && (
+                <span className="text-xs bg-red-500/10 text-red-400 rounded-lg px-2 py-0.5 font-medium">
+                  {creator.strike_count} Strike{creator.strike_count !== 1 ? 's' : ''}
                 </span>
-                {item.qty > 1 && (
-                  <span className="bg-cc-accent text-white text-xs font-black rounded-md px-2.5 py-1 tabular-nums">
-                    ×{item.qty}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Deliverable requirement */}
-          {order.deliverable_requirement && (
-            <div className="border-t border-slate-200 pt-4">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">
-                Content Requirement
-              </p>
-              <div className="border border-slate-200 rounded-lg p-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <DeliverableIcon type={order.deliverable_requirement.allowed_types} />
-                  <span className="text-sm font-semibold text-slate-900">
-                    <DeliverableLabel type={order.deliverable_requirement.allowed_types} />
-                  </span>
-                </div>
-
-                {order.deliverable_requirement.required_hashtags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mb-1.5">
-                    {order.deliverable_requirement.required_hashtags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center gap-1 text-xs border border-slate-200 rounded-md px-2 py-0.5 text-slate-600 font-medium"
-                      >
-                        <Hash className="h-2.5 w-2.5" />
-                        {tag.replace('#', '')}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {order.deliverable_requirement.required_tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {order.deliverable_requirement.required_tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center gap-1 text-xs border border-slate-200 rounded-md px-2 py-0.5 text-slate-600 font-medium"
-                      >
-                        <AtSign className="h-2.5 w-2.5" />
-                        {tag.replace('@', '')}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+              )}
             </div>
-          )}
+            <div className="flex flex-col gap-1.5">
+              {creator.ig_handle && (
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="h-5 w-5 rounded-md bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shrink-0">
+                    <Instagram className="h-3 w-3 text-white" />
+                  </div>
+                  <span className="text-white/60">{creator.ig_handle}</span>
+                </div>
+              )}
+              {creator.tiktok_handle && (
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="h-5 w-5 rounded-md bg-white/10 flex items-center justify-center shrink-0">
+                    <Music2 className="h-3 w-3 text-white" />
+                  </div>
+                  <span className="text-white/60">{creator.tiktok_handle}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* ── Validation Checklist ── */}
-        <div className="bg-white border border-slate-200 rounded-lg p-6 mb-5">
-          <h2 className="text-base font-bold text-slate-900 mb-4">Validation</h2>
+        <div className="mt-4 pt-4 border-t border-white/[0.06] flex items-center gap-2">
+          <ShieldCheck className="h-4 w-4 text-white/30 shrink-0" />
+          <p className="text-xs text-white/30">Verify this person matches the name and handles above.</p>
+        </div>
+      </div>
 
-          <div className="flex flex-col gap-2">
-            {checks.map((check, idx) => (
-              <div
-                key={idx}
-                className={cn(
-                  'flex items-center gap-3 rounded-lg px-4 py-3',
-                  check.status === 'pass' && 'bg-emerald-50',
-                  check.status === 'fail' && 'bg-red-50',
-                  check.status === 'warn' && 'bg-amber-50'
-                )}
-              >
-                <div className={cn(
-                  'shrink-0',
-                  check.status === 'pass' && 'text-emerald-600',
-                  check.status === 'fail' && 'text-red-500',
-                  check.status === 'warn' && 'text-amber-600'
-                )}>
-                  {check.status === 'pass' ? (
-                    <CheckCircle2 className="h-5 w-5" />
-                  ) : check.status === 'fail' ? (
-                    <XCircle className="h-5 w-5" />
-                  ) : (
-                    <AlertTriangle className="h-5 w-5" />
-                  )}
-                </div>
+      {/* Order Details */}
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 mb-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold text-white">Order Items</h2>
+          <span className="font-mono text-xs bg-white/10 text-white/60 rounded-lg px-2.5 py-1 font-bold tracking-widest">
+            #{order.redemption_code}
+          </span>
+        </div>
 
-                <div className="flex-1 min-w-0">
-                  <p className={cn(
-                    'text-sm font-semibold',
-                    check.status === 'pass' && 'text-emerald-700',
-                    check.status === 'fail' && 'text-red-600',
-                    check.status === 'warn' && 'text-amber-700'
-                  )}>
-                    {check.label}
-                  </p>
-                  <p className="text-xs text-slate-500">{check.detail}</p>
-                </div>
-
-                <span className={cn(
-                  'text-xs font-bold px-2 py-0.5 rounded-md shrink-0',
-                  check.status === 'pass' && 'bg-emerald-100 text-emerald-700',
-                  check.status === 'fail' && 'bg-red-100 text-red-600',
-                  check.status === 'warn' && 'bg-amber-100 text-amber-700'
-                )}>
-                  {check.status === 'pass' ? 'Pass' : check.status === 'fail' ? 'Fail' : 'Warn'}
+        <div className="flex flex-col gap-2">
+          {order.items.map((item, idx) => (
+            <div key={idx} className="flex items-center gap-3 bg-white/[0.03] rounded-xl px-4 py-3">
+              <span className="text-lg">🍽️</span>
+              <span className="text-sm font-medium text-white flex-1">{item.menu_item_name}</span>
+              {item.qty > 1 && (
+                <span className="text-xs font-bold bg-gradient-to-r from-orange-500 to-blue-600 text-white rounded-lg px-2 py-0.5">
+                  ×{item.qty}
                 </span>
-              </div>
-            ))}
-          </div>
-
-          {hasFail && (
-            <div className="mt-4 flex items-start gap-2 border border-slate-200 rounded-lg px-4 py-3">
-              <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-              <p className="text-xs text-slate-600">
-                One or more checks failed. Review before confirming — you can still confirm manually.
-              </p>
+              )}
             </div>
-          )}
+          ))}
         </div>
 
-        {/* ── Action Buttons ── */}
-        {!isAlreadyConfirmed && (
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={handleConfirm}
-              disabled={confirming || confirmed}
-              className={cn(
-                'w-full py-4 rounded-lg flex items-center justify-center gap-3 text-white font-bold text-base transition-all duration-150 cursor-pointer',
-                allGreen
-                  ? 'bg-emerald-500 hover:bg-emerald-600'
-                  : 'bg-emerald-400 hover:bg-emerald-500',
-                (confirming || confirmed) && 'opacity-60 cursor-not-allowed'
-              )}
-            >
-              {confirming ? (
-                <>
-                  <div className="h-5 w-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                  Confirming...
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="h-5 w-5" />
-                  Confirm Comp
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={() => setShowRejectModal(true)}
-              className="w-full py-4 rounded-lg border border-slate-200 text-red-500 font-bold text-base hover:bg-red-50 transition-colors cursor-pointer"
-            >
-              Reject Order
-            </button>
+        {order.deliverable_requirement && (
+          <div className="mt-4 pt-4 border-t border-white/[0.06]">
+            <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Content Requirement</p>
+            <div className="bg-white/[0.03] rounded-xl p-3">
+              <p className="text-sm font-semibold text-white mb-2">
+                {order.deliverable_requirement.allowed_types === 'IG_REEL' ? 'Instagram Reel' :
+                 order.deliverable_requirement.allowed_types === 'TIKTOK' ? 'TikTok Video' :
+                 order.deliverable_requirement.allowed_types === 'BOTH' ? 'IG Reel + TikTok' : 'IG Reel or TikTok'}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {order.deliverable_requirement.required_hashtags.map((tag) => (
+                  <span key={tag} className="inline-flex items-center gap-1 text-xs bg-white/[0.05] border border-white/[0.08] rounded-lg px-2 py-0.5 text-white/50">
+                    <Hash className="h-2.5 w-2.5" />{tag.replace('#', '')}
+                  </span>
+                ))}
+                {order.deliverable_requirement.required_tags.map((tag) => (
+                  <span key={tag} className="inline-flex items-center gap-1 text-xs bg-white/[0.05] border border-white/[0.08] rounded-lg px-2 py-0.5 text-white/50">
+                    <AtSign className="h-2.5 w-2.5" />{tag.replace('@', '')}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      {/* ── Rejection Modal ── */}
-      <Modal
-        open={showRejectModal}
-        onClose={() => setShowRejectModal(false)}
-        title="Reject Order"
-        description="Select a reason for rejection."
-        maxWidth="max-w-lg"
-      >
-        <div className="flex flex-col gap-2 mt-2">
-          {REJECTION_REASONS.map((reason) => (
-            <button
-              key={reason}
-              onClick={() => setRejectionReason(reason)}
-              className={cn(
-                'w-full text-left px-4 py-4 rounded-lg border transition-all text-sm font-medium cursor-pointer',
-                rejectionReason === reason
-                  ? 'border-cc-accent bg-cc-accent text-white'
-                  : 'border-slate-200 bg-white text-slate-900 hover:border-slate-300'
-              )}
-            >
-              {reason}
-            </button>
-          ))}
-
-          {rejectionReason === 'Other' && (
-            <Textarea
-              placeholder="Describe the reason..."
-              rows={3}
-              value={otherText}
-              onChange={(e) => setOtherText(e.target.value)}
-              className="mt-1"
-            />
-          )}
+      {/* Validation */}
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 mb-5">
+        <h2 className="text-sm font-semibold text-white mb-4">Validation</h2>
+        <div className="flex flex-col gap-2">
+          {checks.map((check, idx) => {
+            const colors = checkColor(check.status)
+            return (
+              <div key={idx} className={cn('flex items-center gap-3 rounded-xl px-4 py-3', colors.bg)}>
+                <span className={colors.text}>{check.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <p className={cn('text-sm font-semibold', colors.text)}>{check.label}</p>
+                  <p className="text-xs text-white/40">{check.detail}</p>
+                </div>
+                <span className={cn('text-xs font-bold px-2 py-0.5 rounded-lg shrink-0', colors.badge)}>
+                  {check.status === 'pass' ? 'Pass' : check.status === 'fail' ? 'Fail' : 'Warn'}
+                </span>
+              </div>
+            )
+          })}
         </div>
+        {hasFail && (
+          <div className="mt-3 flex items-start gap-2 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3">
+            <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-300">
+              One or more checks failed. Review before confirming.
+            </p>
+          </div>
+        )}
+      </div>
 
-        <ModalFooter>
-          <Button
-            variant="ghost"
-            onClick={() => { setShowRejectModal(false); setRejectionReason(null) }}
+      {/* Action Buttons */}
+      {!isAlreadyConfirmed && (
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={handleConfirm}
+            disabled={confirming || confirmed}
+            className={cn(
+              'w-full py-4 rounded-2xl flex items-center justify-center gap-3 text-white font-bold text-base transition-all',
+              allGreen ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-emerald-500/80 hover:bg-emerald-500',
+              (confirming || confirmed) && 'opacity-60 cursor-not-allowed'
+            )}
           >
-            Cancel
-          </Button>
-          <Button
-            variant="danger"
-            loading={rejecting}
-            disabled={!rejectionReason || (rejectionReason === 'Other' && !otherText.trim())}
-            onClick={handleReject}
+            {confirming ? (
+              <>
+                <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Confirming...
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                Confirm Comp
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={() => setShowRejectSheet(true)}
+            className="w-full py-4 rounded-2xl border border-red-500/20 text-red-400 font-bold text-base hover:bg-red-500/10 transition-colors"
           >
-            Confirm Rejection
-          </Button>
-        </ModalFooter>
-      </Modal>
+            Reject Order
+          </button>
+        </div>
+      )}
+
+      {/* Rejection Bottom Sheet */}
+      {showRejectSheet && (
+        <div className="fixed inset-0 z-50 flex flex-col justify-end">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowRejectSheet(false)} />
+          <div className="relative bg-[#111] rounded-t-3xl border-t border-white/[0.08] p-6 pb-10">
+            <div className="w-10 h-1 rounded-full bg-white/20 mx-auto mb-5" />
+            <h3 className="text-lg font-bold text-white mb-1">Reject Order</h3>
+            <p className="text-sm text-white/50 mb-5">Select a reason</p>
+
+            <div className="flex flex-col gap-2 mb-5">
+              {REJECTION_REASONS.map((reason) => (
+                <button
+                  key={reason}
+                  onClick={() => setRejectionReason(reason)}
+                  className={cn(
+                    'w-full text-left px-4 py-4 rounded-2xl border transition-all text-sm font-medium',
+                    rejectionReason === reason
+                      ? 'border-transparent bg-gradient-to-r from-orange-500 via-rose-500 to-blue-600 text-white'
+                      : 'border-white/[0.08] bg-white/[0.03] text-white/70 hover:border-white/20'
+                  )}
+                >
+                  {reason}
+                </button>
+              ))}
+              {rejectionReason === 'Other' && (
+                <textarea
+                  placeholder="Describe the reason..."
+                  rows={3}
+                  value={otherText}
+                  onChange={(e) => setOtherText(e.target.value)}
+                  className="w-full bg-white/[0.05] border border-white/[0.08] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 resize-none"
+                />
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => { setShowRejectSheet(false); setRejectionReason(null) }}
+                className="flex-1 py-4 rounded-2xl bg-white/[0.05] border border-white/[0.08] text-white/60 font-bold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleReject}
+                disabled={!rejectionReason || (rejectionReason === 'Other' && !otherText.trim()) || rejecting}
+                className="flex-1 py-4 rounded-2xl bg-red-500 text-white font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {rejecting ? 'Rejecting...' : 'Confirm Rejection'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

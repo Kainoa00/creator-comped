@@ -46,8 +46,33 @@ create table restaurants (
     "pause_comps": false
   }',
   active boolean not null default true,
+  -- Extended profile fields
+  logo_url text,
+  description text,
+  phone text,
+  website text,
+  ig_handle text,
+  tiktok_handle text,
+  monthly_budget numeric(10,2),
   created_at timestamptz not null default now()
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- RESTAURANT USERS (admin dashboard logins)
+-- ─────────────────────────────────────────────────────────────
+create table restaurant_users (
+  id uuid primary key default uuid_generate_v4(),
+  auth_user_id uuid references auth.users(id) on delete set null,
+  restaurant_id uuid not null references restaurants(id) on delete cascade,
+  role text not null default 'staff' check (role in ('staff', 'manager', 'admin')),
+  name text not null,
+  email text,
+  pin text,
+  created_at timestamptz not null default now()
+);
+
+create index restaurant_users_restaurant_id_idx on restaurant_users(restaurant_id);
+create index restaurant_users_auth_user_id_idx on restaurant_users(auth_user_id);
 
 -- ─────────────────────────────────────────────────────────────
 -- MENU ITEMS
@@ -182,9 +207,11 @@ create table invite_applications (
 
 -- ─────────────────────────────────────────────────────────────
 -- ROW LEVEL SECURITY
--- Permissive for prototype — lock down for production
+-- Scoped policies — creators see own data, restaurant users see their restaurant only.
+-- API routes use the service role key which bypasses all RLS.
 -- ─────────────────────────────────────────────────────────────
 alter table creators enable row level security;
+alter table restaurant_users enable row level security;
 alter table restaurants enable row level security;
 alter table menu_items enable row level security;
 alter table deliverable_requirements enable row level security;
@@ -195,17 +222,100 @@ alter table contest_entries enable row level security;
 alter table strikes enable row level security;
 alter table invite_applications enable row level security;
 
--- Permissive policies (prototype only)
-create policy "allow_all_creators" on creators for all using (true) with check (true);
-create policy "allow_all_restaurants" on restaurants for all using (true) with check (true);
-create policy "allow_all_menu_items" on menu_items for all using (true) with check (true);
-create policy "allow_all_deliverable_reqs" on deliverable_requirements for all using (true) with check (true);
-create policy "allow_all_orders" on orders for all using (true) with check (true);
-create policy "allow_all_proof_submissions" on proof_submissions for all using (true) with check (true);
-create policy "allow_all_analytics_snapshots" on analytics_snapshots for all using (true) with check (true);
-create policy "allow_all_contest_entries" on contest_entries for all using (true) with check (true);
-create policy "allow_all_strikes" on strikes for all using (true) with check (true);
-create policy "allow_all_invite_applications" on invite_applications for all using (true) with check (true);
+-- Helper: get the restaurant_id for the currently authenticated user
+create or replace function auth_restaurant_id()
+returns uuid language sql stable
+as $$
+  select restaurant_id from restaurant_users
+  where auth_user_id = auth.uid()
+  limit 1;
+$$;
+
+-- Helper: get the role for the currently authenticated user
+create or replace function auth_user_role()
+returns text language sql stable
+as $$
+  select role from restaurant_users
+  where auth_user_id = auth.uid()
+  limit 1;
+$$;
+
+-- ── Creators ──────────────────────────────────────────────────
+-- Creators can read/write only their own record
+create policy "creators_own_record" on creators
+  for all using (auth.uid()::text = id::text or auth_user_role() = 'admin');
+
+-- ── Restaurant Users ──────────────────────────────────────────
+-- Users can read their own restaurant_users record only
+create policy "restaurant_users_own" on restaurant_users
+  for select using (auth_user_id = auth.uid() or auth_user_role() = 'admin');
+
+-- ── Restaurants ───────────────────────────────────────────────
+-- Restaurant users can read their own restaurant; creators can read all active restaurants
+create policy "restaurants_read_own" on restaurants
+  for select using (
+    id = auth_restaurant_id()
+    or auth_user_role() = 'admin'
+    or active = true  -- creators can browse active restaurants
+  );
+create policy "restaurants_write_own" on restaurants
+  for update using (id = auth_restaurant_id() or auth_user_role() = 'admin');
+
+-- ── Menu Items ────────────────────────────────────────────────
+-- Anyone can read menu items (creators need to browse them)
+create policy "menu_items_read_all" on menu_items
+  for select using (true);
+create policy "menu_items_write_own" on menu_items
+  for all using (restaurant_id = auth_restaurant_id() or auth_user_role() = 'admin')
+  with check (restaurant_id = auth_restaurant_id() or auth_user_role() = 'admin');
+
+-- ── Orders ────────────────────────────────────────────────────
+-- Restaurant users see their restaurant's orders; creators see their own orders
+create policy "orders_restaurant_read" on orders
+  for select using (
+    restaurant_id = auth_restaurant_id()
+    or auth_user_role() = 'admin'
+  );
+create policy "orders_write" on orders
+  for all using (
+    restaurant_id = auth_restaurant_id()
+    or auth_user_role() = 'admin'
+  )
+  with check (
+    restaurant_id = auth_restaurant_id()
+    or auth_user_role() = 'admin'
+  );
+
+-- ── Proof Submissions ─────────────────────────────────────────
+create policy "proof_submissions_restaurant" on proof_submissions
+  for select using (
+    order_id in (
+      select id from orders where restaurant_id = auth_restaurant_id()
+    )
+    or auth_user_role() = 'admin'
+  );
+
+-- ── Analytics, Strikes, Contest, Invite Apps ─────────────────
+-- Admin-only write; restaurant users read their own scoped data
+create policy "analytics_restaurant" on analytics_snapshots
+  for select using (restaurant_id = auth_restaurant_id() or auth_user_role() = 'admin');
+
+create policy "strikes_admin" on strikes
+  for all using (auth_user_role() = 'admin');
+
+create policy "contest_entries_read" on contest_entries
+  for select using (true);
+
+create policy "invite_applications_read" on invite_applications
+  for select using (auth_user_role() = 'admin');
+create policy "invite_applications_insert" on invite_applications
+  for insert with check (true);  -- anyone can apply
+
+create policy "deliverable_reqs_read" on deliverable_requirements
+  for select using (true);
+create policy "deliverable_reqs_write" on deliverable_requirements
+  for all using (restaurant_id = auth_restaurant_id() or auth_user_role() = 'admin')
+  with check (restaurant_id = auth_restaurant_id() or auth_user_role() = 'admin');
 
 -- ─────────────────────────────────────────────────────────────
 -- DEMO SEED DATA (Utah County restaurants)

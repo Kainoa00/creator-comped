@@ -31,11 +31,12 @@ export default function Footer() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-white/30 mb-4">Legal</p>
             <nav aria-label="Footer legal" className="flex flex-col gap-3">
-              {['Terms of Service', 'Privacy Policy'].map((l) => (
-                <a key={l} href="#" className="text-sm text-white/45 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm w-fit">
-                  {l}
-                </a>
-              ))}
+              <Link href="/terms" className="text-sm text-white/45 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm w-fit">
+                Terms of Service
+              </Link>
+              <Link href="/privacy" className="text-sm text-white/45 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm w-fit">
+                Privacy Policy
+              </Link>
             </nav>
           </div>
         </div>

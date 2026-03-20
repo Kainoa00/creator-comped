@@ -1,179 +1,139 @@
 'use client'
 
 import { useState } from 'react'
+import { DarkHeader } from '@/components/restaurant-ui/DarkHeader'
+import { DarkToggle } from '@/components/restaurant-ui/DarkToggle'
 import { Lock, Info } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 
 export default function EditDeliverablesPage() {
   const [formData, setFormData] = useState({
     instagramRequired: true,
     tiktokRequired: true,
     instagramStory: false,
-    tiktokStory: false,
     hashtags: '#CreatorComped #YourRestaurant',
     tagRestaurant: true,
-    postingDeadline: '48 hours',
-    avoidTopics: 'Politics, religion, controversial topics',
     usageRights: true,
-    usageRightsText:
-      'By participating, creators grant the restaurant rights to repost content on their official channels.',
     additionalNotes: 'Please showcase the ambiance and plate presentation. Tag our location!',
   })
-
-  const handleChange = (field: string, value: boolean | string) => {
-    setFormData({ ...formData, [field]: value })
-  }
+  const set = (field: keyof typeof formData, value: boolean | string) => setFormData({ ...formData, [field]: value })
+  const { saved, flash: handleSave } = useSaveFlash()
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Edit Deliverables</h1>
-        <p className="text-white/70">Set content requirements and posting guidelines</p>
-      </div>
+    <div className="px-4 pt-6 pb-20">
+      <DarkHeader title="Deliverables" subtitle="Content requirements" />
 
-      <div className="max-w-3xl space-y-6">
-        {/* Platform Requirements */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-          <h3 className="font-semibold mb-4">Platform Requirements</h3>
-          <div className="space-y-4">
-            {[
-              { field: 'instagramRequired', label: 'Instagram Post', desc: 'Require creators to post on Instagram feed' },
-              { field: 'tiktokRequired', label: 'TikTok Post', desc: 'Require creators to post on TikTok' },
-              { field: 'instagramStory', label: 'Instagram Story', desc: 'Optional Instagram story requirement' },
-            ].map(({ field, label, desc }) => (
-              <div key={field} className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">{label}</div>
-                  <p className="text-sm text-white/70">{desc}</p>
-                </div>
-                <label className="relative inline-block w-12 h-6">
-                  <input
-                    type="checkbox"
-                    checked={formData[field as keyof typeof formData] as boolean}
-                    onChange={(e) => handleChange(field, e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-12 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-blue-600"></div>
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Hashtags & Tagging */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-          <h3 className="font-semibold mb-4">Hashtags & Tagging</h3>
-          <div className="space-y-4">
+      {/* Platform Requirements */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Platform Requirements</p>
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-4">
+        {(
+          [
+            { field: 'instagramRequired', label: 'Instagram Post', desc: 'Require creators to post on Instagram feed' },
+            { field: 'tiktokRequired', label: 'TikTok Post', desc: 'Require creators to post on TikTok' },
+            { field: 'instagramStory', label: 'Instagram Story', desc: 'Optional Instagram story requirement' },
+          ] as { field: keyof typeof formData; label: string; desc: string }[]
+        ).map(({ field, label, desc }) => (
+          <div key={field} className="flex items-center justify-between px-4 py-3.5">
             <div>
-              <label className="block font-medium mb-2">Required Hashtags</label>
-              <input
-                type="text"
-                value={formData.hashtags}
-                onChange={(e) => handleChange('hashtags', e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-orange-500 transition"
-                placeholder="#CreatorComped #YourRestaurant"
-              />
-              <p className="text-sm text-white/50 mt-2">Separate hashtags with spaces</p>
+              <p className="text-sm font-medium text-white">{label}</p>
+              <p className="text-xs text-white/40 mt-0.5">{desc}</p>
             </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium">Tag Restaurant Account</div>
-                <p className="text-sm text-white/70">Require tagging your restaurant in posts</p>
-              </div>
-              <label className="relative inline-block w-12 h-6">
-                <input
-                  type="checkbox"
-                  checked={formData.tagRestaurant}
-                  onChange={(e) => handleChange('tagRestaurant', e.target.checked)}
-                  className="sr-only peer"
-                />
-                <div className="w-12 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-blue-600"></div>
-              </label>
-            </div>
+            <DarkToggle
+              checked={formData[field] as boolean}
+              onChange={(v) => set(field, v)}
+            />
           </div>
-        </div>
+        ))}
+      </div>
 
-        {/* Posting Deadline (Fixed) */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5 relative">
-          <div className="absolute top-4 right-4">
-            <Lock className="w-5 h-5 text-white/30" />
-          </div>
-          <h3 className="font-semibold mb-4">Posting Deadline</h3>
-          <div className="flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white/50">
-            <span className="font-medium">{formData.postingDeadline}</span>
-            <span className="text-sm">(Fixed by platform policy)</span>
-          </div>
-        </div>
-
-        {/* Avoid Topics (Fixed) */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5 relative">
-          <div className="absolute top-4 right-4">
-            <Lock className="w-5 h-5 text-white/30" />
-          </div>
-          <h3 className="font-semibold mb-4">Topics to Avoid</h3>
-          <div className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white/50">
-            <p>{formData.avoidTopics}</p>
-            <p className="text-sm mt-2">(Fixed by platform policy)</p>
-          </div>
-        </div>
-
-        {/* Usage Rights */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-          <h3 className="font-semibold mb-4">Usage Rights</h3>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium">Request Content Usage Rights</div>
-                <p className="text-sm text-white/70">Allow reposting creator content</p>
-              </div>
-              <label className="relative inline-block w-12 h-6">
-                <input
-                  type="checkbox"
-                  checked={formData.usageRights}
-                  onChange={(e) => handleChange('usageRights', e.target.checked)}
-                  className="sr-only peer"
-                />
-                <div className="w-12 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-blue-600"></div>
-              </label>
-            </div>
-
-            <div className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white/70">
-              <p className="text-sm">{formData.usageRightsText}</p>
-              <p className="text-xs text-white/50 mt-2">(Fixed description text)</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Additional Notes */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-          <h3 className="font-semibold mb-4">Additional Notes</h3>
-          <textarea
-            value={formData.additionalNotes}
-            onChange={(e) => handleChange('additionalNotes', e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-orange-500 transition h-32 resize-none"
-            placeholder="Any additional guidelines or requests for creators..."
+      {/* Hashtags */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Hashtags & Tagging</p>
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-4">
+        <div className="px-4 py-3.5">
+          <p className="text-sm font-medium text-white mb-2">Required Hashtags</p>
+          <input
+            type="text"
+            value={formData.hashtags}
+            onChange={(e) => set('hashtags', e.target.value)}
+            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20"
+            placeholder="#CreatorComped #YourRestaurant"
           />
+          <p className="text-xs text-white/30 mt-1.5">Separate hashtags with spaces</p>
         </div>
-
-        {/* Info Box */}
-        <div className="bg-blue-500/10 backdrop-blur-sm rounded-2xl p-4 border border-blue-500/20 flex gap-3">
-          <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-white/90">
-            Creators will see these requirements before redeeming a comp. Clear guidelines
-            help ensure quality content that meets your expectations.
+        <div className="flex items-center justify-between px-4 py-3.5">
+          <div>
+            <p className="text-sm font-medium text-white">Tag Restaurant Account</p>
+            <p className="text-xs text-white/40 mt-0.5">Require tagging your restaurant in posts</p>
           </div>
-        </div>
-
-        {/* Save Buttons */}
-        <div className="flex justify-end gap-4 pt-4">
-          <button className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition">
-            Cancel
-          </button>
-          <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-blue-600 hover:opacity-90 transition">
-            Save Changes
-          </button>
+          <DarkToggle checked={formData.tagRestaurant} onChange={(v) => set('tagRestaurant', v)} />
         </div>
       </div>
+
+      {/* Fixed Fields */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Platform Policy (Fixed)</p>
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-4">
+        {[
+          { label: 'Posting Deadline', value: '48 hours after redemption' },
+          { label: 'Topics to Avoid', value: 'Politics, religion, controversial topics' },
+        ].map(({ label, value }) => (
+          <div key={label} className="px-4 py-3.5 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white">{label}</p>
+              <p className="text-xs text-white/40 mt-0.5">{value}</p>
+            </div>
+            <Lock className="h-4 w-4 text-white/20 shrink-0" />
+          </div>
+        ))}
+      </div>
+
+      {/* Usage Rights */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Usage Rights</p>
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl mb-4">
+        <div className="flex items-center justify-between px-4 py-3.5 border-b border-white/[0.05]">
+          <div>
+            <p className="text-sm font-medium text-white">Request Content Usage Rights</p>
+            <p className="text-xs text-white/40 mt-0.5">Allow reposting creator content on your channels</p>
+          </div>
+          <DarkToggle checked={formData.usageRights} onChange={(v) => set('usageRights', v)} />
+        </div>
+        <div className="px-4 py-3.5">
+          <p className="text-xs text-white/40 leading-relaxed">
+            By participating, creators grant the restaurant rights to repost content on their official channels.
+          </p>
+        </div>
+      </div>
+
+      {/* Additional Notes */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Additional Notes</p>
+      <textarea
+        value={formData.additionalNotes}
+        onChange={(e) => set('additionalNotes', e.target.value)}
+        rows={4}
+        className="w-full bg-white/[0.05] border border-white/[0.08] rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 resize-none mb-4"
+        placeholder="Any additional guidelines for creators..."
+      />
+
+      {/* Info */}
+      <div className="bg-blue-500/[0.08] border border-blue-500/20 rounded-2xl p-4 mb-5 flex gap-3">
+        <Info className="h-4 w-4 text-blue-400 shrink-0 mt-0.5" />
+        <p className="text-xs text-white/60 leading-relaxed">
+          Creators see these requirements before redeeming. Clear guidelines help ensure quality content.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSave}
+        className={cn(
+          'w-full py-4 rounded-2xl text-white font-bold text-sm transition-all',
+          saved
+            ? 'bg-emerald-500'
+            : 'bg-gradient-to-r from-orange-500 via-rose-500 to-blue-600'
+        )}
+      >
+        {saved ? 'Saved!' : 'Save Changes'}
+      </button>
     </div>
   )
 }

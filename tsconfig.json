@@ -31,5 +31,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "WebApp(figma)"]
+  "exclude": ["node_modules", "WebApp(figma)", "capacitor.config.ts", "vitest.config.ts"]
 }

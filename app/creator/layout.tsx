@@ -1,9 +1,11 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { MapPin, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { supabase, isDemoMode } from '@/lib/supabase'
 
 const tabs = [
   {
@@ -22,12 +24,54 @@ const tabs = [
 
 export default function CreatorLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const [authChecked, setAuthChecked] = useState(isDemoMode) // demo mode skips check
+  const [offline, setOffline] = useState(false)
 
   // On the proof page, hide tab bar — creator is locked in
   const isProofPage = pathname === '/creator/proof'
 
+  // Auth guard — in live mode only
+  useEffect(() => {
+    if (isDemoMode) return
+    supabase?.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        router.replace('/')
+      } else {
+        setAuthChecked(true)
+      }
+    })
+  }, [router])
+
+  // Offline detection
+  useEffect(() => {
+    setOffline(!navigator.onLine)
+    const onOnline = () => setOffline(false)
+    const onOffline = () => setOffline(true)
+    window.addEventListener('online', onOnline)
+    window.addEventListener('offline', onOffline)
+    return () => {
+      window.removeEventListener('online', onOnline)
+      window.removeEventListener('offline', onOffline)
+    }
+  }, [])
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="h-7 w-7 border-2 border-gray-200 border-t-gray-500 rounded-full animate-spin" />
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-white relative">
+      {offline && (
+        <div className="fixed top-0 left-0 right-0 z-[100] bg-yellow-500 text-black text-center text-xs font-semibold py-2 px-4">
+          No internet connection
+        </div>
+      )}
+
       {/* Main content area */}
       <main className={cn('min-h-screen', !isProofPage && 'pb-16')}>
         {children}

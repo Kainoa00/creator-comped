@@ -2,119 +2,90 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Modal, ModalFooter } from '@/components/ui/modal'
-import { Button } from '@/components/ui/button'
-import { OrderStatusBadge } from '@/components/ui/badge'
 import { useToast } from '@/components/ui/toast'
-import { Avatar } from '@/components/ui/avatar'
-import {
-  DEMO_ORDERS,
-  DEMO_CREATORS,
-  DEMO_RESTAURANTS,
-} from '@/lib/demo-data'
-import { relativeTime, formatTime, cn } from '@/lib/utils'
+import { useRealtimeOrders } from '@/lib/hooks/useRealtimeOrders'
+import { DEMO_RESTAURANTS } from '@/lib/demo-data'
+import { relativeTime, cn } from '@/lib/utils'
 import {
   Camera,
   QrCode,
-  X,
   Clock,
   CheckCircle2,
   XCircle,
+  X,
   AlertCircle,
 } from 'lucide-react'
+import type { Order } from '@/lib/types'
 
 const restaurant = DEMO_RESTAURANTS[0]
-const RECENT_REDEMPTIONS = DEMO_ORDERS.slice(0, 5)
-
-function getCreator(creatorId: string) {
-  return DEMO_CREATORS.find((c) => c.id === creatorId) ?? null
-}
 
 function getGreeting(): string {
   const h = new Date().getHours()
-  if (h < 12) return 'Good morning'
-  if (h < 17) return 'Good afternoon'
-  return 'Good evening'
+  if (h < 12) return 'Morning'
+  if (h < 17) return 'Afternoon'
+  return 'Evening'
 }
 
 function LiveClock() {
-  const [time, setTime] = useState(() => {
-    const now = new Date()
-    return now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
-  })
-
+  const [time, setTime] = useState(() =>
+    new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+  )
   useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date()
-      setTime(now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }))
+    const iv = setInterval(() => {
+      setTime(new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }))
     }, 1000)
-    return () => clearInterval(interval)
+    return () => clearInterval(iv)
   }, [])
-
   return <span>{time}</span>
 }
 
+function statusColor(status: Order['status']) {
+  if (status === 'confirmed' || status === 'approved' || status === 'proof_submitted') return 'bg-emerald-500'
+  if (status === 'rejected' || status === 'expired') return 'bg-red-500'
+  return 'bg-amber-400'
+}
+
 const shakeStyle = `
-@keyframes shake {
+@keyframes ccShake {
   0%,100% { transform: translateX(0); }
   20% { transform: translateX(-8px); }
   40% { transform: translateX(8px); }
   60% { transform: translateX(-6px); }
   80% { transform: translateX(6px); }
 }
-.shake { animation: shake 0.4s ease-in-out; }
-
-@keyframes scanLine {
-  0%, 100% { transform: translateY(0px); opacity: 0.9; }
-  50% { transform: translateY(80px); opacity: 0.6; }
-}
-.scan-line {
-  animation: scanLine 2s ease-in-out infinite;
-}
-
-@keyframes scanPulse {
-  0%, 100% { opacity: 0.15; }
-  50% { opacity: 0.3; }
-}
-.scan-pulse {
-  animation: scanPulse 2s ease-in-out infinite;
-}
+.cc-shake { animation: ccShake 0.4s ease-in-out; }
 `
 
-export default function RestaurantStaffPage() {
+export default function RestaurantScannerPage() {
   const router = useRouter()
   const { toast } = useToast()
+  const { orders } = useRealtimeOrders(restaurant.id)
 
   const [showScanner, setShowScanner] = useState(false)
-  const [codeDigits, setCodeDigits] = useState<string[]>(['', '', '', '', ''])
+  const [digits, setDigits] = useState<string[]>(['', '', '', '', ''])
   const [codeError, setCodeError] = useState<string | null>(null)
   const [shaking, setShaking] = useState(false)
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
-  const [expiredModal, setExpiredModal] = useState(false)
-  const [alreadyRedeemedModal, setAlreadyRedeemedModal] = useState<{ open: boolean; time?: string }>({ open: false })
 
-  const fullCode = codeDigits.join('')
+  const fullCode = digits.join('')
 
   useEffect(() => {
-    if (fullCode.length === 5 && !codeDigits.includes('')) {
+    if (fullCode.length === 5 && !digits.includes('')) {
       handleCodeSubmit(fullCode)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fullCode])
 
   function handleDigitChange(idx: number, val: string) {
     if (!/^\d?$/.test(val)) return
-    const next = [...codeDigits]
+    const next = [...digits]
     next[idx] = val.slice(-1)
-    setCodeDigits(next)
+    setDigits(next)
     setCodeError(null)
-    if (val && idx < 4) {
-      inputRefs.current[idx + 1]?.focus()
-    }
+    if (val && idx < 4) inputRefs.current[idx + 1]?.focus()
   }
 
-  function handleDigitKeyDown(idx: number, e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Backspace' && !codeDigits[idx] && idx > 0) {
+  function handleKeyDown(idx: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Backspace' && !digits[idx] && idx > 0) {
       inputRefs.current[idx - 1]?.focus()
     }
   }
@@ -125,380 +96,248 @@ export default function RestaurantStaffPage() {
   }
 
   function handleCodeSubmit(code: string) {
-    const order = DEMO_ORDERS.find((o) => o.redemption_code === code)
-
+    const order = orders.find((o) => o.redemption_code === code)
     if (!order) {
-      setCodeError('Code not found. Please try again.')
+      setCodeError('Code not found')
       triggerShake()
-      toast({ type: 'error', title: 'Invalid code', message: 'No order found for this code.' })
-      setCodeDigits(['', '', '', '', ''])
+      toast({ type: 'error', title: 'Invalid code', message: 'No order found.' })
+      setDigits(['', '', '', '', ''])
       setTimeout(() => inputRefs.current[0]?.focus(), 100)
       return
     }
-
     if (order.status === 'expired') {
-      setCodeDigits(['', '', '', '', ''])
-      setExpiredModal(true)
+      toast({ type: 'warning', title: 'Code expired', message: 'Ask creator to generate a new code.' })
+      setDigits(['', '', '', '', ''])
       return
     }
-
-    if (
-      order.status === 'confirmed' ||
-      order.status === 'approved' ||
-      order.status === 'proof_submitted'
-    ) {
-      setCodeDigits(['', '', '', '', ''])
-      setAlreadyRedeemedModal({
-        open: true,
-        time: order.confirmed_at ? formatTime(order.confirmed_at) : undefined,
-      })
+    if (['confirmed', 'approved', 'proof_submitted'].includes(order.status)) {
+      toast({ type: 'warning', title: 'Already redeemed', message: 'This code was already used.' })
+      setDigits(['', '', '', '', ''])
       return
     }
-
     router.push(`/restaurant/ticket/${order.id}`)
   }
 
   function handleDemoScan() {
     setShowScanner(false)
-    const demoOrder = DEMO_ORDERS.find((o) => o.status === 'created') ?? DEMO_ORDERS[0]
-    router.push(`/restaurant/ticket/${demoOrder.id}`)
+    const demoOrder = orders.find((o) => o.status === 'created') ?? orders[0]
+    if (demoOrder) router.push(`/restaurant/ticket/${demoOrder.id}`)
   }
+
+  const todayOrders = orders.filter((o) => {
+    const today = new Date().toDateString()
+    return new Date(o.confirmed_at ?? o.created_at).toDateString() === today &&
+      ['confirmed', 'approved', 'proof_submitted', 'rejected'].includes(o.status)
+  })
 
   return (
     <>
       <style>{shakeStyle}</style>
+      <div className="px-4 pt-6">
 
-      <div className="p-6 min-h-full">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-end justify-between mb-1">
-            <div>
-              <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-1">Staff Mode</p>
-              <h1 className="text-xl font-black text-slate-900">
-                {getGreeting()}, {restaurant.name}
-              </h1>
-            </div>
-            <div className="text-right">
-              <p className="text-2xl font-black text-slate-900 tabular-nums leading-none">
-                <LiveClock />
-              </p>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-              </p>
-            </div>
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <p className="text-xs text-white/40 uppercase tracking-widest font-medium mb-1">Staff Mode</p>
+            <h1 className="text-xl font-bold text-white">
+              Good {getGreeting()}!
+            </h1>
+            <p className="text-sm text-white/40 mt-0.5">{restaurant.name}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xl font-bold text-white tabular-nums">
+              <LiveClock />
+            </p>
+            <p className="text-xs text-white/30 mt-0.5">
+              {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+            </p>
           </div>
         </div>
 
         {/* Pause banner */}
         {restaurant.settings.pause_comps && (
-          <div className="mb-6 flex items-center gap-3 border border-amber-200 rounded-lg px-4 py-3">
-            <AlertCircle className="h-4 w-4 text-amber-500 shrink-0" />
-            <p className="text-sm text-amber-700">
-              Comps are currently paused. Contact your manager to resume.
-            </p>
+          <div className="mb-5 flex items-center gap-3 bg-amber-500/10 border border-amber-500/20 rounded-2xl px-4 py-3">
+            <AlertCircle className="h-4 w-4 text-amber-400 shrink-0" />
+            <p className="text-sm text-amber-300">Comps are paused. Contact your manager.</p>
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 cc-inner">
-
-          {/* ── LEFT: Scan + Manual Entry ── */}
-          <div className="flex flex-col gap-5 h-full">
-
-            {/* Scan button */}
-            <button
-              onClick={() => setShowScanner(true)}
-              className="w-full min-h-[180px] rounded-lg bg-cc-accent hover:bg-cc-accent-dark active:scale-[0.99] transition-colors flex flex-col items-center justify-center gap-3 text-white cursor-pointer select-none"
-            >
-              <Camera className="h-8 w-8 text-white/90" />
-              <div className="text-center">
-                <p className="text-lg font-bold">Scan QR Code</p>
-                <p className="text-sm text-white/70 mt-0.5">Point camera at creator&apos;s screen</p>
-              </div>
-            </button>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 border-t border-slate-200" />
-              <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">or enter code</span>
-              <div className="flex-1 border-t border-slate-200" />
+        {/* Scan QR button */}
+        <button
+          onClick={() => setShowScanner(true)}
+          className="w-full rounded-2xl bg-gradient-to-r from-orange-500 via-rose-500 to-blue-600 p-px mb-4"
+        >
+          <div className="w-full rounded-[calc(1rem-1px)] bg-[#0a0a0a] flex flex-col items-center justify-center gap-3 py-10 hover:bg-white/[0.03] transition-colors">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-orange-500 via-rose-500 to-blue-600 flex items-center justify-center">
+              <Camera className="h-7 w-7 text-white" />
             </div>
-
-            {/* Manual code entry */}
-            <div className="border border-slate-200 rounded-lg p-6">
-              <p className="text-xs font-medium text-slate-400 uppercase tracking-widest text-center mb-5">5-Digit Redemption Code</p>
-              <div className={cn('flex gap-3 justify-center', shaking && 'shake')}>
-                {codeDigits.map((digit, idx) => (
-                  <input
-                    key={idx}
-                    ref={(el) => { inputRefs.current[idx] = el }}
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleDigitChange(idx, e.target.value)}
-                    onKeyDown={(e) => handleDigitKeyDown(idx, e)}
-                    className={cn(
-                      'w-14 h-14 text-center text-2xl font-black rounded-lg bg-slate-50 border text-slate-900',
-                      'focus:outline-none focus:border-cc-accent focus:bg-white',
-                      'transition-colors',
-                      codeError ? 'border-red-300 bg-red-50' : 'border-slate-200'
-                    )}
-                  />
-                ))}
-              </div>
-
-              {codeError && (
-                <p className="text-sm text-red-500 text-center mt-4 font-medium">{codeError}</p>
-              )}
-
-              <p className="text-xs text-slate-400 text-center mt-4">
-                Auto-submits when all 5 digits are entered
-              </p>
-
-              {/* Demo shortcuts */}
-              <div className="mt-4 pt-4 border-t border-slate-200 text-center">
-                <p className="text-xs text-slate-400 mb-2.5">Demo — try a code:</p>
-                <div className="flex gap-2 justify-center flex-wrap">
-                  {DEMO_ORDERS.map((o) => (
-                    <button
-                      key={o.id}
-                      onClick={() => router.push(`/restaurant/ticket/${o.id}`)}
-                      className="text-xs font-mono border border-slate-200 rounded-lg px-2.5 py-1.5 text-cc-accent hover:border-cc-accent hover:bg-slate-50 transition-colors font-semibold"
-                    >
-                      {o.redemption_code}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <div className="text-center">
+              <p className="text-lg font-bold text-white">Scan QR Code</p>
+              <p className="text-sm text-white/50 mt-0.5">Point camera at creator&apos;s screen</p>
             </div>
+          </div>
+        </button>
 
-            {/* How it works */}
-            <div className="border border-slate-200 rounded-lg p-5 mt-auto">
-              <p className="text-sm font-semibold text-slate-900 mb-4">How it works</p>
-              <div className="flex flex-col gap-3">
-                {[
-                  'Creator opens the app and selects items',
-                  'They show you their QR code or 5-digit code',
-                  'You scan or enter the code to confirm',
-                  'The comp is applied — no cash needed',
-                ].map((step, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <span className="text-xs font-semibold text-cc-accent shrink-0 tabular-nums mt-0.5">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <p className="text-sm text-slate-500 leading-snug">{step}</p>
+        {/* Divider */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 h-px bg-white/[0.08]" />
+          <span className="text-xs text-white/30 font-semibold uppercase tracking-wider">or enter code</span>
+          <div className="flex-1 h-px bg-white/[0.08]" />
+        </div>
+
+        {/* Code entry */}
+        <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 mb-5">
+          <p className="text-xs text-white/40 uppercase tracking-widest text-center mb-5 font-medium">
+            5-Digit Redemption Code
+          </p>
+          <div className={cn('flex gap-2.5 justify-center', shaking && 'cc-shake')}>
+            {digits.map((digit, idx) => (
+              <input
+                key={idx}
+                ref={(el) => { inputRefs.current[idx] = el }}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleDigitChange(idx, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(idx, e)}
+                className={cn(
+                  'w-12 h-12 text-center text-xl font-bold rounded-xl border text-white',
+                  'bg-white/[0.05] focus:outline-none transition-colors',
+                  codeError
+                    ? 'border-red-500/50 bg-red-500/10'
+                    : 'border-white/[0.08] focus:border-white/30'
+                )}
+              />
+            ))}
+          </div>
+          {codeError && (
+            <p className="text-sm text-red-400 text-center mt-3 font-medium">{codeError}</p>
+          )}
+          <p className="text-xs text-white/30 text-center mt-3">Auto-submits on 5 digits</p>
+
+          {/* Demo shortcuts */}
+          <div className="mt-4 pt-4 border-t border-white/[0.06] text-center">
+            <p className="text-xs text-white/30 mb-2">Demo — tap a code:</p>
+            <div className="flex gap-2 justify-center flex-wrap">
+              {orders.slice(0, 4).map((o) => (
+                <button
+                  key={o.id}
+                  onClick={() => router.push(`/restaurant/ticket/${o.id}`)}
+                  className="text-xs font-mono bg-white/[0.05] border border-white/[0.1] rounded-lg px-2.5 py-1.5 text-white/60 hover:text-white hover:border-white/20 transition-colors font-semibold"
+                >
+                  {o.redemption_code}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Today's Redemptions */}
+        <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl overflow-hidden mb-4">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-white/40" />
+              <h2 className="text-sm font-semibold text-white">Today&apos;s Redemptions</h2>
+            </div>
+            <span className="text-xs text-white/40 font-medium tabular-nums">{todayOrders.length}</span>
+          </div>
+
+          {todayOrders.length === 0 ? (
+            <div className="flex flex-col items-center gap-3 py-10 text-center px-6">
+              <QrCode className="h-8 w-8 text-white/20" />
+              <p className="text-sm text-white/40">No redemptions yet today</p>
+            </div>
+          ) : (
+            <ul>
+              {todayOrders.map((order, i) => (
+                <li
+                  key={order.id}
+                  className={cn(
+                    'flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-white/[0.03] transition-colors',
+                    i < todayOrders.length - 1 && 'border-b border-white/[0.06]'
+                  )}
+                  onClick={() => router.push(`/restaurant/ticket/${order.id}`)}
+                >
+                  <span className={cn('h-2 w-2 rounded-full shrink-0', statusColor(order.status))} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-white truncate">
+                      #{order.redemption_code}
+                    </p>
+                    <p className="text-xs text-white/40 truncate mt-0.5">
+                      {order.items.map((i) => i.menu_item_name).join(', ')}
+                    </p>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Recent Redemptions */}
-          <div className="border border-slate-200 rounded-lg overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-slate-400" />
-                <h2 className="text-sm font-semibold text-slate-900">Today&apos;s Redemptions</h2>
-              </div>
-              <span className="text-xs text-slate-400 font-medium tabular-nums">
-                {RECENT_REDEMPTIONS.length}
-              </span>
-            </div>
-
-            {RECENT_REDEMPTIONS.length === 0 ? (
-              <div className="flex flex-col items-center gap-3 py-16 text-center px-6 flex-1">
-                <div className="h-14 w-14 rounded-lg border border-slate-200 flex items-center justify-center">
-                  <QrCode className="h-6 w-6 text-slate-400" />
-                </div>
-                <p className="text-slate-500 font-semibold">No redemptions yet today</p>
-                <p className="text-sm text-slate-400">Scan a creator&apos;s QR code to get started</p>
-              </div>
-            ) : (
-              <ul className="flex-1">
-                {RECENT_REDEMPTIONS.map((order, i) => {
-                  const creator = getCreator(order.creator_id)
-                  const isConfirmed =
-                    order.status === 'confirmed' ||
-                    order.status === 'approved' ||
-                    order.status === 'proof_submitted'
-                  const isRejected = order.status === 'rejected'
-
-                  return (
-                    <li
-                      key={order.id}
-                      className={cn(
-                        'flex items-center gap-4 pr-6 py-4 hover:bg-slate-50/80 transition-colors cursor-pointer',
-                        i < RECENT_REDEMPTIONS.length - 1 && 'border-b border-slate-200',
-                        isConfirmed ? 'border-l-4 border-l-emerald-400 pl-4' : isRejected ? 'border-l-4 border-l-red-400 pl-4' : 'border-l-4 border-l-amber-400 pl-4'
-                      )}
-                      onClick={() => router.push(`/restaurant/ticket/${order.id}`)}
-                    >
-                      {/* Status icon */}
-                      <div className="shrink-0">
-                        {isConfirmed ? (
-                          <div className="h-8 w-8 rounded-lg border border-slate-200 flex items-center justify-center">
-                            <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
-                          </div>
-                        ) : isRejected ? (
-                          <div className="h-8 w-8 rounded-lg border border-slate-200 flex items-center justify-center">
-                            <XCircle className="h-4.5 w-4.5 text-red-400" />
-                          </div>
-                        ) : (
-                          <div className="h-8 w-8 rounded-lg border border-slate-200 flex items-center justify-center">
-                            <Clock className="h-3.5 w-3.5 text-amber-500" />
-                          </div>
-                        )}
-                      </div>
-
-                      <Avatar
-                        src={creator?.photo_url ?? null}
-                        name={creator?.name ?? 'Unknown'}
-                        size="sm"
-                      />
-
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-slate-900 truncate">
-                          {creator?.name ?? 'Unknown Creator'}
-                        </p>
-                        <p className="text-xs text-slate-500 truncate mt-0.5">
-                          {order.items.map((item) => item.menu_item_name).join(', ')}
-                        </p>
-                      </div>
-
-                      <div className="flex flex-col items-end gap-1.5 shrink-0">
-                        <OrderStatusBadge status={order.status} />
-                        <div className="flex items-center gap-2">
-                          {order.items.length > 0 && (
-                            <span className="text-xs border border-slate-200 text-slate-500 font-semibold rounded-md px-2 py-0.5">
-                              {order.items.length} {order.items.length === 1 ? 'item' : 'items'}
-                            </span>
-                          )}
-                          <span className="text-xs text-slate-400">
-                            {relativeTime(order.confirmed_at ?? order.created_at)}
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
+                  <div className="text-right shrink-0">
+                    <p className={cn(
+                      'text-xs font-medium capitalize',
+                      order.status === 'confirmed' || order.status === 'approved'
+                        ? 'text-emerald-400'
+                        : order.status === 'rejected'
+                        ? 'text-red-400'
+                        : 'text-white/40'
+                    )}>
+                      {order.status}
+                    </p>
+                    <p className="text-xs text-white/30 mt-0.5">
+                      {relativeTime(order.confirmed_at ?? order.created_at)}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
-      {/* ── QR Scanner Modal ── */}
-      <Modal
-        open={showScanner}
-        onClose={() => setShowScanner(false)}
-        hideClose
-        maxWidth="max-w-md"
-      >
-        <div className="relative">
+      {/* QR Scanner Overlay */}
+      {showScanner && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6">
           <button
             onClick={() => setShowScanner(false)}
-            className="absolute top-0 right-0 h-9 w-9 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors"
+            className="absolute top-6 right-6 h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:text-white"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </button>
 
-          <div className="flex flex-col items-center gap-6 py-2">
-            <div className="text-center">
-              <h2 className="text-xl font-bold text-slate-900">Scan Creator&apos;s QR Code</h2>
-              <p className="text-sm text-slate-500 mt-1">
-                Point camera at creator&apos;s QR code on their phone
-              </p>
-            </div>
-
-            {/* Viewfinder */}
-            <div className="relative w-64 h-64 flex items-center justify-center">
-              <div className="w-56 h-56 border border-dashed border-cc-accent rounded-lg flex flex-col items-center justify-center gap-3 bg-slate-50">
-                <QrCode className="h-14 w-14 text-cc-accent opacity-30" />
-                <p className="text-xs text-slate-400 text-center px-4">
-                  Camera preview would appear here
-                </p>
-              </div>
-              {/* Corner bracket markers */}
-              {[
-                ['top-0 left-0', 'border-t-4 border-l-4 rounded-tl-lg'],
-                ['top-0 right-0', 'border-t-4 border-r-4 rounded-tr-lg'],
-                ['bottom-0 left-0', 'border-b-4 border-l-4 rounded-bl-lg'],
-                ['bottom-0 right-0', 'border-b-4 border-r-4 rounded-br-lg'],
-              ].map(([pos, border], i) => (
-                <div
-                  key={i}
-                  className={cn('absolute w-7 h-7 border-cc-accent', pos, border)}
-                />
-              ))}
-            </div>
-
-            {/* Demo simulate */}
-            <div className="flex flex-col items-center gap-3 w-full">
-              <div className="flex items-center gap-3 w-full max-w-xs">
-                <div className="flex-1 border-t border-slate-200" />
-                <span className="text-xs text-slate-400 font-medium">DEMO MODE</span>
-                <div className="flex-1 border-t border-slate-200" />
-              </div>
-              <button
-                onClick={handleDemoScan}
-                className="w-full max-w-xs min-h-[48px] bg-cc-accent hover:bg-cc-accent-dark text-white rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
-              >
-                <QrCode className="h-4 w-4" />
-                Simulate QR Scan
-              </button>
-              <p className="text-xs text-slate-400">
-                Simulates scanning a valid creator QR code
-              </p>
-            </div>
-          </div>
-        </div>
-      </Modal>
-
-      {/* ── Expired Code Modal ── */}
-      <Modal
-        open={expiredModal}
-        onClose={() => setExpiredModal(false)}
-        title="Code Expired"
-        description="This redemption code is no longer valid."
-      >
-        <div className="flex flex-col items-center gap-4 py-2">
-          <div className="h-14 w-14 rounded-lg border border-slate-200 flex items-center justify-center">
-            <Clock className="h-7 w-7 text-amber-500" />
-          </div>
-          <p className="text-sm text-slate-600 text-center">
-            QR codes expire 20 minutes after generation. Ask the creator to generate a new code in the app.
+          <h2 className="text-xl font-bold text-white mb-2">Scan QR Code</h2>
+          <p className="text-sm text-white/50 mb-8 text-center">
+            Point the camera at the creator&apos;s screen
           </p>
-        </div>
-        <ModalFooter>
-          <Button variant="primary" onClick={() => setExpiredModal(false)}>
-            Got It
-          </Button>
-        </ModalFooter>
-      </Modal>
 
-      {/* ── Already Redeemed Modal ── */}
-      <Modal
-        open={alreadyRedeemedModal.open}
-        onClose={() => setAlreadyRedeemedModal({ open: false })}
-        title="Already Redeemed"
-        description="This code has already been used."
-      >
-        <div className="flex flex-col items-center gap-4 py-2">
-          <div className="h-14 w-14 rounded-lg border border-slate-200 flex items-center justify-center">
-            <XCircle className="h-7 w-7 text-red-400" />
+          {/* Viewfinder */}
+          <div className="relative w-64 h-64 mb-8">
+            <div className="w-full h-full rounded-2xl border border-dashed border-white/20 flex flex-col items-center justify-center gap-3">
+              <QrCode className="h-16 w-16 text-white/20" />
+              <p className="text-xs text-white/30 text-center px-4">Camera preview here</p>
+            </div>
+            {/* Corner brackets */}
+            {[
+              'top-0 left-0 border-t-2 border-l-2 rounded-tl-xl',
+              'top-0 right-0 border-t-2 border-r-2 rounded-tr-xl',
+              'bottom-0 left-0 border-b-2 border-l-2 rounded-bl-xl',
+              'bottom-0 right-0 border-b-2 border-r-2 rounded-br-xl',
+            ].map((cls, i) => (
+              <div key={i} className={`absolute w-8 h-8 border-orange-500 ${cls}`} />
+            ))}
           </div>
-          <p className="text-sm text-slate-600 text-center">
-            This code was already redeemed
-            {alreadyRedeemedModal.time ? ` at ${alreadyRedeemedModal.time}` : ''}.
-            Each code can only be used once.
-          </p>
+
+          <div className="w-full max-w-xs">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-1 h-px bg-white/[0.08]" />
+              <span className="text-xs text-white/30 font-medium">DEMO MODE</span>
+              <div className="flex-1 h-px bg-white/[0.08]" />
+            </div>
+            <button
+              onClick={handleDemoScan}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 via-rose-500 to-blue-600 text-white font-bold text-sm flex items-center justify-center gap-2"
+            >
+              <QrCode className="h-4 w-4" />
+              Simulate QR Scan
+            </button>
+          </div>
         </div>
-        <ModalFooter>
-          <Button variant="primary" onClick={() => setAlreadyRedeemedModal({ open: false })}>
-            Got It
-          </Button>
-        </ModalFooter>
-      </Modal>
+      )}
     </>
   )
 }

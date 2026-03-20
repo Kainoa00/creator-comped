@@ -1,220 +1,150 @@
 'use client'
 
-import { useState } from 'react'
-import { FilterSelector } from '@/components/admin-ui/FilterSelector'
-import { CheckCircle, Clock, XCircle, Instagram, Music2 } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { DarkHeader } from '@/components/restaurant-ui/DarkHeader'
+import { DEMO_ORDERS, DEMO_CREATORS } from '@/lib/demo-data'
+import { relativeTime, cn } from '@/lib/utils'
+import type { OrderStatus } from '@/lib/types'
+import { CheckCircle2, Clock, XCircle, Search, Instagram, Music2 } from 'lucide-react'
 
-type FilterType = 'Month' | 'Year' | 'All time'
+const STATUS_FILTERS: { label: string; value: OrderStatus | 'all' }[] = [
+  { label: 'All', value: 'all' },
+  { label: 'Confirmed', value: 'confirmed' },
+  { label: 'Approved', value: 'approved' },
+  { label: 'Pending', value: 'proof_submitted' },
+  { label: 'Rejected', value: 'rejected' },
+]
 
-interface Comp {
-  id: string
-  creator: string
-  date: string
-  items: string[]
-  value: number
-  status: 'completed' | 'pending' | 'expired'
-  instagram?: string
-  tiktok?: string
+function statusIcon(status: OrderStatus) {
+  if (status === 'confirmed' || status === 'approved') return <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+  if (status === 'rejected' || status === 'expired') return <XCircle className="h-4 w-4 text-red-400" />
+  return <Clock className="h-4 w-4 text-amber-400" />
 }
 
-const mockComps: Comp[] = [
-  {
-    id: '1',
-    creator: '@foodie_sarah',
-    date: 'Feb 28, 2026',
-    items: ['Margherita Pizza', 'Caesar Salad', 'Tiramisu'],
-    value: 42,
-    status: 'completed',
-    instagram: 'instagram.com/p/abc123',
-    tiktok: 'tiktok.com/@foodie_sarah/video/123',
-  },
-  {
-    id: '2',
-    creator: '@tastemaker_mike',
-    date: 'Feb 27, 2026',
-    items: ['Carbonara', 'Bruschetta', 'Gelato'],
-    value: 38,
-    status: 'completed',
-    instagram: 'instagram.com/p/def456',
-    tiktok: 'tiktok.com/@tastemaker_mike/video/456',
-  },
-  {
-    id: '3',
-    creator: '@eats_with_emma',
-    date: 'Feb 26, 2026',
-    items: ['Quattro Formaggi', 'Caprese Salad'],
-    value: 35,
-    status: 'pending',
-  },
-  {
-    id: '4',
-    creator: '@chef_chronicles',
-    date: 'Feb 25, 2026',
-    items: ['Lasagna', 'Garlic Bread', 'Panna Cotta'],
-    value: 45,
-    status: 'completed',
-    instagram: 'instagram.com/p/ghi789',
-    tiktok: 'tiktok.com/@chef_chronicles/video/789',
-  },
-  {
-    id: '5',
-    creator: '@downtown_diner',
-    date: 'Feb 24, 2026',
-    items: ['Ravioli', 'House Salad'],
-    value: 28,
-    status: 'expired',
-  },
-]
-
-const topItems = [
-  { name: 'Margherita Pizza', count: 45 },
-  { name: 'Caesar Salad', count: 38 },
-  { name: 'Tiramisu', count: 32 },
-  { name: 'Carbonara', count: 28 },
-  { name: 'Bruschetta', count: 24 },
-]
+function statusColor(status: OrderStatus) {
+  if (status === 'confirmed' || status === 'approved') return 'text-emerald-400'
+  if (status === 'rejected' || status === 'expired') return 'text-red-400'
+  return 'text-amber-400'
+}
 
 export default function CompsPage() {
-  const [filter, setFilter] = useState<FilterType>('Month')
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState<OrderStatus | 'all'>('all')
+
+  const filtered = useMemo(() => {
+    let list = [...DEMO_ORDERS].sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+    if (statusFilter !== 'all') list = list.filter((o) => o.status === statusFilter)
+    if (search.trim()) {
+      const q = search.toLowerCase()
+      list = list.filter((o) => {
+        const creator = DEMO_CREATORS.find((c) => c.id === o.creator_id)
+        return creator?.name.toLowerCase().includes(q) || o.redemption_code.includes(q) ||
+          o.items.some((i) => i.menu_item_name.toLowerCase().includes(q))
+      })
+    }
+    return list
+  }, [search, statusFilter])
+
+  // Summary
+  const summary = {
+    confirmed: DEMO_ORDERS.filter((o) => ['confirmed', 'approved', 'proof_submitted'].includes(o.status)).length,
+    pending: DEMO_ORDERS.filter((o) => o.status === 'proof_submitted').length,
+    rejected: DEMO_ORDERS.filter((o) => o.status === 'rejected').length,
+  }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Comps</h1>
-          <p className="text-white/70">All comps and redemption details</p>
-        </div>
-        <FilterSelector value={filter} onChange={setFilter} />
+    <div className="px-4 pt-6 pb-6">
+      <DarkHeader title="Comps" subtitle={`${filtered.length} records`} />
+
+      {/* Summary */}
+      <div className="grid grid-cols-3 gap-3 mb-5">
+        {[
+          { label: 'Confirmed', value: summary.confirmed, color: 'text-emerald-400' },
+          { label: 'Pending', value: summary.pending, color: 'text-amber-400' },
+          { label: 'Rejected', value: summary.rejected, color: 'text-red-400' },
+        ].map(({ label, value, color }) => (
+          <div key={label} className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4 text-center">
+            <p className={cn('text-2xl font-bold', color)}>{value}</p>
+            <p className="text-xs text-white/40 mt-0.5">{label}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Comps List */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 overflow-hidden">
-            <div className="p-4 border-b border-white/5 grid grid-cols-12 gap-4 font-semibold text-sm text-white/70">
-              <div className="col-span-3">Creator</div>
-              <div className="col-span-3">Items</div>
-              <div className="col-span-2">Date</div>
-              <div className="col-span-2">Value</div>
-              <div className="col-span-2">Status</div>
-            </div>
+      {/* Search */}
+      <div className="relative mb-3">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
+        <input
+          placeholder="Search creator, item, or code..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full bg-white/[0.05] border border-white/[0.08] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20"
+        />
+      </div>
 
-            <div className="divide-y divide-white/5">
-              {mockComps.map((comp) => (
-                <div
-                  key={comp.id}
-                  className="p-4 hover:bg-white/5 transition grid grid-cols-12 gap-4 items-center"
-                >
-                  <div className="col-span-3">
-                    <div className="font-semibold">{comp.creator}</div>
-                    <div className="text-sm text-white/50 flex gap-2 mt-1">
-                      {comp.instagram && (
-                        <a
-                          href={`https://${comp.instagram}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-orange-500 hover:text-orange-400"
-                        >
-                          <Instagram className="w-4 h-4" />
-                        </a>
+      {/* Status Pills */}
+      <div className="flex gap-2 overflow-x-auto pb-1 mb-5">
+        {STATUS_FILTERS.map((f) => (
+          <button
+            key={f.value}
+            onClick={() => setStatusFilter(f.value)}
+            className={cn(
+              'px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap border',
+              statusFilter === f.value
+                ? 'bg-white/10 border-white/20 text-white'
+                : 'border-white/[0.08] text-white/40 hover:text-white/60'
+            )}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      {/* List */}
+      <div className="flex flex-col gap-3">
+        {filtered.map((order) => {
+          const creator = DEMO_CREATORS.find((c) => c.id === order.creator_id)
+          return (
+            <div key={order.id} className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4">
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="flex items-center gap-2">
+                  {statusIcon(order.status)}
+                  <div>
+                    <p className="text-sm font-semibold text-white">{creator?.name ?? 'Unknown'}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      {creator?.ig_handle && (
+                        <span className="text-xs text-white/40 flex items-center gap-1">
+                          <Instagram className="h-3 w-3" />{creator.ig_handle}
+                        </span>
                       )}
-                      {comp.tiktok && (
-                        <a
-                          href={`https://${comp.tiktok}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500 hover:text-blue-400"
-                        >
-                          <Music2 className="w-4 h-4" />
-                        </a>
+                      {creator?.tiktok_handle && (
+                        <span className="text-xs text-white/40 flex items-center gap-1">
+                          <Music2 className="h-3 w-3" />{creator.tiktok_handle}
+                        </span>
                       )}
                     </div>
-                  </div>
-                  <div className="col-span-3">
-                    <div className="text-sm">
-                      {comp.items.map((item, i) => (
-                        <div key={i} className="text-white/70">{item}</div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="col-span-2 text-sm text-white/70">{comp.date}</div>
-                  <div className="col-span-2 font-semibold">${comp.value}</div>
-                  <div className="col-span-2">
-                    {comp.status === 'completed' && (
-                      <div className="flex items-center gap-2 text-green-500">
-                        <CheckCircle className="w-4 h-4" />
-                        <span className="text-sm">Completed</span>
-                      </div>
-                    )}
-                    {comp.status === 'pending' && (
-                      <div className="flex items-center gap-2 text-yellow-500">
-                        <Clock className="w-4 h-4" />
-                        <span className="text-sm">Pending</span>
-                      </div>
-                    )}
-                    {comp.status === 'expired' && (
-                      <div className="flex items-center gap-2 text-red-500">
-                        <XCircle className="w-4 h-4" />
-                        <span className="text-sm">Expired</span>
-                      </div>
-                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Top 5 Items */}
-        <div className="space-y-4">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-            <h3 className="text-lg font-semibold mb-4">Top 5 Comped Items</h3>
-            <div className="space-y-4">
-              {topItems.map((item, index) => (
-                <div key={item.name}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center font-semibold text-sm">
-                        {index + 1}
-                      </div>
-                      <div className="font-medium">{item.name}</div>
-                    </div>
-                    <div className="font-semibold">{item.count}</div>
-                  </div>
-                  <div className="w-full bg-white/10 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-orange-500 to-blue-600 h-2 rounded-full"
-                      style={{ width: `${(item.count / 45) * 100}%` }}
-                    />
-                  </div>
+                <div className="text-right shrink-0">
+                  <p className={cn('text-xs font-semibold capitalize', statusColor(order.status))}>
+                    {order.status.replace('_', ' ')}
+                  </p>
+                  <p className="text-xs text-white/30 mt-0.5">{relativeTime(order.created_at)}</p>
                 </div>
-              ))}
+              </div>
+              <p className="text-xs text-white/50">
+                {order.items.map((i) => `${i.menu_item_name}${i.qty > 1 ? ` ×${i.qty}` : ''}`).join(', ')}
+              </p>
+              <p className="text-xs text-white/30 mt-1 font-mono">#{order.redemption_code}</p>
             </div>
+          )
+        })}
+        {filtered.length === 0 && (
+          <div className="text-center py-16 text-white/30">
+            <p className="text-sm">No comps found</p>
           </div>
-
-          {/* Summary Stats */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-            <h3 className="text-lg font-semibold mb-4">Summary</h3>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-white/70">Total Comps</span>
-                <span className="font-semibold">156</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/70">Completed</span>
-                <span className="font-semibold text-green-500">142</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/70">Pending</span>
-                <span className="font-semibold text-yellow-500">9</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/70">Expired</span>
-                <span className="font-semibold text-red-500">5</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )

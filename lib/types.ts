@@ -221,3 +221,28 @@ export interface Notification {
   message?: string
   duration?: number
 }
+
+// ── Restaurant User ───────────────────────────────────────────
+export type RestaurantUserRole = 'staff' | 'manager' | 'admin'
+
+export interface RestaurantUser {
+  id: string
+  auth_user_id: string | null
+  restaurant_id: string
+  role: RestaurantUserRole
+  name: string
+  email: string | null
+  pin: string | null
+  created_at: string
+}
+
+// ── Extended Restaurant (new columns) ─────────────────────────
+export interface RestaurantProfile extends Restaurant {
+  logo_url: string | null
+  description: string | null
+  phone: string | null
+  website: string | null
+  ig_handle: string | null
+  tiktok_handle: string | null
+  monthly_budget: number | null
+}

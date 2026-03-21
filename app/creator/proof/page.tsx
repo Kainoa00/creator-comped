@@ -159,7 +159,7 @@ export default function ProofPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col max-w-sm mx-auto">
+    <div className="min-h-screen bg-white flex flex-col max-w-sm mx-auto md:max-w-2xl">
       {/* Locked header */}
       <header className="flex items-center justify-between px-4 pt-5 pb-3 border-b border-slate-100">
         <CCLogoWithMark size="sm" />

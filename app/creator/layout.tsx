@@ -25,13 +25,11 @@ const tabs = [
 export default function CreatorLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
-  const [authChecked, setAuthChecked] = useState(isDemoMode) // demo mode skips check
+  const [authChecked, setAuthChecked] = useState(isDemoMode)
   const [offline, setOffline] = useState(false)
 
-  // On the proof page, hide tab bar — creator is locked in
   const isProofPage = pathname === '/creator/proof'
 
-  // Auth guard — in live mode only
   useEffect(() => {
     if (isDemoMode) return
     supabase?.auth.getSession().then(({ data }) => {
@@ -43,7 +41,6 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
     })
   }, [router])
 
-  // Offline detection
   useEffect(() => {
     setOffline(!navigator.onLine)
     const onOnline = () => setOffline(false)
@@ -65,22 +62,61 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
   }
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-white relative flex">
       {offline && (
         <div className="fixed top-0 left-0 right-0 z-[100] bg-yellow-500 text-black text-center text-xs font-semibold py-2 px-4">
           No internet connection
         </div>
       )}
 
-      {/* Main content area */}
-      <main className={cn('min-h-screen', !isProofPage && 'pb-16')}>
-        {children}
-      </main>
+      {/* Desktop sidebar — hidden on mobile */}
+      {!isProofPage && (
+        <aside className="hidden md:flex flex-col w-56 shrink-0 border-r border-slate-100 bg-white sticky top-0 h-screen">
+          {/* Brand */}
+          <div className="px-5 py-6 border-b border-slate-100">
+            <span className="text-sm font-bold tracking-tight text-slate-900">
+              Creator<span className="text-cc-accent">Comped</span>
+            </span>
+          </div>
 
-      {/* Bottom Tab Bar — premium iOS style */}
+          {/* Nav links */}
+          <nav className="flex-1 px-3 py-4 space-y-1" aria-label="Creator navigation">
+            {tabs.map((tab) => {
+              const isActive = tab.matchPaths.some((p) => pathname.startsWith(p))
+              const Icon = tab.icon
+              return (
+                <Link
+                  key={tab.href}
+                  href={tab.href}
+                  className={cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                    isActive
+                      ? 'bg-cc-accent-subtle text-cc-accent'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                  )}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <Icon
+                    className="h-4 w-4 shrink-0"
+                    strokeWidth={isActive ? 2.5 : 1.75}
+                  />
+                  {tab.label}
+                </Link>
+              )
+            })}
+          </nav>
+        </aside>
+      )}
+
+      {/* Main content */}
+      <div className={cn('flex-1 flex flex-col min-w-0', !isProofPage && 'md:pb-0 pb-16')}>
+        {children}
+      </div>
+
+      {/* Mobile bottom tab bar — hidden on desktop */}
       {!isProofPage && (
         <nav
-          className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-100/80"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-100/80"
           style={{ height: '64px' }}
           aria-label="Creator navigation"
         >
@@ -99,7 +135,6 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
                   )}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  {/* Icon container — filled bg when active */}
                   <div
                     className={cn(
                       'w-10 h-7 rounded-2xl flex items-center justify-center transition-all duration-200',
@@ -114,8 +149,6 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
                       strokeWidth={isActive ? 2.5 : 1.75}
                     />
                   </div>
-
-                  {/* Label */}
                   <span
                     className={cn(
                       'text-[10px] font-semibold tracking-wide transition-colors',

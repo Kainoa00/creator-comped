@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import {
   LayoutDashboard,
   Receipt,
@@ -54,14 +55,12 @@ export default function RestaurantAdminLayout({ children }: { children: React.Re
 
   const isLoginPage = pathname === '/restaurant-admin/login'
 
-  // Auth guard — redirect to login if no session and not already there
   useEffect(() => {
     if (!loading && !user && !isLoginPage) {
       router.replace('/restaurant-admin/login')
     }
   }, [loading, user, isLoginPage, router])
 
-  // Offline detection
   useEffect(() => {
     setOffline(!navigator.onLine)
     const onOnline = () => setOffline(false)
@@ -74,7 +73,6 @@ export default function RestaurantAdminLayout({ children }: { children: React.Re
     }
   }, [])
 
-  // Show spinner while checking auth (skip on login page to avoid flash)
   if (loading && !isLoginPage) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
@@ -84,18 +82,74 @@ export default function RestaurantAdminLayout({ children }: { children: React.Re
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex">
       {offline && (
         <div className="fixed top-0 left-0 right-0 z-[100] bg-yellow-500 text-black text-center text-xs font-semibold py-2 px-4">
           No internet connection
         </div>
       )}
 
-      <main className={cn('min-h-screen max-w-sm mx-auto', !isLoginPage && 'pb-20')}>
-        {children}
-      </main>
+      {/* Desktop sidebar — hidden on mobile, hidden on login page */}
+      {!isLoginPage && (
+        <aside className="hidden md:flex flex-col w-56 shrink-0 border-r border-white/[0.06] bg-[#0d0d0d] sticky top-0 h-screen">
+          {/* Brand */}
+          <div className="px-5 py-6 border-b border-white/[0.06]">
+            <span className="text-sm font-bold tracking-tight text-white">
+              Creator<span className="bg-gradient-to-r from-orange-400 to-rose-400 bg-clip-text text-transparent">Comped</span>
+            </span>
+            <p className="text-[10px] text-white/40 mt-0.5 font-medium tracking-widest uppercase">Restaurant</p>
+          </div>
 
-      {!isLoginPage && <DarkBottomTabBar tabs={tabs} />}
+          {/* Nav links */}
+          <nav className="flex-1 px-3 py-4 space-y-1" aria-label="Restaurant navigation">
+            {tabs.map((tab) => {
+              const isActive = tab.matchPaths.some((p) =>
+                p === '/restaurant-admin' ? pathname === p : pathname.startsWith(p)
+              )
+              const Icon = tab.icon
+              return (
+                <Link
+                  key={tab.href}
+                  href={tab.href}
+                  className={cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                    isActive
+                      ? 'bg-white/10 text-white'
+                      : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  )}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {isActive && (
+                    <span className="absolute left-0 w-0.5 h-5 rounded-r-full bg-gradient-to-b from-orange-500 to-rose-500" />
+                  )}
+                  <Icon
+                    className="h-4 w-4 shrink-0"
+                    strokeWidth={isActive ? 2.5 : 1.75}
+                  />
+                  {tab.label}
+                </Link>
+              )
+            })}
+          </nav>
+        </aside>
+      )}
+
+      {/* Main content */}
+      <div
+        className={cn(
+          'flex-1 flex flex-col min-w-0',
+          !isLoginPage && 'md:pb-0 pb-20'
+        )}
+      >
+        {children}
+      </div>
+
+      {/* Mobile bottom tab bar — hidden on desktop */}
+      {!isLoginPage && (
+        <div className="md:hidden">
+          <DarkBottomTabBar tabs={tabs} />
+        </div>
+      )}
     </div>
   )
 }

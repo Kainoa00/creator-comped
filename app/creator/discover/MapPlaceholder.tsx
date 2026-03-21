@@ -26,7 +26,7 @@ export function MapPlaceholder({ restaurants }: MapPlaceholderProps) {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white max-w-sm mx-auto">
+    <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="px-5 pt-6 pb-4">
         <h1 className="text-2xl font-bold text-slate-900">Discover</h1>

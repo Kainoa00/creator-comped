@@ -158,7 +158,7 @@ export default function ProfilePage() {
       : null
 
   return (
-    <div className="min-h-screen bg-white max-w-sm mx-auto">
+    <div className="min-h-screen bg-white max-w-sm mx-auto md:max-w-3xl">
       {/* Sticky header */}
       <header className="sticky top-0 z-20 bg-white border-b border-slate-200">
         <div className="flex items-center justify-between h-14 px-4">

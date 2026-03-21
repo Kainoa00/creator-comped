@@ -81,7 +81,7 @@ export default function RedeemPage() {
       : 'text-emerald-600'
 
   return (
-    <div className="min-h-screen bg-white flex flex-col max-w-sm mx-auto">
+    <div className="min-h-screen bg-white flex flex-col max-w-sm mx-auto md:max-w-2xl">
       {/* Header */}
       <div className="border-b border-slate-200 pt-safe">
         <header className="flex items-center justify-between px-5 pt-5 pb-3">

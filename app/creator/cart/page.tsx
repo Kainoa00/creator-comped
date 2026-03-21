@@ -243,7 +243,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col max-w-sm mx-auto">
+    <div className="min-h-screen bg-slate-50 flex flex-col max-w-sm mx-auto md:max-w-3xl">
       {/* Header */}
       <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-100">
         <div className="flex items-center gap-3 h-14 px-4">

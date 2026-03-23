@@ -230,7 +230,7 @@ export default function StrikesPage() {
       </div>
 
       {/* Section 1: Active Issues */}
-      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl">
         <div className="flex items-center gap-2 px-5 py-4 border-b border-white/[0.06]">
           <Zap className="h-4 w-4 text-red-500" />
           <h2 className="text-sm font-semibold text-white">Active Issues</h2>
@@ -368,7 +368,7 @@ export default function StrikesPage() {
       </div>
 
       {/* Section 2: Strike History Log */}
-      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl">
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-white/40" />
@@ -385,7 +385,7 @@ export default function StrikesPage() {
                 placeholder="Filter by creator..."
                 value={historySearch}
                 onChange={(e) => setHistorySearch(e.target.value)}
-                className="bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent w-48"
+                className="bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent w-48"
               />
             </div>
             <Button
@@ -470,7 +470,7 @@ export default function StrikesPage() {
             <select
               value={issueCreatorId}
               onChange={(e) => setIssueCreatorId(e.target.value)}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-hive-accent"
             >
               <option value="">Select creator...</option>
               {[...DEMO_CREATORS, ...DEMO_ACTIVE_ISSUES.filter(c => !DEMO_CREATORS.find(dc => dc.id === c.id))].map((c) => (
@@ -486,7 +486,7 @@ export default function StrikesPage() {
             <select
               value={issueReason}
               onChange={(e) => setIssueReason(e.target.value as StrikeReason)}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-hive-accent"
             >
               {STRIKE_REASONS.map((r) => (
                 <option key={r.value} value={r.value}>{r.label}</option>
@@ -503,7 +503,7 @@ export default function StrikesPage() {
               onChange={(e) => setIssueNotes(e.target.value)}
               placeholder="Document the violation..."
               rows={3}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-hive-accent"
             />
           </div>
 
@@ -543,7 +543,7 @@ export default function StrikesPage() {
             type="date"
             value={banUntil}
             onChange={(e) => setBanUntil(e.target.value)}
-            className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-hive-accent"
           />
         </div>
         <ModalFooter>

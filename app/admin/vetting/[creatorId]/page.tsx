@@ -202,7 +202,7 @@ export default function CreatorReviewPage() {
         {/* Left Column: Creator Info */}
         <div className="col-span-2 space-y-4">
           {/* Profile card */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-6">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-6">
             <div className="flex flex-col items-center text-center mb-6">
               <Avatar src={null} name={app.name} size="xl" />
               <h2 className="mt-4 text-2xl font-bold text-white">{app.name}</h2>
@@ -233,7 +233,7 @@ export default function CreatorReviewPage() {
                     href={`https://instagram.com/${app.ig_handle.replace('@', '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-cc-accent hover:underline flex items-center gap-1"
+                    className="text-sm text-hive-accent hover:underline flex items-center gap-1"
                   >
                     {app.ig_handle} <ExternalLink className="h-3 w-3" />
                   </a>
@@ -246,7 +246,7 @@ export default function CreatorReviewPage() {
                     href={`https://tiktok.com/${app.tiktok_handle}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-cc-accent hover:underline flex items-center gap-1"
+                    className="text-sm text-hive-accent hover:underline flex items-center gap-1"
                   >
                     {app.tiktok_handle} <ExternalLink className="h-3 w-3" />
                   </a>
@@ -271,21 +271,21 @@ export default function CreatorReviewPage() {
 
           {/* Why join */}
           {app.why_join && (
-            <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+            <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-2">Why they want to join</h3>
               <p className="text-sm text-white/50 leading-relaxed">{app.why_join}</p>
             </div>
           )}
 
           {/* Admin notes */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-2">Internal Notes</h3>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Add internal notes (not visible to applicant)..."
               rows={4}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-hive-accent"
             />
             {notes && (
               <Button variant="secondary" size="sm" className="mt-2">
@@ -298,9 +298,9 @@ export default function CreatorReviewPage() {
         {/* Right Column: Review Actions */}
         <div className="col-span-3 space-y-4">
           {/* DM Verification Section */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-6">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Shield className="h-5 w-5 text-cc-accent" />
+              <Shield className="h-5 w-5 text-hive-accent" />
               <h2 className="text-base font-semibold text-white">DM Verification</h2>
               <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md border border-white/[0.06] text-white/60">
                 <span className={`h-1.5 w-1.5 rounded-full ${
@@ -349,7 +349,7 @@ export default function CreatorReviewPage() {
                         dmStep > s.step
                           ? 'bg-emerald-500 border-emerald-500 text-white'
                           : dmStep === s.step
-                          ? 'border-cc-accent text-cc-accent'
+                          ? 'border-hive-accent text-hive-accent'
                           : 'border-white/[0.06] text-white/30'
                       }`}
                     >
@@ -386,7 +386,7 @@ export default function CreatorReviewPage() {
           </div>
 
           {/* Vetting Decision */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-6">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-6">
             <h2 className="text-base font-semibold text-white mb-4">Vetting Decision</h2>
 
             {appStatus !== 'pending' ? (
@@ -501,7 +501,7 @@ export default function CreatorReviewPage() {
           onChange={(e) => setMoreInfoMsg(e.target.value)}
           placeholder="What information do you need from the applicant?"
           rows={4}
-          className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
+          className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-hive-accent"
         />
         <ModalFooter>
           <Button variant="ghost" onClick={() => setShowMoreInfoModal(false)}>Cancel</Button>

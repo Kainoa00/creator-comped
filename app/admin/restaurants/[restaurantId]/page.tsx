@@ -431,7 +431,7 @@ export default function RestaurantDetailPage() {
                   }))
                 }
                 placeholder="Unlimited"
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-hive-accent"
               />
             </div>
             <div>
@@ -445,7 +445,7 @@ export default function RestaurantDetailPage() {
                 onChange={(e) =>
                   setEditSettings((s) => ({ ...s, max_items_per_order: Number(e.target.value) }))
                 }
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-hive-accent"
               />
             </div>
           </div>
@@ -461,7 +461,7 @@ export default function RestaurantDetailPage() {
               onChange={(e) =>
                 setEditSettings((s) => ({ ...s, cooldown_days: Number(e.target.value) }))
               }
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-hive-accent"
             />
           </div>
 
@@ -476,7 +476,7 @@ export default function RestaurantDetailPage() {
                 onChange={(e) =>
                   setEditSettings((s) => ({ ...s, blackout_start: e.target.value || null }))
                 }
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-hive-accent"
               />
             </div>
             <div>
@@ -489,7 +489,7 @@ export default function RestaurantDetailPage() {
                 onChange={(e) =>
                   setEditSettings((s) => ({ ...s, blackout_end: e.target.value || null }))
                 }
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cc-accent"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-hive-accent"
               />
             </div>
           </div>

@@ -204,6 +204,27 @@ body {
   100% { offset-distance: 100%; }
 }
 
+/* Aurora blobs — slow position oscillation for AuroraBackground component */
+@keyframes aurora-shift-1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(40px, -30px) scale(1.08); }
+  66%  { transform: translate(-20px, 40px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes aurora-shift-2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  40%  { transform: translate(-50px, 30px) scale(1.06); }
+  70%  { transform: translate(30px, -40px) scale(0.97); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Pause aurora animations when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob {
+    animation-play-state: paused !important;
+  }
+}
+
 /* html5-qrcode dark theme overrides for HIVE scanner */
 #qr-reader { border: none !important; background: transparent !important; }
 #qr-reader__scan_region { background: transparent !important; }
@@ -211,3 +232,32 @@ body {
 #qr-reader__dashboard_section_swaplink { color: #9ca3af !important; }
 #qr-reader__status_span { color: #9ca3af !important; font-size: 12px !important; }
 #qr-reader video { border-radius: 16px !important; }
+
+/* ── Gradient Slider (range input) ──────────────────────────── */
+.gradient-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+.gradient-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+.gradient-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}

@@ -171,7 +171,7 @@ export default function ProofReviewDetailPage() {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div className="flex items-start gap-3">
-            <div className="w-1 self-stretch rounded-full bg-cc-accent shrink-0" />
+            <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-[#FF6B35] to-[#4A90E2] shrink-0" />
             <div>
               <h1 className="text-2xl font-black text-white tracking-tight">Proof Review</h1>
               <p className="text-sm text-white/40 font-medium">#{proof.id}</p>
@@ -187,7 +187,7 @@ export default function ProofReviewDetailPage() {
         {/* Left Panel: Context */}
         <div className="col-span-3 space-y-4">
           {/* Creator card */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
             <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-4">Creator</p>
             <div className="flex items-center gap-3 mb-4">
               <Avatar src={creator?.photo_url ?? null} name={creator?.name ?? '?'} size="md" />
@@ -223,7 +223,7 @@ export default function ProofReviewDetailPage() {
           </div>
 
           {/* Order details */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5 space-y-2">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 space-y-2">
             <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">Order</p>
             <div className="flex flex-col gap-0.5">
               <span className="text-xs text-white/40">Restaurant</span>
@@ -247,7 +247,7 @@ export default function ProofReviewDetailPage() {
 
           {/* Deliverable requirements */}
           {deliverable && (
-            <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+            <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
               <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">
                 Requirements
               </p>
@@ -281,7 +281,7 @@ export default function ProofReviewDetailPage() {
           )}
 
           {/* Submission info */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5 space-y-2">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 space-y-2">
             <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">
               Submission
             </p>
@@ -307,7 +307,7 @@ export default function ProofReviewDetailPage() {
 
         {/* Center Panel: Content Preview */}
         <div className="col-span-5 space-y-4">
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
             <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-4">Content Preview</p>
 
             {/* URL Display */}
@@ -329,7 +329,8 @@ export default function ProofReviewDetailPage() {
               href={proof.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-3 bg-cc-accent text-white rounded-lg font-semibold text-sm hover:bg-cc-accent-dark transition-colors mb-4"
+              className="flex items-center justify-center gap-2 w-full py-3 text-white rounded-2xl font-semibold text-sm hover:brightness-110 transition-all mb-4"
+              style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
             >
               <ExternalLink className="h-4 w-4" />
               Open in New Tab
@@ -374,7 +375,7 @@ export default function ProofReviewDetailPage() {
                 </div>
                 <div className="mt-2 flex items-center justify-between">
                   <span className="text-xs text-white/40">
-                    Contest score: <span className="font-mono font-bold text-cc-accent">{formatNumber(snapshot.score)}</span>
+                    Contest score: <span className="font-mono font-bold text-hive-accent">{formatNumber(snapshot.score)}</span>
                   </span>
                   <span className="text-xs text-white/40">Snapshot {relativeTime(snapshot.timestamp)}</span>
                 </div>
@@ -383,14 +384,14 @@ export default function ProofReviewDetailPage() {
           </div>
 
           {/* Reviewer Notes */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
             <p className="text-sm font-semibold text-white mb-2">Reviewer Notes</p>
             <textarea
               value={reviewNotes}
               onChange={(e) => setReviewNotes(e.target.value)}
               placeholder="Internal notes about this proof..."
               rows={3}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-hive-accent"
             />
           </div>
         </div>
@@ -398,7 +399,7 @@ export default function ProofReviewDetailPage() {
         {/* Right Panel: Checklist + Actions */}
         <div className="col-span-4 space-y-4">
           {/* Quality Checklist */}
-          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
             <div className="flex items-center justify-between mb-4">
               <p className="text-sm font-bold text-white">Quality Checklist</p>
               <span className="text-xs font-bold px-2.5 py-1 rounded-md border border-white/[0.06] text-white/50">
@@ -450,7 +451,7 @@ export default function ProofReviewDetailPage() {
 
           {/* Action Buttons */}
           {reviewStatus !== 'pending' && reviewStatus !== 'needs_fix' ? (
-            <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+            <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5">
               <p className="text-sm font-bold text-white mb-3">Decision Recorded</p>
               <ProofStatusBadge status={reviewStatus} />
               {reviewNotes && (
@@ -458,7 +459,7 @@ export default function ProofReviewDetailPage() {
               )}
             </div>
           ) : (
-            <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5 space-y-3">
+            <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 space-y-3">
               <p className="text-sm font-bold text-white mb-1">Review Decision</p>
 
               <button
@@ -524,7 +525,7 @@ export default function ProofReviewDetailPage() {
             onChange={(e) => setCreatorMessage(e.target.value)}
             placeholder="Explain what the creator needs to fix (e.g., missing hashtag, private account)..."
             rows={4}
-            className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-hive-accent"
           />
           <p className="text-xs text-white/40">Creator will have 24 hours to resubmit.</p>
         </div>
@@ -570,7 +571,7 @@ export default function ProofReviewDetailPage() {
             <select
               value={strikeReason}
               onChange={(e) => setStrikeReason(e.target.value as StrikeReason)}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-hive-accent"
             >
               {STRIKE_REASONS.map((r) => (
                 <option key={r.value} value={r.value}>{r.label}</option>
@@ -587,7 +588,7 @@ export default function ProofReviewDetailPage() {
               onChange={(e) => setStrikeNotes(e.target.value)}
               placeholder="Document why this proof is being rejected..."
               rows={3}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-hive-accent"
             />
           </div>
         </div>

@@ -136,7 +136,7 @@ export default function ProofReviewQueuePage() {
       <div className="px-8 pt-6 pb-5 border-b border-white/[0.06]">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-4">
-            <div className="w-1 self-stretch rounded-full bg-cc-accent shrink-0" />
+            <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-[#FF6B35] to-[#4A90E2] shrink-0" />
             <div>
               <h1 className="text-2xl font-black text-white tracking-tight">Proof Review Queue</h1>
               <p className="text-sm font-semibold text-white/40 mt-0.5">
@@ -167,7 +167,7 @@ export default function ProofReviewQueuePage() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 statusFilter === s
-                  ? 'bg-cc-accent text-white'
+                  ? 'bg-hive-accent text-white'
                   : 'bg-white/5 border border-white/[0.06] text-white/60 hover:border-white/[0.1]'
               }`}
             >
@@ -184,7 +184,7 @@ export default function ProofReviewQueuePage() {
               onClick={() => setPlatformFilter(p)}
               className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 platformFilter === p
-                  ? 'bg-cc-accent text-white'
+                  ? 'bg-hive-accent text-white'
                   : 'bg-white/5 border border-white/[0.06] text-white/60 hover:border-white/[0.1]'
               }`}
             >
@@ -201,7 +201,7 @@ export default function ProofReviewQueuePage() {
             placeholder="Search creator or restaurant..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent transition-colors"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent transition-colors"
           />
         </div>
       </div>
@@ -228,7 +228,7 @@ export default function ProofReviewQueuePage() {
             return (
               <div
                 key={proof.id}
-                className={`bg-[#1a1a1a] border rounded-lg px-5 py-4 flex items-center gap-4 transition-colors hover:bg-white/5 cursor-pointer ${
+                className={`bg-white/[0.05] border rounded-2xl px-5 py-4 flex items-center gap-4 transition-colors hover:bg-white/[0.08] cursor-pointer ${
                   deadlinePassed
                     ? 'border-red-500/20'
                     : deadlineSoon
@@ -313,7 +313,8 @@ export default function ProofReviewQueuePage() {
                       e.stopPropagation()
                       router.push(`/admin/proof/${proof.id}`)
                     }}
-                    className="bg-cc-accent text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-cc-accent-dark transition-colors"
+                    className="text-white rounded-xl px-4 py-2 text-sm font-semibold hover:brightness-110 transition-all"
+                    style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
                   >
                     Review
                   </button>

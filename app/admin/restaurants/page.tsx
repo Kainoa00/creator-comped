@@ -120,12 +120,12 @@ export default function RestaurantsPage() {
           placeholder="Search restaurants..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
+          className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent"
         />
       </div>
 
       {/* Restaurants Table */}
-      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg overflow-hidden">
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/[0.06] bg-white/5">
@@ -271,7 +271,7 @@ export default function RestaurantsPage() {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="e.g. Brick Oven Restaurant"
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent"
             />
           </div>
 
@@ -284,7 +284,7 @@ export default function RestaurantsPage() {
               value={newAddress}
               onChange={(e) => setNewAddress(e.target.value)}
               placeholder="111 E 800 N, Provo, UT 84606"
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent"
             />
           </div>
 
@@ -299,7 +299,7 @@ export default function RestaurantsPage() {
                 value={newLat}
                 onChange={(e) => setNewLat(e.target.value)}
                 placeholder="40.2477"
-                className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
+                className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent"
               />
             </div>
             <div>
@@ -312,7 +312,7 @@ export default function RestaurantsPage() {
                 value={newLng}
                 onChange={(e) => setNewLng(e.target.value)}
                 placeholder="-111.6561"
-                className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
+                className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent"
               />
             </div>
           </div>
@@ -327,7 +327,7 @@ export default function RestaurantsPage() {
               onChange={(e) => setNewPin(e.target.value.slice(0, 6))}
               placeholder="4–6 digit PIN"
               maxLength={6}
-              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent font-mono tracking-widest"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent font-mono tracking-widest"
             />
           </div>
         </div>

@@ -164,9 +164,9 @@ export default function VettingQueuePage() {
   function SortIcon({ field }: { field: SortKey }) {
     if (sortKey !== field) return <ChevronUp className="h-3 w-3 opacity-30" />
     return sortDir === 'asc' ? (
-      <ChevronUp className="h-3 w-3 text-cc-accent" />
+      <ChevronUp className="h-3 w-3 text-hive-accent" />
     ) : (
-      <ChevronDown className="h-3 w-3 text-cc-accent" />
+      <ChevronDown className="h-3 w-3 text-hive-accent" />
     )
   }
 
@@ -178,7 +178,7 @@ export default function VettingQueuePage() {
       <div className="border-b border-white/[0.06] pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-4">
-            <div className="w-1 self-stretch rounded-full bg-cc-accent shrink-0" />
+            <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-[#FF6B35] to-[#4A90E2] shrink-0" />
             <div>
               <h1 className="text-2xl font-black text-white tracking-tight">Creator Vetting</h1>
               <p className="text-sm font-semibold text-white/40 mt-0.5">
@@ -205,7 +205,7 @@ export default function VettingQueuePage() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-all capitalize ${
                 statusFilter === s
-                  ? 'bg-cc-accent text-white'
+                  ? 'bg-hive-accent text-white'
                   : 'bg-white/5 border border-white/[0.06] text-white/60 hover:border-white/[0.1]'
               }`}
             >
@@ -222,13 +222,13 @@ export default function VettingQueuePage() {
             placeholder="Search by name, email, or handle..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-hive-accent"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg overflow-hidden min-h-[500px]">
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl overflow-hidden min-h-[500px]">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/[0.06] bg-white/5">
@@ -311,7 +311,7 @@ export default function VettingQueuePage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 text-cc-accent text-sm font-medium hover:underline"
+                          className="inline-flex items-center gap-1 text-hive-accent text-sm font-medium hover:underline"
                         >
                           {app.ig_handle}
                           <ExternalLink className="h-3 w-3" />
@@ -327,7 +327,7 @@ export default function VettingQueuePage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 text-cc-accent text-sm font-medium hover:underline"
+                          className="inline-flex items-center gap-1 text-hive-accent text-sm font-medium hover:underline"
                         >
                           {app.tiktok_handle}
                           <ExternalLink className="h-3 w-3" />
@@ -365,7 +365,8 @@ export default function VettingQueuePage() {
                           e.stopPropagation()
                           router.push(`/admin/vetting/${app.id}`)
                         }}
-                        className="bg-cc-accent text-white rounded-lg px-3 py-1.5 text-xs font-bold hover:bg-cc-accent-dark transition-colors"
+                        className="text-white rounded-xl px-3 py-1.5 text-xs font-bold hover:brightness-110 transition-all"
+                        style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
                       >
                         Review
                       </button>

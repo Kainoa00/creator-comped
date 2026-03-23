@@ -231,7 +231,7 @@ export default function LeaderboardPage() {
             onClick={() => setActiveTab(platform)}
             className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
               activeTab === platform
-                ? 'bg-cc-accent text-white'
+                ? 'bg-hive-accent text-white'
                 : 'text-white/60 hover:text-white'
             }`}
           >
@@ -241,7 +241,7 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Leaderboard Table */}
-      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg overflow-hidden min-h-[500px]">
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl overflow-hidden min-h-[500px]">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/[0.06] bg-white/5">
@@ -304,7 +304,7 @@ export default function LeaderboardPage() {
                       </div>
                     </td>
                     <td className="px-4 py-4 text-right">
-                      <span className="font-mono font-bold text-cc-accent">{formatNumber(entry.score)}</span>
+                      <span className="font-mono font-bold text-hive-accent">{formatNumber(entry.score)}</span>
                     </td>
                     <td className="px-4 py-4 text-center">
                       {entry.eligible && !entry.disqualified ? (
@@ -440,7 +440,7 @@ export default function LeaderboardPage() {
           onChange={(e) => setDqReason(e.target.value)}
           placeholder="Reason for disqualification..."
           rows={3}
-          className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
+          className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-hive-accent"
         />
         <ModalFooter>
           <Button variant="ghost" onClick={() => setShowDQModal(false)}>Cancel</Button>

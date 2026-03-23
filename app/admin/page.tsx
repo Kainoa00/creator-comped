@@ -14,6 +14,10 @@ import {
 } from '@/lib/demo-data'
 import { relativeTime, formatNumber, currentMonthKey } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
+import { TextGenerateEffect } from '@/components/effects/TextGenerateEffect'
+import { CardSpotlight } from '@/components/effects/CardSpotlight'
+import { AnimatedCounter } from '@/components/effects/AnimatedCounter'
+import { StaggeredList, StaggerItem } from '@/components/effects/StaggeredList'
 
 const STATS = [
   { label: 'Total Creators', value: 48 },
@@ -94,7 +98,9 @@ export default function AdminDashboardPage() {
       <div className="border-b border-white/[0.06] pb-5">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-black text-white tracking-tight">Dashboard</h1>
+            <h1 className="text-xl font-black text-white tracking-tight">
+              <TextGenerateEffect text="Dashboard" />
+            </h1>
             <p className="text-sm text-white/40 mt-0.5">{today}</p>
           </div>
           <span className="text-xs text-white/40 border border-white/[0.06] px-3 py-1.5 rounded-lg font-medium">
@@ -104,19 +110,23 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
+      <StaggeredList className="grid grid-cols-3 lg:grid-cols-6 gap-4">
         {STATS.map((stat) => (
-          <div key={stat.label} className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-4">
-            <div className="text-3xl font-black text-white leading-none mb-1">{stat.value}</div>
-            <div className="text-xs text-white/40 mt-1 leading-snug">{stat.label}</div>
-          </div>
+          <StaggerItem key={stat.label}>
+            <CardSpotlight className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4 h-full">
+              <div className="text-3xl font-black text-white leading-none mb-1">
+                <AnimatedCounter value={stat.value} />
+              </div>
+              <div className="text-xs text-white/40 mt-1 leading-snug">{stat.label}</div>
+            </CardSpotlight>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggeredList>
 
       {/* Middle Row */}
       <div className="grid grid-cols-12 gap-5">
         {/* Proof Review */}
-        <div className="col-span-7 bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+        <div className="col-span-7 bg-white/[0.05] border border-white/[0.08] rounded-2xl">
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-semibold text-white">Pending Proof Review</h2>
@@ -124,7 +134,7 @@ export default function AdminDashboardPage() {
                 <span className="text-xs text-white/40 font-medium">({pendingProofs.length})</span>
               )}
             </div>
-            <Link href="/admin/proof" className="flex items-center gap-1 text-cc-accent text-xs font-medium hover:underline">
+            <Link href="/admin/proof" className="flex items-center gap-1 text-hive-accent text-xs font-medium hover:underline">
               View All <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -135,102 +145,110 @@ export default function AdminDashboardPage() {
               <p className="text-xs text-white/40 mt-0.5">No proofs pending review.</p>
             </div>
           ) : (
-            <ul>
+            <StaggeredList staggerDelay={0.04}>
               {pendingProofs.map((proof) => {
                 const order = DEMO_ORDERS.find((o) => o.id === proof.order_id)
                 const creator = DEMO_CREATORS.find((c) => c.id === proof.creator_id)
                 return (
-                  <li key={proof.id} className="flex items-center gap-3 px-5 py-3 border-b border-white/[0.06] last:border-0 hover:bg-white/5 transition-colors">
-                    <Avatar
-                      src={creator?.photo_url ?? null}
-                      name={creator?.name ?? 'Unknown'}
-                      size="sm"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white truncate">
-                        {creator?.name ?? 'Unknown Creator'}
-                      </p>
-                      <p className="text-xs text-white/40 truncate">
-                        {order?.restaurant_name ?? '—'} · {relativeTime(proof.submitted_at)}
-                      </p>
+                  <StaggerItem key={proof.id}>
+                    <div className="flex items-center gap-3 px-5 py-3 border-b border-white/[0.06] last:border-0 hover:bg-white/5 transition-colors">
+                      <Avatar
+                        src={creator?.photo_url ?? null}
+                        name={creator?.name ?? 'Unknown'}
+                        size="sm"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-white truncate">
+                          {creator?.name ?? 'Unknown Creator'}
+                        </p>
+                        <p className="text-xs text-white/40 truncate">
+                          {order?.restaurant_name ?? '—'} · {relativeTime(proof.submitted_at)}
+                        </p>
+                      </div>
+                      <span className="text-xs font-medium text-white/40 border border-white/[0.06] px-2 py-0.5 rounded">
+                        {proof.platform === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
+                      </span>
+                      <button
+                        onClick={() => router.push(`/admin/proof/${proof.id}`)}
+                        className="text-white rounded-xl px-3 py-1.5 text-xs font-semibold hover:brightness-110 transition-all shrink-0"
+                        style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
+                      >
+                        Review
+                      </button>
                     </div>
-                    <span className="text-xs font-medium text-white/40 border border-white/[0.06] px-2 py-0.5 rounded">
-                      {proof.platform === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
-                    </span>
-                    <button
-                      onClick={() => router.push(`/admin/proof/${proof.id}`)}
-                      className="bg-cc-accent text-white rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-cc-accent-dark transition-colors shrink-0"
-                    >
-                      Review
-                    </button>
-                  </li>
+                  </StaggerItem>
                 )
               })}
-            </ul>
+            </StaggeredList>
           )}
         </div>
 
         {/* Vetting Queue */}
-        <div className="col-span-5 bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+        <div className="col-span-5 bg-white/[0.05] border border-white/[0.08] rounded-2xl">
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-semibold text-white">Pending Vetting</h2>
               <span className="text-xs text-white/40 font-medium">({PENDING_CREATORS.length})</span>
             </div>
-            <Link href="/admin/vetting" className="flex items-center gap-1 text-cc-accent text-xs font-medium hover:underline">
+            <Link href="/admin/vetting" className="flex items-center gap-1 text-hive-accent text-xs font-medium hover:underline">
               All <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
 
-          <ul>
+          <StaggeredList staggerDelay={0.06}>
             {PENDING_CREATORS.map((c) => (
-              <li key={c.id} className="flex items-center gap-3 px-5 py-3 border-b border-white/[0.06] last:border-0 hover:bg-white/5 transition-colors">
-                <Avatar src={null} name={c.name} size="sm" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">{c.name}</p>
-                  <p className="text-xs text-white/40 truncate">
-                    {c.ig_handle} · {relativeTime(c.submitted_at)}
-                  </p>
+              <StaggerItem key={c.id}>
+                <div className="flex items-center gap-3 px-5 py-3 border-b border-white/[0.06] last:border-0 hover:bg-white/5 transition-colors">
+                  <Avatar src={null} name={c.name} size="sm" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white truncate">{c.name}</p>
+                    <p className="text-xs text-white/40 truncate">
+                      {c.ig_handle} · {relativeTime(c.submitted_at)}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => router.push(`/admin/vetting/${c.id}`)}
+                    className="text-white rounded-xl px-3 py-1.5 text-xs font-semibold hover:brightness-110 transition-all shrink-0"
+                    style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
+                  >
+                    Review
+                  </button>
                 </div>
-                <button
-                  onClick={() => router.push(`/admin/vetting/${c.id}`)}
-                  className="bg-cc-accent text-white rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-cc-accent-dark transition-colors shrink-0"
-                >
-                  Review
-                </button>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggeredList>
         </div>
       </div>
 
       {/* Bottom Row */}
       <div className="grid grid-cols-12 gap-5">
         {/* Activity Log */}
-        <div className="col-span-7 bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+        <div className="col-span-7 bg-white/[0.05] border border-white/[0.08] rounded-2xl">
           <div className="px-5 py-3.5 border-b border-white/[0.06]">
             <h2 className="text-sm font-semibold text-white">Recent Activity</h2>
           </div>
-          <ul>
+          <StaggeredList staggerDelay={0.04}>
             {ACTIVITY_LOG.map((event) => (
-              <li key={event.id} className="flex items-start gap-3 px-5 py-3 border-b border-white/[0.06] last:border-0">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-white/60 leading-snug">{event.text}</p>
+              <StaggerItem key={event.id}>
+                <div className="flex items-start gap-3 px-5 py-3 border-b border-white/[0.06] last:border-0">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-white/60 leading-snug">{event.text}</p>
+                  </div>
+                  <span className="shrink-0 text-xs text-white/40 whitespace-nowrap mt-0.5">{event.time}</span>
                 </div>
-                <span className="shrink-0 text-xs text-white/40 whitespace-nowrap mt-0.5">{event.time}</span>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggeredList>
         </div>
 
         {/* Leaderboard */}
-        <div className="col-span-5 bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+        <div className="col-span-5 bg-white/[0.05] border border-white/[0.08] rounded-2xl">
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
             <div>
               <h2 className="text-sm font-semibold text-white">February Leaderboard</h2>
               <p className="text-xs text-white/40 mt-0.5">Feb 2026 · 2 days remaining</p>
             </div>
-            <Link href="/admin/leaderboard" className="flex items-center gap-1 text-cc-accent text-xs font-medium hover:underline">
+            <Link href="/admin/leaderboard" className="flex items-center gap-1 text-hive-accent text-xs font-medium hover:underline">
               Manage <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -247,12 +265,15 @@ export default function AdminDashboardPage() {
                       <div className="flex items-center gap-2">
                         <span className="text-sm shrink-0">{TROPHY_ICONS[i]}</span>
                         <span className="flex-1 text-sm text-white/70 truncate">{entry.creator_name}</span>
-                        <span className="text-xs font-semibold text-cc-accent">{formatNumber(entry.score)}</span>
+                        <span className="text-xs font-semibold text-hive-accent">{formatNumber(entry.score)}</span>
                       </div>
                       <div className="ml-6 h-1 bg-white/10 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-cc-accent rounded-full"
-                          style={{ width: `${Math.round((entry.score / MAX_SCORE) * 100)}%` }}
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${Math.round((entry.score / MAX_SCORE) * 100)}%`,
+                            background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)',
+                          }}
                         />
                       </div>
                     </div>

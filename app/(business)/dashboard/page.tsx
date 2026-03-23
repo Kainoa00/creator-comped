@@ -1,12 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { DarkStatCard } from '@/components/restaurant-ui/DarkStatCard'
 import { DEMO_RESTAURANTS, DEMO_ORDERS, DEMO_ANALYTICS_SNAPSHOTS } from '@/lib/demo-data'
-import { formatNumber } from '@/lib/utils'
+import { formatNumber, cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
-import { cn } from '@/lib/utils'
+import { TimeRangeTrigger, timeRangeLabel } from '@/components/restaurant-ui/TimeRangeTrigger'
+import { TimeRangeModal } from '@/components/restaurant-ui/TimeRangeModal'
+import { GradientSlider } from '@/components/restaurant-ui/GradientSlider'
+import type { TimeRange } from '@/lib/types'
+import { TextGenerateEffect } from '@/components/effects/TextGenerateEffect'
+import { StaggeredList, StaggerItem } from '@/components/effects/StaggeredList'
+import { AuroraBackground } from '@/components/effects/AuroraBackground'
+import { GlowCard } from '@/components/effects/GlowCard'
 import {
   Receipt,
   DollarSign,
@@ -23,6 +29,7 @@ const restaurant = DEMO_RESTAURANTS[0]
 const confirmedOrders = DEMO_ORDERS.filter((o) =>
   ['confirmed', 'proof_submitted', 'approved'].includes(o.status)
 )
+const pendingProofReviews = DEMO_ORDERS.filter((o) => o.status === 'proof_submitted').length
 const totalViews = DEMO_ANALYTICS_SNAPSHOTS.reduce((sum, s) => sum + s.views, 0)
 const monthlyBudget = 5000
 const spent = 4892
@@ -46,6 +53,9 @@ function getGreeting() {
 }
 
 export default function BusinessDashboardPage() {
+  const now = new Date()
+  const [timeRange, setTimeRange] = useState<TimeRange>({ mode: 'month', month: now.getMonth(), year: now.getFullYear() })
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [monthlyBudgetInput, setMonthlyBudgetInput] = useState(5000)
   const [cooldownDays, setCooldownDays] = useState(14)
   const [totalItemLimit, setTotalItemLimit] = useState(2)
@@ -53,19 +63,33 @@ export default function BusinessDashboardPage() {
 
   return (
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">
-      {/* Header */}
-      <div className="mb-6">
-        <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
-        <h1 className="text-xl font-bold text-white">{getGreeting()}!</h1>
-        <p className="text-sm text-white/50 mt-0.5">{restaurant.name}</p>
+      {/* Header with AuroraBackground */}
+      <div className="relative overflow-hidden rounded-2xl mb-6 -mx-2 px-2 pt-4 pb-2">
+        <AuroraBackground />
+        <div className="relative flex items-start justify-between">
+          <div>
+            <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
+            <h1 className="text-xl font-bold text-white">
+              <TextGenerateEffect text={`${getGreeting()}!`} />
+            </h1>
+            <p className="text-sm text-white/50 mt-0.5">{restaurant.name}</p>
+          </div>
+          <TimeRangeTrigger range={timeRange} onClick={() => setIsModalOpen(true)} />
+        </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <DarkStatCard icon={Receipt} label="Comps" value={confirmedOrders.length} sub="this month" accent />
-        <DarkStatCard icon={DollarSign} label="Spent" value={`$${spent.toLocaleString()}`} sub="of $5k" />
-        <DarkStatCard icon={Eye} label="Views" value={formatNumber(totalViews)} sub="est. reach" />
-      </div>
+      <StaggeredList className="grid grid-cols-3 gap-3 mb-6">
+        <StaggerItem>
+          <DarkStatCard icon={Receipt} label="Comps" value={confirmedOrders.length} sub={timeRangeLabel(timeRange)} accent badge={pendingProofReviews > 0 ? pendingProofReviews : undefined} />
+        </StaggerItem>
+        <StaggerItem>
+          <DarkStatCard icon={DollarSign} label="Spent" value={`$${spent.toLocaleString()}`} sub="of $5k" badge={budgetPct >= 90 ? '!' : undefined} />
+        </StaggerItem>
+        <StaggerItem>
+          <DarkStatCard icon={Eye} label="Views" value={formatNumber(totalViews)} sub="est. reach" />
+        </StaggerItem>
+      </StaggeredList>
 
       {/* Budget Progress */}
       <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-5 mb-6">
@@ -88,24 +112,24 @@ export default function BusinessDashboardPage() {
       </div>
 
       {/* Nav Tiles Grid */}
-      <div className="grid grid-cols-2 gap-3 mb-8">
+      <StaggeredList className="grid grid-cols-2 gap-3 mb-8">
         {QUICK_TILES.map((tile) => {
           const Icon = tile.icon
           return (
-            <Link
-              key={tile.href}
-              href={tile.href}
-              className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4 hover:bg-white/[0.08] transition-colors"
-            >
-              <div className="w-10 h-10 rounded-xl bg-white/[0.08] flex items-center justify-center mb-3">
-                <Icon className="h-5 w-5 text-white/60" />
-              </div>
-              <p className="text-sm font-semibold text-white">{tile.label}</p>
-              <p className="text-xs text-white/40 mt-0.5">{tile.description}</p>
-            </Link>
+            <StaggerItem key={tile.href}>
+              <GlowCard href={tile.href}>
+                <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4 hover:bg-white/[0.08] transition-colors">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] flex items-center justify-center mb-3">
+                    <Icon className="h-5 w-5 text-white/60" />
+                  </div>
+                  <p className="text-sm font-semibold text-white">{tile.label}</p>
+                  <p className="text-xs text-white/40 mt-0.5">{tile.description}</p>
+                </div>
+              </GlowCard>
+            </StaggerItem>
           )
         })}
-      </div>
+      </StaggeredList>
 
       {/* Settings Section */}
       <div className="mb-6">
@@ -140,14 +164,7 @@ export default function BusinessDashboardPage() {
               </div>
               <span className="text-sm font-bold text-white">{cooldownDays}d</span>
             </div>
-            <input
-              type="range"
-              min={1}
-              max={90}
-              value={cooldownDays}
-              onChange={(e) => setCooldownDays(parseInt(e.target.value))}
-              className="w-full accent-orange-500"
-            />
+            <GradientSlider min={1} max={90} value={cooldownDays} onChange={setCooldownDays} />
             <div className="flex justify-between text-xs text-white/30 mt-1">
               <span>1 day</span>
               <span>90 days</span>
@@ -163,14 +180,7 @@ export default function BusinessDashboardPage() {
               </div>
               <span className="text-sm font-bold text-white">{totalItemLimit} items</span>
             </div>
-            <input
-              type="range"
-              min={1}
-              max={10}
-              value={totalItemLimit}
-              onChange={(e) => setTotalItemLimit(parseInt(e.target.value))}
-              className="w-full accent-orange-500"
-            />
+            <GradientSlider min={1} max={10} value={totalItemLimit} onChange={setTotalItemLimit} />
             <div className="flex justify-between text-xs text-white/30 mt-1">
               <span>1 item</span>
               <span>10 items</span>
@@ -178,6 +188,13 @@ export default function BusinessDashboardPage() {
           </div>
         </div>
       </div>
+
+      <TimeRangeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onApply={setTimeRange}
+        initialRange={timeRange}
+      />
 
       {/* Save Settings */}
       <button

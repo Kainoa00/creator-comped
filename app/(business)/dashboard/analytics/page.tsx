@@ -1,8 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Instagram, Music2, Eye, Heart, MessageCircle, Info } from 'lucide-react'
+import { Instagram, Music2, Eye, Heart, MessageCircle, Info, TrendingUp } from 'lucide-react'
 import { cn, formatNumber } from '@/lib/utils'
+import { TimeRangeTrigger } from '@/components/restaurant-ui/TimeRangeTrigger'
+import { TimeRangeModal } from '@/components/restaurant-ui/TimeRangeModal'
+import type { TimeRange } from '@/lib/types'
+import { AnimatedTabs } from '@/components/effects/AnimatedTabs'
+import { AnimatedCounter } from '@/components/effects/AnimatedCounter'
+import { StaggeredList, StaggerItem } from '@/components/effects/StaggeredList'
 
 type Platform = 'instagram' | 'tiktok'
 
@@ -53,68 +59,79 @@ const totalsByPlatform = (['instagram', 'tiktok'] as Platform[]).reduce(
   {} as Record<Platform, { views: number; likes: number; comments: number; posts: number }>
 )
 
+const PLATFORM_TABS = [
+  { key: 'instagram', label: 'Instagram', icon: <Instagram className="h-4 w-4" /> },
+  { key: 'tiktok', label: 'TikTok', icon: <Music2 className="h-4 w-4" /> },
+]
+
 export default function AnalyticsPage() {
+  const now = new Date()
   const [platform, setPlatform] = useState<Platform>('instagram')
+  const [timeRange, setTimeRange] = useState<TimeRange>({ mode: 'month', month: now.getMonth(), year: now.getFullYear() })
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const totals = totalsByPlatform[platform]
+  const engagementRate = totals.views > 0
+    ? (((totals.likes + totals.comments) / totals.views) * 100).toFixed(1)
+    : '0.0'
 
   return (
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">
       {/* Header */}
-      <div className="mb-5">
-        <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
-        <h1 className="text-xl font-bold text-white">Analytics</h1>
-        <p className="text-sm text-white/40 mt-0.5">Content performance</p>
+      <div className="flex items-start justify-between mb-5">
+        <div>
+          <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
+          <h1 className="text-xl font-bold text-white">Analytics</h1>
+          <p className="text-sm text-white/40 mt-0.5">Content performance</p>
+        </div>
+        <TimeRangeTrigger range={timeRange} onClick={() => setIsModalOpen(true)} />
       </div>
 
-      {/* Platform Toggle */}
-      <div className="flex gap-2 mb-5">
-        <button
-          onClick={() => setPlatform('instagram')}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all border',
-            platform === 'instagram'
-              ? 'bg-white/10 border-white/20 text-white'
-              : 'border-white/[0.08] text-white/40 hover:text-white/60'
-          )}
-        >
-          <Instagram className="h-4 w-4" />
-          Instagram
-        </button>
-        <button
-          onClick={() => setPlatform('tiktok')}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all border',
-            platform === 'tiktok'
-              ? 'bg-white/10 border-white/20 text-white'
-              : 'border-white/[0.08] text-white/40 hover:text-white/60'
-          )}
-        >
-          <Music2 className="h-4 w-4" />
-          TikTok
-        </button>
-      </div>
+      {/* Platform Toggle — AnimatedTabs */}
+      <AnimatedTabs
+        tabs={PLATFORM_TABS}
+        activeKey={platform}
+        onTabChange={(k) => setPlatform(k as Platform)}
+        layoutId="analytics-platform-tab"
+        className="mb-5"
+      />
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 gap-3 mb-5">
+      <StaggeredList className="grid grid-cols-2 gap-3 mb-5">
         {[
-          { icon: Eye, label: 'Total Views', value: formatNumber(totals.views) },
-          { icon: Heart, label: 'Total Likes', value: formatNumber(totals.likes) },
-          { icon: MessageCircle, label: 'Comments', value: formatNumber(totals.comments) },
-          { icon: platform === 'instagram' ? Instagram : Music2, label: 'Posts', value: totals.posts.toString() },
+          { icon: Eye, label: 'Total Views', value: totals.views },
+          { icon: Heart, label: 'Total Likes', value: totals.likes },
+          { icon: MessageCircle, label: 'Comments', value: totals.comments },
+          { icon: platform === 'instagram' ? Instagram : Music2, label: 'Posts', value: totals.posts },
         ].map(({ icon: Icon, label, value }) => (
-          <div key={label} className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4">
+          <StaggerItem key={label}>
+            <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center mb-2"
+                style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #4A90E2 100%)' }}
+              >
+                <Icon className="h-4 w-4 text-white" />
+              </div>
+              <p className="text-xl font-bold text-white">
+                <AnimatedCounter value={value} />
+              </p>
+              <p className="text-xs text-white/40 mt-0.5">{label}</p>
+            </div>
+          </StaggerItem>
+        ))}
+        <StaggerItem>
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl p-4">
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center mb-2"
               style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #4A90E2 100%)' }}
             >
-              <Icon className="h-4 w-4 text-white" />
+              <TrendingUp className="h-4 w-4 text-white" />
             </div>
-            <p className="text-xl font-bold text-white">{value}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+            <p className="text-xl font-bold text-white">{engagementRate}%</p>
+            <p className="text-xs text-white/40 mt-0.5">Engagement Rate</p>
           </div>
-        ))}
-      </div>
+        </StaggerItem>
+      </StaggeredList>
 
       {/* Anti-Bot Policy Banner */}
       <div className="bg-amber-500/[0.08] border border-amber-500/20 rounded-2xl p-4 mb-5 flex gap-3">
@@ -138,33 +155,42 @@ export default function AnalyticsPage() {
             <span key={h} className="text-xs text-white/30 font-semibold uppercase tracking-wider">{h}</span>
           ))}
         </div>
-        {topCreators.map((creator, idx) => {
-          const d = creator[platform]
-          return (
-            <div
-              key={creator.rank}
-              className={cn(
-                'grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-3 items-center hover:bg-white/[0.03] transition-colors',
-                idx < topCreators.length - 1 && 'border-b border-white/[0.06]'
-              )}
-            >
-              <div className="flex items-center gap-2 min-w-0">
+        <StaggeredList staggerDelay={0.04}>
+          {topCreators.map((creator, idx) => {
+            const d = creator[platform]
+            return (
+              <StaggerItem key={creator.rank}>
                 <div
-                  className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #4A90E2 100%)' }}
+                  className={cn(
+                    'grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-3 items-center hover:bg-white/[0.03] transition-colors',
+                    idx < topCreators.length - 1 && 'border-b border-white/[0.06]'
+                  )}
                 >
-                  {creator.rank}
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div
+                      className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0"
+                      style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #4A90E2 100%)' }}
+                    >
+                      {creator.rank}
+                    </div>
+                    <p className="text-sm font-semibold text-white truncate">{creator.name}</p>
+                  </div>
+                  <p className="text-xs text-white/60">{formatNumber(d.views)}</p>
+                  <p className="text-xs text-white/60">{formatNumber(d.likes)}</p>
+                  <p className="text-xs text-white/60">{formatNumber(d.comments)}</p>
+                  <p className="text-xs text-white/60">{d.posts}</p>
                 </div>
-                <p className="text-sm font-semibold text-white truncate">{creator.name}</p>
-              </div>
-              <p className="text-xs text-white/60">{formatNumber(d.views)}</p>
-              <p className="text-xs text-white/60">{formatNumber(d.likes)}</p>
-              <p className="text-xs text-white/60">{formatNumber(d.comments)}</p>
-              <p className="text-xs text-white/60">{d.posts}</p>
-            </div>
-          )
-        })}
+              </StaggerItem>
+            )
+          })}
+        </StaggeredList>
       </div>
+      <TimeRangeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onApply={setTimeRange}
+        initialRange={timeRange}
+      />
     </div>
   )
 }

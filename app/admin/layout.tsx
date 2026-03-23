@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { HiveLogoWithMark } from '@/components/hive-logo'
 import { useAuth } from '@/lib/hooks/useAuth'
@@ -148,7 +149,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 )}
               >
                 {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-0.5 bg-cc-accent rounded-full" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-0.5 rounded-full bg-gradient-to-b from-[#FF6B35] to-[#4A90E2]" />
                 )}
                 <span className={cn('shrink-0', active ? 'text-white' : 'text-white/40')}>
                   {item.icon}
@@ -205,10 +206,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-[#0B0B0D]">
+      {/* Main Content — page-level mount animation keyed by pathname */}
+      <motion.main
+        key={pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="flex-1 overflow-y-auto bg-[#0B0B0D]"
+      >
         {children}
-      </main>
+      </motion.main>
     </div>
   )
 }

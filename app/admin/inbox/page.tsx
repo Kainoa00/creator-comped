@@ -113,7 +113,7 @@ export default function InboxPage() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-lg font-black text-white">Support Inbox</h1>
             {openCount > 0 && (
-              <div className="px-2.5 py-1 rounded-full bg-cc-accent text-white text-xs font-semibold">
+              <div className="px-2.5 py-1 rounded-full bg-hive-accent text-white text-xs font-semibold">
                 {openCount} open
               </div>
             )}
@@ -127,7 +127,7 @@ export default function InboxPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search tickets..."
-              className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cc-accent"
+              className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-hive-accent"
             />
           </div>
 
@@ -248,7 +248,7 @@ export default function InboxPage() {
 
             {/* Reply Composer */}
             {selectedTicket.status === 'open' && (
-              <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+              <div className="border border-white/[0.08] rounded-2xl p-5 bg-white/[0.05]">
                 <h3 className="text-sm font-semibold text-white mb-3">
                   Reply to {selectedTicket.name}
                 </h3>
@@ -256,7 +256,7 @@ export default function InboxPage() {
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Type your response..."
-                  className="w-full px-3 py-2.5 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cc-accent h-32 resize-none mb-3"
+                  className="w-full px-3 py-2.5 bg-white/5 border border-white/[0.06] rounded-2xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-hive-accent h-32 resize-none mb-3"
                 />
                 <div className="flex justify-end gap-2">
                   <button className="px-4 py-2 rounded-lg border border-white/[0.06] text-sm font-medium text-white/60 hover:bg-white/5 transition-colors">

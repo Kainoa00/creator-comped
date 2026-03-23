@@ -3,13 +3,11 @@
 import { useState, useMemo } from 'react'
 import { DEMO_ORDERS, DEMO_CREATORS } from '@/lib/demo-data'
 import { relativeTime, cn } from '@/lib/utils'
-import type { OrderStatus } from '@/lib/types'
-import { CheckCircle2, Clock, XCircle, Search, Instagram, Music2, ChevronLeft, ChevronRight } from 'lucide-react'
-
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-]
+import type { OrderStatus, TimeRange } from '@/lib/types'
+import { CheckCircle2, Clock, XCircle, Search, Instagram, Music2 } from 'lucide-react'
+import { TimeRangeTrigger } from '@/components/restaurant-ui/TimeRangeTrigger'
+import { TimeRangeModal } from '@/components/restaurant-ui/TimeRangeModal'
+import { StaggeredList, StaggerItem } from '@/components/effects/StaggeredList'
 
 const STATUS_FILTERS: { label: string; value: OrderStatus | 'all' }[] = [
   { label: 'All', value: 'all' },
@@ -39,7 +37,8 @@ function orderValue(itemCount: number) {
 
 export default function CompsPage() {
   const now = new Date()
-  const [monthIdx, setMonthIdx] = useState(now.getMonth())
+  const [timeRange, setTimeRange] = useState<TimeRange>({ mode: 'month', month: now.getMonth(), year: now.getFullYear() })
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'all'>('all')
 
@@ -81,6 +80,7 @@ export default function CompsPage() {
     .slice(0, 5)
 
   return (
+    <>
     <div className="flex flex-col lg:flex-row min-h-0 flex-1">
       {/* Main Panel */}
       <div className="flex-1 px-4 pt-6 pb-8 min-w-0">
@@ -90,26 +90,9 @@ export default function CompsPage() {
           <h1 className="text-xl font-bold text-white">Comps</h1>
         </div>
 
-        {/* Month Picker */}
-        <div className="flex items-center gap-2 mb-5">
-          <button
-            onClick={() => setMonthIdx((m) => (m - 1 + 12) % 12)}
-            className="p-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08] transition-colors"
-          >
-            <ChevronLeft className="h-4 w-4 text-white/60" />
-          </button>
-          <div
-            className="px-4 py-2 rounded-full text-sm font-semibold text-white"
-            style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
-          >
-            {MONTHS[monthIdx]} {now.getFullYear()}
-          </div>
-          <button
-            onClick={() => setMonthIdx((m) => (m + 1) % 12)}
-            className="p-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08] transition-colors"
-          >
-            <ChevronRight className="h-4 w-4 text-white/60" />
-          </button>
+        {/* Time Range Trigger */}
+        <div className="mb-5">
+          <TimeRangeTrigger range={timeRange} onClick={() => setIsModalOpen(true)} />
         </div>
 
         {/* Search */}
@@ -123,8 +106,8 @@ export default function CompsPage() {
           />
         </div>
 
-        {/* Status Pills */}
-        <div className="flex gap-2 overflow-x-auto pb-1 mb-5">
+        {/* Status Pills + Result Count */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 mb-5">
           {STATUS_FILTERS.map((f) => (
             <button
               key={f.value}
@@ -139,6 +122,9 @@ export default function CompsPage() {
               {f.label}
             </button>
           ))}
+          <span className="ml-auto text-xs text-white/30 whitespace-nowrap tabular-nums shrink-0">
+            {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+          </span>
         </div>
 
         {/* Table */}
@@ -151,11 +137,12 @@ export default function CompsPage() {
             <span className="text-xs text-white/30 font-semibold uppercase tracking-wider">Status</span>
           </div>
 
+          <StaggeredList staggerDelay={0.03}>
           {filtered.map((order, idx) => {
             const creator = DEMO_CREATORS.find((c) => c.id === order.creator_id)
             return (
+              <StaggerItem key={order.id}>
               <div
-                key={order.id}
                 className={cn(
                   'px-5 py-4 hover:bg-white/[0.03] transition-colors',
                   idx < filtered.length - 1 && 'border-b border-white/[0.06]'
@@ -223,8 +210,10 @@ export default function CompsPage() {
                   <div>{statusBadge(order.status)}</div>
                 </div>
               </div>
+              </StaggerItem>
             )
           })}
+          </StaggeredList>
 
           {filtered.length === 0 && (
             <div className="text-center py-16 text-white/30">
@@ -291,5 +280,12 @@ export default function CompsPage() {
         </div>
       </div>
     </div>
+    <TimeRangeModal
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      onApply={setTimeRange}
+      initialRange={timeRange}
+    />
+    </>
   )
 }

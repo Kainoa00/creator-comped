@@ -141,7 +141,7 @@ export default function SubmissionsPage() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-lg font-black text-white">Submissions</h1>
             {pendingCount > 0 && (
-              <div className="px-2.5 py-1 rounded-full bg-cc-accent text-white text-xs font-semibold">
+              <div className="px-2.5 py-1 rounded-full bg-hive-accent text-white text-xs font-semibold">
                 {pendingCount} pending
               </div>
             )}
@@ -155,7 +155,7 @@ export default function SubmissionsPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search submissions..."
-              className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cc-accent"
+              className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-hive-accent"
             />
           </div>
 
@@ -236,7 +236,7 @@ export default function SubmissionsPage() {
 
             <div className="space-y-5">
               {/* Submitted Posts */}
-              <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+              <div className="border border-white/[0.08] rounded-2xl p-5 bg-white/[0.05]">
                 <h3 className="text-sm font-semibold text-white mb-4">Submitted Posts</h3>
                 <div className="space-y-3">
                   {selectedSubmission.instagramUrl && (
@@ -287,7 +287,7 @@ export default function SubmissionsPage() {
               </div>
 
               {/* Deliverables Compliance */}
-              <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+              <div className="border border-white/[0.08] rounded-2xl p-5 bg-white/[0.05]">
                 <h3 className="text-sm font-semibold text-white mb-4">Deliverables Compliance</h3>
                 <div className="space-y-3">
                   {[
@@ -314,7 +314,7 @@ export default function SubmissionsPage() {
               </div>
 
               {/* Submission Details */}
-              <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+              <div className="border border-white/[0.08] rounded-2xl p-5 bg-white/[0.05]">
                 <h3 className="text-sm font-semibold text-white mb-4">Submission Details</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">

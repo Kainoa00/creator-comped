@@ -236,6 +236,13 @@ export interface RestaurantUser {
   created_at: string
 }
 
+// ── Time Range ────────────────────────────────────────────────
+export interface TimeRange {
+  mode: 'month' | 'year' | 'all'
+  month?: number  // 0-11
+  year?: number   // e.g. 2026
+}
+
 // ── Extended Restaurant (new columns) ─────────────────────────
 export interface RestaurantProfile extends Restaurant {
   logo_url: string | null

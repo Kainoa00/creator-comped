@@ -17,6 +17,7 @@ import {
   QrCode,
   LogOut,
   User,
+  ArrowLeft,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/lib/hooks/useAuth'
@@ -81,6 +82,16 @@ export default function BusinessLayout({ children }: { children: React.ReactNode
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-white flex">
+      {user?.role === 'admin' && (
+        <div className="fixed top-0 left-0 right-0 z-[100] flex items-center gap-3 bg-cc-accent/90 backdrop-blur-sm px-4 py-2">
+          <Link href="/admin" className="flex items-center gap-1.5 text-white text-xs font-semibold hover:opacity-80 transition-opacity">
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to Admin
+          </Link>
+          <span className="text-white/40 text-xs">·</span>
+          <span className="text-white/70 text-xs">Admin Preview — Business Dashboard</span>
+        </div>
+      )}
       {offline && (
         <div className="fixed top-0 left-0 right-0 z-[100] bg-yellow-500 text-black text-center text-xs font-semibold py-2 px-4">
           No internet connection

@@ -17,6 +17,7 @@ import {
   FileCheck,
   Inbox,
   LogOut,
+  Store,
 } from 'lucide-react'
 
 const PENDING_VETTING = 3
@@ -80,6 +81,14 @@ const NAV_ITEMS: NavItem[] = [
     href: '/admin/inbox',
     icon: <Inbox className="h-4 w-4" />,
     badge: PENDING_INBOX,
+  },
+]
+
+const PREVIEW_ITEMS: NavItem[] = [
+  {
+    label: 'Business Dashboard',
+    href: '/dashboard',
+    icon: <Store className="h-4 w-4" />,
   },
 ]
 
@@ -153,6 +162,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </Link>
             )
           })}
+
+          {/* Preview section */}
+          <div className="mt-3 pt-3 border-t border-white/[0.06]">
+            <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/25">
+              Preview
+            </p>
+            {PREVIEW_ITEMS.map((item) => {
+              const active = pathname.startsWith(item.href)
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors relative',
+                    active
+                      ? 'text-white font-semibold bg-white/10'
+                      : 'text-white/50 hover:text-white hover:bg-white/5'
+                  )}
+                >
+                  <span className={cn('shrink-0', active ? 'text-white' : 'text-white/40')}>
+                    {item.icon}
+                  </span>
+                  <span className="flex-1">{item.label}</span>
+                </Link>
+              )
+            })}
+          </div>
         </nav>
 
         {/* Footer */}

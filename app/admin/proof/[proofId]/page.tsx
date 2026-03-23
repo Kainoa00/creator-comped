@@ -454,7 +454,7 @@ export default function ProofReviewDetailPage() {
               <p className="text-sm font-bold text-white mb-3">Decision Recorded</p>
               <ProofStatusBadge status={reviewStatus} />
               {reviewNotes && (
-                <p className="mt-3 text-sm text-white/50 italic">"{reviewNotes}"</p>
+                <p className="mt-3 text-sm text-white/50 italic">&quot;{reviewNotes}&quot;</p>
               )}
             </div>
           ) : (

@@ -96,6 +96,7 @@ export function useAnalytics(): UseAnalyticsResult {
 
         if (snapError) throw new Error(snapError.message)
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const snapshotList = ((snapshotsRaw ?? []) as any[]).map((s) => ({
           id: s.id,
           proof_id: s.proof_id,

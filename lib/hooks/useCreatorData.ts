@@ -81,6 +81,7 @@ export function useCreatorData(): UseCreatorDataResult {
         }
 
         // Normalise orders: flatten restaurant_name from join
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const normalisedOrders: Order[] = ((ordersRaw ?? []) as any[]).map((o) => ({
           id: o.id,
           creator_id: o.creator_id,

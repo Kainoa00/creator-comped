@@ -67,7 +67,7 @@ export default function ProofPage() {
         </div>
         <div>
           <h2 className="text-2xl font-bold text-white">Proof Submitted!</h2>
-          <p className="text-sm text-gray-400 mt-2 leading-relaxed">Under review within 24 hours. We'll notify you when it's approved.</p>
+          <p className="text-sm text-gray-400 mt-2 leading-relaxed">Under review within 24 hours. We&apos;ll notify you when it&apos;s approved.</p>
         </div>
         <button
           onClick={() => router.push('/discover')}

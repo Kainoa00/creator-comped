@@ -77,7 +77,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-3">8. Children's Privacy</h2>
+          <h2 className="text-lg font-semibold mb-3">8. Children&apos;s Privacy</h2>
           <p className="text-white/60 text-sm leading-relaxed">
             HIVE is not directed at children under the age of 13. We do not knowingly collect
             personal information from children under 13.

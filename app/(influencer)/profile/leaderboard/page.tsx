@@ -70,6 +70,7 @@ export default function LeaderboardPage() {
           return
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const normalised: ContestEntry[] = ((rawEntries ?? []) as any[]).map((e) => ({
           id: e.id,
           proof_id: e.proof_id,

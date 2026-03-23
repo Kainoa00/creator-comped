@@ -69,27 +69,6 @@ export default function RestaurantScannerPage() {
 
   const fullCode = digits.join('')
 
-  useEffect(() => {
-    if (fullCode.length === 5 && !digits.includes('')) {
-      handleCodeSubmit(fullCode)
-    }
-  }, [fullCode])
-
-  function handleDigitChange(idx: number, val: string) {
-    if (!/^\d?$/.test(val)) return
-    const next = [...digits]
-    next[idx] = val.slice(-1)
-    setDigits(next)
-    setCodeError(null)
-    if (val && idx < 4) inputRefs.current[idx + 1]?.focus()
-  }
-
-  function handleKeyDown(idx: number, e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Backspace' && !digits[idx] && idx > 0) {
-      inputRefs.current[idx - 1]?.focus()
-    }
-  }
-
   function triggerShake() {
     setShaking(true)
     setTimeout(() => setShaking(false), 500)
@@ -116,6 +95,27 @@ export default function RestaurantScannerPage() {
       return
     }
     router.push(`/restaurant/ticket/${order.id}`)
+  }
+
+  useEffect(() => {
+    if (fullCode.length === 5 && !digits.includes('')) {
+      handleCodeSubmit(fullCode)
+    }
+  }, [fullCode])
+
+  function handleDigitChange(idx: number, val: string) {
+    if (!/^\d?$/.test(val)) return
+    const next = [...digits]
+    next[idx] = val.slice(-1)
+    setDigits(next)
+    setCodeError(null)
+    if (val && idx < 4) inputRefs.current[idx + 1]?.focus()
+  }
+
+  function handleKeyDown(idx: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Backspace' && !digits[idx] && idx > 0) {
+      inputRefs.current[idx - 1]?.focus()
+    }
   }
 
   function handleDemoScan() {

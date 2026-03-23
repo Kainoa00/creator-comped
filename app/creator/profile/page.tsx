@@ -144,7 +144,7 @@ export default function ProfilePage() {
   const recentOrders = orders.slice(0, 10)
 
   const month = currentMonthKey()
-  const leaderboard = useMemo(() => getLeaderboard(month), [month])
+  const leaderboard = getLeaderboard(month)
 
   const totalComps = orders.filter((o) =>
     ['confirmed', 'proof_submitted', 'approved'].includes(o.status)

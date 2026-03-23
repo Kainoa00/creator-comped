@@ -34,8 +34,8 @@ export default function TermsPage() {
           <p className="text-white/60 text-sm leading-relaxed">
             In exchange for a complimentary meal, creators agree to post authentic content (Instagram Reel
             and/or TikTok video) within 48 hours of their visit. Posts must include required hashtags and
-            restaurant tags as specified on the restaurant's deliverables page. Content must not include
-            misleading claims, discriminatory material, or content that violates the social media platform's
+            restaurant tags as specified on the restaurant&apos;s deliverables page. Content must not include
+            misleading claims, discriminatory material, or content that violates the social media platform&apos;s
             terms of service.
           </p>
         </section>
@@ -64,8 +64,8 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold mb-3">6. Comp Redemption</h2>
           <p className="text-white/60 text-sm leading-relaxed">
             Each creator may hold one active comp at a time. Comp codes expire 20 minutes after generation.
-            Comps are subject to each restaurant's daily cap, blackout hours, and cooldown periods. A comp
-            covers the items specified in the approved cart only — additional charges are the creator's
+            Comps are subject to each restaurant&apos;s daily cap, blackout hours, and cooldown periods. A comp
+            covers the items specified in the approved cart only — additional charges are the creator&apos;s
             responsibility.
           </p>
         </section>
@@ -82,7 +82,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-lg font-semibold mb-3">8. Leaderboard & Prizes</h2>
           <p className="text-white/60 text-sm leading-relaxed">
-            Monthly leaderboard prizes are awarded at HIVE's sole discretion. Prize amounts and
+            Monthly leaderboard prizes are awarded at HIVE&apos;s sole discretion. Prize amounts and
             structure may change month to month. Leaderboard scores are calculated based on verified posts,
             engagement metrics, and platform activity as defined in our scoring documentation.
           </p>
@@ -91,7 +91,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-lg font-semibold mb-3">9. Limitation of Liability</h2>
           <p className="text-white/60 text-sm leading-relaxed">
-            HIVE is provided "as is" without warranty of any kind. We are not liable for any
+            HIVE is provided &quot;as is&quot; without warranty of any kind. We are not liable for any
             indirect, incidental, or consequential damages arising from your use of the platform, including
             disputes between creators and restaurants.
           </p>

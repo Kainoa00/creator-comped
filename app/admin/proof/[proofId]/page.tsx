@@ -157,7 +157,7 @@ export default function ProofReviewDetailPage() {
     if (hoursLeft < 0) return { text: 'Deadline passed', color: 'text-red-500' }
     if (hoursLeft < 6) return { text: `${Math.round(hoursLeft)}h left — URGENT`, color: 'text-red-500' }
     if (hoursLeft < 24) return { text: `${Math.round(hoursLeft)}h remaining`, color: 'text-amber-500' }
-    return { text: `${Math.round(hoursLeft)}h remaining`, color: 'text-slate-500' }
+    return { text: `${Math.round(hoursLeft)}h remaining`, color: 'text-white/50' }
   }
 
   const dl = deadlineLabel()
@@ -165,7 +165,7 @@ export default function ProofReviewDetailPage() {
   return (
     <div className="px-8 py-6">
       {/* Header */}
-      <div className="border-b border-slate-100 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-white/[0.06] pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon-sm" onClick={() => router.back()}>
             <ArrowLeft className="h-4 w-4" />
@@ -173,8 +173,8 @@ export default function ProofReviewDetailPage() {
           <div className="flex items-start gap-3">
             <div className="w-1 self-stretch rounded-full bg-cc-accent shrink-0" />
             <div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight">Proof Review</h1>
-              <p className="text-sm text-slate-400 font-medium">#{proof.id}</p>
+              <h1 className="text-2xl font-black text-white tracking-tight">Proof Review</h1>
+              <p className="text-sm text-white/40 font-medium">#{proof.id}</p>
             </div>
           </div>
           <div className="ml-auto">
@@ -187,31 +187,31 @@ export default function ProofReviewDetailPage() {
         {/* Left Panel: Context */}
         <div className="col-span-3 space-y-4">
           {/* Creator card */}
-          <div className="bg-white border border-slate-200 rounded-lg p-5">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Creator</p>
+          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+            <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-4">Creator</p>
             <div className="flex items-center gap-3 mb-4">
               <Avatar src={creator?.photo_url ?? null} name={creator?.name ?? '?'} size="md" />
               <div>
-                <p className="font-bold text-slate-900 text-base">{creator?.name ?? 'Unknown'}</p>
-                <p className="text-xs text-slate-400">{creator?.ig_handle ?? creator?.tiktok_handle ?? '—'}</p>
+                <p className="font-bold text-white text-base">{creator?.name ?? 'Unknown'}</p>
+                <p className="text-xs text-white/40">{creator?.ig_handle ?? creator?.tiktok_handle ?? '—'}</p>
               </div>
             </div>
             <div className="space-y-2.5">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">Strikes</span>
+                <span className="text-white/40">Strikes</span>
                 <div className="flex gap-1">
                   {[0, 1, 2].map((i) => (
                     <span
                       key={i}
                       className={`h-2.5 w-2.5 rounded-full ${
-                        i < (creator?.strike_count ?? 0) ? 'bg-red-500' : 'bg-slate-200'
+                        i < (creator?.strike_count ?? 0) ? 'bg-red-500' : 'bg-white/10'
                       }`}
                     />
                   ))}
                 </div>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">Ban State</span>
+                <span className="text-white/40">Ban State</span>
                 <Badge
                   variant={creator?.ban_state === 'none' ? 'success' : 'error'}
                   size="sm"
@@ -223,54 +223,54 @@ export default function ProofReviewDetailPage() {
           </div>
 
           {/* Order details */}
-          <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-2">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Order</p>
+          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5 space-y-2">
+            <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">Order</p>
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-slate-400">Restaurant</span>
-              <span className="text-sm font-semibold text-slate-900">{order?.restaurant_name ?? '—'}</span>
+              <span className="text-xs text-white/40">Restaurant</span>
+              <span className="text-sm font-semibold text-white">{order?.restaurant_name ?? '—'}</span>
             </div>
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-slate-400">Items Ordered</span>
+              <span className="text-xs text-white/40">Items Ordered</span>
               {order?.items.map((item) => (
-                <span key={item.menu_item_id} className="text-sm text-slate-700">
+                <span key={item.menu_item_id} className="text-sm text-white/70">
                   {item.qty}× {item.menu_item_name}
                 </span>
               ))}
             </div>
             {order?.confirmed_at && (
               <div className="flex flex-col gap-0.5">
-                <span className="text-xs text-slate-400">Confirmed At</span>
-                <span className="text-sm text-slate-700">{relativeTime(order.confirmed_at)}</span>
+                <span className="text-xs text-white/40">Confirmed At</span>
+                <span className="text-sm text-white/70">{relativeTime(order.confirmed_at)}</span>
               </div>
             )}
           </div>
 
           {/* Deliverable requirements */}
           {deliverable && (
-            <div className="bg-white border border-slate-200 rounded-lg p-5">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+            <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+              <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">
                 Requirements
               </p>
               <div className="space-y-2.5">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs text-slate-400">Platform</span>
+                  <span className="text-xs text-white/40">Platform</span>
                   <Badge variant="info" size="sm" className="self-start">{deliverable.allowed_types}</Badge>
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs text-slate-400">Hashtags</span>
+                  <span className="text-xs text-white/40">Hashtags</span>
                   <div className="flex flex-wrap gap-1">
                     {deliverable.required_hashtags.map((h) => (
-                      <span key={h} className="text-xs border border-slate-200 rounded-md px-2 py-0.5 text-slate-600 font-mono">
+                      <span key={h} className="text-xs border border-white/[0.06] rounded-md px-2 py-0.5 text-white/60 font-mono">
                         {h}
                       </span>
                     ))}
                   </div>
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs text-slate-400">Tags</span>
+                  <span className="text-xs text-white/40">Tags</span>
                   <div className="flex flex-wrap gap-1">
                     {deliverable.required_tags.map((t) => (
-                      <span key={t} className="text-xs border border-slate-200 rounded-md px-2 py-0.5 text-slate-600 font-mono">
+                      <span key={t} className="text-xs border border-white/[0.06] rounded-md px-2 py-0.5 text-white/60 font-mono">
                         {t}
                       </span>
                     ))}
@@ -281,24 +281,24 @@ export default function ProofReviewDetailPage() {
           )}
 
           {/* Submission info */}
-          <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-2">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5 space-y-2">
+            <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">
               Submission
             </p>
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-slate-400">Platform</span>
-              <span className="inline-flex self-start items-center px-2 py-0.5 rounded-md text-xs font-bold border border-slate-200 text-slate-600">
+              <span className="text-xs text-white/40">Platform</span>
+              <span className="inline-flex self-start items-center px-2 py-0.5 rounded-md text-xs font-bold border border-white/[0.06] text-white/60">
                 {proof.platform === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
               </span>
             </div>
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-slate-400">Submitted</span>
-              <span className="text-sm text-slate-700">{relativeTime(proof.submitted_at)}</span>
+              <span className="text-xs text-white/40">Submitted</span>
+              <span className="text-sm text-white/70">{relativeTime(proof.submitted_at)}</span>
             </div>
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-slate-400">Deadline</span>
+              <span className="text-xs text-white/40">Deadline</span>
               <div className="flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-slate-400" />
+                <Clock className="h-3.5 w-3.5 text-white/40" />
                 <span className={`text-sm font-medium ${dl.color}`}>{dl.text}</span>
               </div>
             </div>
@@ -307,17 +307,17 @@ export default function ProofReviewDetailPage() {
 
         {/* Center Panel: Content Preview */}
         <div className="col-span-5 space-y-4">
-          <div className="bg-white border border-slate-200 rounded-lg p-5">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Content Preview</p>
+          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+            <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-4">Content Preview</p>
 
             {/* URL Display */}
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
-              <p className="text-xs text-slate-400 mb-2">Submission URL</p>
+            <div className="bg-white/5 border border-white/[0.06] rounded-lg p-4 mb-4">
+              <p className="text-xs text-white/40 mb-2">Submission URL</p>
               <div className="flex items-start gap-2">
-                <p className="flex-1 text-sm font-mono text-slate-900 break-all leading-relaxed">{proof.url}</p>
+                <p className="flex-1 text-sm font-mono text-white break-all leading-relaxed">{proof.url}</p>
                 <button
                   onClick={copyUrl}
-                  className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
+                  className="shrink-0 p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
                 >
                   {urlCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
                 </button>
@@ -336,15 +336,15 @@ export default function ProofReviewDetailPage() {
             </a>
 
             {/* Preview card with play button overlay */}
-            <div className="relative border border-dashed border-slate-200 rounded-lg overflow-hidden">
-              <div className="bg-slate-50 p-10 text-center">
+            <div className="relative border border-dashed border-white/[0.06] rounded-lg overflow-hidden">
+              <div className="bg-white/5 p-10 text-center">
                 <div className="relative inline-flex items-center justify-center mb-3">
-                  <div className="h-16 w-16 rounded-lg border border-slate-200 bg-white flex items-center justify-center">
-                    <Play className="h-7 w-7 text-slate-400 ml-0.5" />
+                  <div className="h-16 w-16 rounded-lg border border-white/[0.06] bg-white/5 flex items-center justify-center">
+                    <Play className="h-7 w-7 text-white/40 ml-0.5" />
                   </div>
                 </div>
-                <p className="text-sm font-semibold text-slate-700">Embed Preview Unavailable</p>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-sm font-semibold text-white/70">Embed Preview Unavailable</p>
+                <p className="text-xs text-white/40 mt-1">
                   {proof.platform === 'IG_REEL' ? 'Instagram' : 'TikTok'} blocks iframe embedding.
                   <br />
                   Use the link above to review the content.
@@ -354,8 +354,8 @@ export default function ProofReviewDetailPage() {
 
             {/* Analytics snapshot if available */}
             {snapshot && (
-              <div className="mt-4 pt-4 border-t border-slate-100">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+              <div className="mt-4 pt-4 border-t border-white/[0.06]">
+                <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">
                   Analytics Snapshot
                 </p>
                 <div className="grid grid-cols-4 gap-3">
@@ -365,32 +365,32 @@ export default function ProofReviewDetailPage() {
                     { icon: <MessageCircle className="h-4 w-4" />, label: 'Comments', value: formatNumber(snapshot.comments) },
                     { icon: <Share2 className="h-4 w-4" />, label: 'Shares', value: formatNumber(snapshot.shares) },
                   ].map((stat) => (
-                    <div key={stat.label} className="border border-slate-200 rounded-lg p-3 text-center">
-                      <div className="flex justify-center text-slate-400 mb-1">{stat.icon}</div>
-                      <p className="text-base font-bold text-slate-900">{stat.value}</p>
-                      <p className="text-xs text-slate-400">{stat.label}</p>
+                    <div key={stat.label} className="border border-white/[0.06] rounded-lg p-3 text-center">
+                      <div className="flex justify-center text-white/40 mb-1">{stat.icon}</div>
+                      <p className="text-base font-bold text-white">{stat.value}</p>
+                      <p className="text-xs text-white/40">{stat.label}</p>
                     </div>
                   ))}
                 </div>
                 <div className="mt-2 flex items-center justify-between">
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-white/40">
                     Contest score: <span className="font-mono font-bold text-cc-accent">{formatNumber(snapshot.score)}</span>
                   </span>
-                  <span className="text-xs text-slate-400">Snapshot {relativeTime(snapshot.timestamp)}</span>
+                  <span className="text-xs text-white/40">Snapshot {relativeTime(snapshot.timestamp)}</span>
                 </div>
               </div>
             )}
           </div>
 
           {/* Reviewer Notes */}
-          <div className="bg-white border border-slate-200 rounded-lg p-5">
-            <p className="text-sm font-semibold text-slate-900 mb-2">Reviewer Notes</p>
+          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+            <p className="text-sm font-semibold text-white mb-2">Reviewer Notes</p>
             <textarea
               value={reviewNotes}
               onChange={(e) => setReviewNotes(e.target.value)}
               placeholder="Internal notes about this proof..."
               rows={3}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
             />
           </div>
         </div>
@@ -398,10 +398,10 @@ export default function ProofReviewDetailPage() {
         {/* Right Panel: Checklist + Actions */}
         <div className="col-span-4 space-y-4">
           {/* Quality Checklist */}
-          <div className="bg-white border border-slate-200 rounded-lg p-5">
+          <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-sm font-bold text-slate-900">Quality Checklist</p>
-              <span className="text-xs font-bold px-2.5 py-1 rounded-md border border-slate-200 text-slate-500">
+              <p className="text-sm font-bold text-white">Quality Checklist</p>
+              <span className="text-xs font-bold px-2.5 py-1 rounded-md border border-white/[0.06] text-white/50">
                 {checkedCount}/{CHECKLIST_ITEMS.length}
               </span>
             </div>
@@ -419,18 +419,18 @@ export default function ProofReviewDetailPage() {
                     onClick={() => toggleCheck(i)}
                     className={`w-full flex items-start gap-3 py-3 px-3 rounded-lg text-left transition-all border ${
                       checklist[i]
-                        ? 'bg-slate-50 border-slate-200'
-                        : 'border-transparent hover:bg-slate-50 hover:border-slate-200'
+                        ? 'bg-white/5 border-white/[0.06]'
+                        : 'border-transparent hover:bg-white/5 hover:border-white/[0.06]'
                     }`}
                   >
                     {checklist[i] ? (
                       <CheckSquare className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
                     ) : (
-                      <Square className="h-4 w-4 text-slate-300 shrink-0 mt-0.5" />
+                      <Square className="h-4 w-4 text-white/30 shrink-0 mt-0.5" />
                     )}
                     <span
                       className={`text-sm leading-snug ${
-                        checklist[i] ? 'text-slate-400 line-through' : 'text-slate-700'
+                        checklist[i] ? 'text-white/40 line-through' : 'text-white/70'
                       }`}
                     >
                       {displayItem}
@@ -441,7 +441,7 @@ export default function ProofReviewDetailPage() {
             </div>
 
             {allChecked && (
-              <div className="mt-3 flex items-center gap-2 text-slate-600 text-sm border border-slate-200 rounded-lg px-3 py-2">
+              <div className="mt-3 flex items-center gap-2 text-white/60 text-sm border border-white/[0.06] rounded-lg px-3 py-2">
                 <CheckCircle2 className="h-4 w-4 shrink-0" />
                 All items checked — ready to approve
               </div>
@@ -450,16 +450,16 @@ export default function ProofReviewDetailPage() {
 
           {/* Action Buttons */}
           {reviewStatus !== 'pending' && reviewStatus !== 'needs_fix' ? (
-            <div className="bg-white border border-slate-200 rounded-lg p-5">
-              <p className="text-sm font-bold text-slate-900 mb-3">Decision Recorded</p>
+            <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5">
+              <p className="text-sm font-bold text-white mb-3">Decision Recorded</p>
               <ProofStatusBadge status={reviewStatus} />
               {reviewNotes && (
-                <p className="mt-3 text-sm text-slate-500 italic">"{reviewNotes}"</p>
+                <p className="mt-3 text-sm text-white/50 italic">"{reviewNotes}"</p>
               )}
             </div>
           ) : (
-            <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-3">
-              <p className="text-sm font-bold text-slate-900 mb-1">Review Decision</p>
+            <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg p-5 space-y-3">
+              <p className="text-sm font-bold text-white mb-1">Review Decision</p>
 
               <button
                 onClick={() => setShowApproveModal(true)}
@@ -496,10 +496,10 @@ export default function ProofReviewDetailPage() {
         title="Approve Proof"
         description="This will approve the submission and enter it into the contest."
       >
-        <div className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg">
+        <div className="flex items-center gap-3 p-4 border border-white/[0.06] rounded-lg">
           <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
-          <p className="text-sm text-slate-600">
-            Proof from <span className="font-semibold text-slate-900">{creator?.name}</span> will be approved
+          <p className="text-sm text-white/60">
+            Proof from <span className="font-semibold text-white">{creator?.name}</span> will be approved
             and their score will count toward the monthly leaderboard.
           </p>
         </div>
@@ -524,9 +524,9 @@ export default function ProofReviewDetailPage() {
             onChange={(e) => setCreatorMessage(e.target.value)}
             placeholder="Explain what the creator needs to fix (e.g., missing hashtag, private account)..."
             rows={4}
-            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
           />
-          <p className="text-xs text-slate-400">Creator will have 24 hours to resubmit.</p>
+          <p className="text-xs text-white/40">Creator will have 24 hours to resubmit.</p>
         </div>
         <ModalFooter>
           <Button variant="ghost" onClick={() => setShowNeedsFixModal(false)}>Cancel</Button>
@@ -551,10 +551,10 @@ export default function ProofReviewDetailPage() {
         maxWidth="max-w-md"
       >
         <div className="space-y-4">
-          <div className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg">
+          <div className="flex items-center gap-3 p-3 border border-white/[0.06] rounded-lg">
             <Zap className="h-4 w-4 text-red-500 shrink-0" />
-            <p className="text-sm text-slate-600">
-              <span className="font-semibold text-slate-900">{creator?.name}</span> will receive a strike.{' '}
+            <p className="text-sm text-white/60">
+              <span className="font-semibold text-white">{creator?.name}</span> will receive a strike.{' '}
               {(creator?.strike_count ?? 0) + 1 >= 3
                 ? 'This will result in a PERMANENT BAN.'
                 : (creator?.strike_count ?? 0) + 1 >= 2
@@ -564,13 +564,13 @@ export default function ProofReviewDetailPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Strike Reason
             </label>
             <select
               value={strikeReason}
               onChange={(e) => setStrikeReason(e.target.value as StrikeReason)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
             >
               {STRIKE_REASONS.map((r) => (
                 <option key={r.value} value={r.value}>{r.label}</option>
@@ -579,7 +579,7 @@ export default function ProofReviewDetailPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Notes (required)
             </label>
             <textarea
@@ -587,7 +587,7 @@ export default function ProofReviewDetailPage() {
               onChange={(e) => setStrikeNotes(e.target.value)}
               placeholder="Document why this proof is being rejected..."
               rows={3}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
             />
           </div>
         </div>

@@ -133,13 +133,13 @@ export default function ProofReviewQueuePage() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-8 pt-6 pb-5 border-b border-slate-100">
+      <div className="px-8 pt-6 pb-5 border-b border-white/[0.06]">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-4">
             <div className="w-1 self-stretch rounded-full bg-cc-accent shrink-0" />
             <div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight">Proof Review Queue</h1>
-              <p className="text-sm font-semibold text-slate-400 mt-0.5">
+              <h1 className="text-2xl font-black text-white tracking-tight">Proof Review Queue</h1>
+              <p className="text-sm font-semibold text-white/40 mt-0.5">
                 Review creator-submitted content proofs — FIFO order
               </p>
             </div>
@@ -148,8 +148,8 @@ export default function ProofReviewQueuePage() {
           <div className="flex items-center gap-4 flex-wrap justify-end">
             {QUICK_STATS.map((s) => (
               <div key={s.label} className="text-right">
-                <p className="text-xl font-black text-slate-900 leading-none">{s.value}</p>
-                <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">{s.label}</p>
+                <p className="text-xl font-black text-white leading-none">{s.value}</p>
+                <p className="text-[10px] text-white/40 uppercase tracking-wider mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
@@ -157,7 +157,7 @@ export default function ProofReviewQueuePage() {
       </div>
 
       {/* Filter Row — sticky */}
-      <div className="sticky top-0 z-10 bg-white border-b border-slate-100 px-8 py-3">
+      <div className="sticky top-0 z-10 bg-[#0B0B0D] border-b border-white/[0.06] px-8 py-3">
       <div className="flex items-center gap-2 flex-wrap">
         {/* Status filter */}
         <div className="flex items-center gap-1.5">
@@ -168,7 +168,7 @@ export default function ProofReviewQueuePage() {
               className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 statusFilter === s
                   ? 'bg-cc-accent text-white'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'
+                  : 'bg-white/5 border border-white/[0.06] text-white/60 hover:border-white/[0.1]'
               }`}
             >
               {s === 'needs_fix' ? 'Needs Fix' : s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -185,7 +185,7 @@ export default function ProofReviewQueuePage() {
               className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 platformFilter === p
                   ? 'bg-cc-accent text-white'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'
+                  : 'bg-white/5 border border-white/[0.06] text-white/60 hover:border-white/[0.1]'
               }`}
             >
               {p === 'all' ? 'All Platforms' : p === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
@@ -195,13 +195,13 @@ export default function ProofReviewQueuePage() {
 
         {/* Search */}
         <div className="relative ml-auto w-56">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
           <input
             type="text"
             placeholder="Search creator or restaurant..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent transition-colors"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent transition-colors"
           />
         </div>
       </div>
@@ -210,11 +210,11 @@ export default function ProofReviewQueuePage() {
       {/* Queue List */}
       <div className="flex-1 overflow-y-auto px-8 py-5">
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 py-20 text-center border border-slate-200 rounded-lg justify-center">
-          <CheckCircle2 className="h-8 w-8 text-slate-300" />
+        <div className="flex flex-col items-center gap-4 py-20 text-center border border-white/[0.06] rounded-lg justify-center">
+          <CheckCircle2 className="h-8 w-8 text-white/30" />
           <div>
-            <p className="font-semibold text-slate-900">All caught up!</p>
-            <p className="text-sm text-slate-400 mt-1">No proofs match your current filters.</p>
+            <p className="font-semibold text-white">All caught up!</p>
+            <p className="text-sm text-white/40 mt-1">No proofs match your current filters.</p>
           </div>
         </div>
       ) : (
@@ -228,17 +228,17 @@ export default function ProofReviewQueuePage() {
             return (
               <div
                 key={proof.id}
-                className={`bg-white border rounded-lg px-5 py-4 flex items-center gap-4 transition-colors hover:bg-slate-50 cursor-pointer ${
+                className={`bg-[#1a1a1a] border rounded-lg px-5 py-4 flex items-center gap-4 transition-colors hover:bg-white/5 cursor-pointer ${
                   deadlinePassed
-                    ? 'border-red-200'
+                    ? 'border-red-500/20'
                     : deadlineSoon
-                    ? 'border-amber-200'
-                    : 'border-slate-200'
+                    ? 'border-amber-500/20'
+                    : 'border-white/[0.06]'
                 }`}
                 onClick={() => router.push(`/admin/proof/${proof.id}`)}
               >
                 {/* Platform badge */}
-                <span className="shrink-0 inline-flex items-center px-2.5 py-1 rounded border border-slate-200 text-xs font-semibold text-slate-500">
+                <span className="shrink-0 inline-flex items-center px-2.5 py-1 rounded border border-white/[0.06] text-xs font-semibold text-white/50">
                   {proof.platform === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
                 </span>
 
@@ -246,43 +246,43 @@ export default function ProofReviewQueuePage() {
                 <div className="flex items-center gap-3 w-44 shrink-0">
                   <Avatar src={creator?.photo_url ?? null} name={creator?.name ?? '?'} size="sm" />
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-slate-900 truncate">{creator?.name ?? 'Unknown'}</p>
-                    <p className="text-xs text-slate-400 truncate">{creator?.ig_handle ?? creator?.tiktok_handle ?? '—'}</p>
+                    <p className="text-sm font-bold text-white truncate">{creator?.name ?? 'Unknown'}</p>
+                    <p className="text-xs text-white/40 truncate">{creator?.ig_handle ?? creator?.tiktok_handle ?? '—'}</p>
                   </div>
                 </div>
 
                 {/* Restaurant */}
                 <div className="w-36 shrink-0">
-                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-0.5">Restaurant</p>
-                  <p className="text-sm text-slate-700 font-medium truncate">{order?.restaurant_name ?? '—'}</p>
+                  <p className="text-xs text-white/40 uppercase tracking-wider mb-0.5">Restaurant</p>
+                  <p className="text-sm text-white/70 font-medium truncate">{order?.restaurant_name ?? '—'}</p>
                 </div>
 
                 {/* Submitted */}
                 <div className="w-24 shrink-0">
-                  <p className="text-xs text-slate-400">Submitted</p>
-                  <p className="text-sm text-slate-700">{relativeTime(proof.submitted_at)}</p>
+                  <p className="text-xs text-white/40">Submitted</p>
+                  <p className="text-sm text-white/70">{relativeTime(proof.submitted_at)}</p>
                 </div>
 
                 {/* Deadline */}
                 <div className="w-24 shrink-0">
-                  <p className="text-xs text-slate-400">Deadline</p>
+                  <p className="text-xs text-white/40">Deadline</p>
                   {proof.review_status === 'pending' || proof.review_status === 'needs_fix' ? (
                     <div className="flex items-center gap-1">
-                      <Clock className={`h-3 w-3 ${deadlinePassed ? 'text-red-500' : deadlineSoon ? 'text-amber-500' : 'text-slate-400'}`} />
+                      <Clock className={`h-3 w-3 ${deadlinePassed ? 'text-red-500' : deadlineSoon ? 'text-amber-500' : 'text-white/40'}`} />
                       <p className={`text-sm font-medium ${
-                        deadlinePassed ? 'text-red-500' : deadlineSoon ? 'text-amber-500' : 'text-slate-400'
+                        deadlinePassed ? 'text-red-500' : deadlineSoon ? 'text-amber-500' : 'text-white/40'
                       }`}>
                         {deadlineLabel(proof.deadline)}
                       </p>
                     </div>
                   ) : (
-                    <p className="text-sm text-slate-300">—</p>
+                    <p className="text-sm text-white/30">—</p>
                   )}
                 </div>
 
                 {/* URL */}
                 <div className="flex-1 min-w-0 flex items-center gap-2">
-                  <span className="text-xs text-slate-400 truncate font-mono">
+                  <span className="text-xs text-white/40 truncate font-mono">
                     {truncate(proof.url, 40)}
                   </span>
                   <button
@@ -290,7 +290,7 @@ export default function ProofReviewQueuePage() {
                       e.stopPropagation()
                       copyUrl(proof.url, proof.id)
                     }}
-                    className="shrink-0 p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                    className="shrink-0 p-1 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
                     title="Copy URL"
                   >
                     {copiedId === proof.id ? (

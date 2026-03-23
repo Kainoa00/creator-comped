@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { isDemoMode } from '@/lib/supabase'
-import { createServerClient } from '@/lib/supabase-server'
+import { createServerClient, dbErrorResponse } from '@/lib/supabase-server'
 import { requireRestaurantSession } from '@/lib/api-auth'
 import { DEMO_ORDERS } from '@/lib/demo-data'
 
@@ -28,10 +28,11 @@ export async function POST(req: NextRequest) {
       .from('orders')
       .update({ status: 'rejected', rejection_reason: reason ?? 'Rejected by staff' })
       .eq('id', order_id)
+      .eq('restaurant_id', auth.restaurantId)
       .select()
       .single()
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) return dbErrorResponse(error, 'Order not found')
     return NextResponse.json({ order: data })
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })

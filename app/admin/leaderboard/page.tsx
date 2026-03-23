@@ -160,18 +160,18 @@ export default function LeaderboardPage() {
   return (
     <div className="px-8 py-6 space-y-5">
       {/* Header */}
-      <div className="border-b border-slate-100 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-white/[0.06] pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-black text-slate-900">Contest Leaderboard</h1>
-            <p className="text-sm text-slate-400 mt-0.5">
+            <h1 className="text-2xl font-black text-white">Contest Leaderboard</h1>
+            <p className="text-sm text-white/40 mt-0.5">
               Monthly creator rankings by engagement score
             </p>
           </div>
           <div className="flex items-center gap-3">
             {locked && (
-              <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-600 text-sm font-medium px-3 py-1.5 rounded-md">
-                <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+              <span className="inline-flex items-center gap-1.5 border border-white/[0.06] text-white/60 text-sm font-medium px-3 py-1.5 rounded-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
                 Locked Snapshot
               </span>
             )}
@@ -193,20 +193,20 @@ export default function LeaderboardPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMonthKey(prevMonth(monthKey))}
-            className="p-2 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors"
+            className="p-2 rounded-lg bg-white/5 border border-white/[0.06] text-white/40 hover:text-white/70 hover:border-white/[0.1] transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <div className="text-center">
-            <p className="text-lg font-bold text-slate-900">{monthLabel(monthKey)}</p>
+            <p className="text-lg font-bold text-white">{monthLabel(monthKey)}</p>
             {isCurrentMonth && (
-              <p className="text-xs text-slate-400">{daysLeftInMonth()} days remaining</p>
+              <p className="text-xs text-white/40">{daysLeftInMonth()} days remaining</p>
             )}
           </div>
           <button
             onClick={() => setMonthKey(nextMonth(monthKey))}
             disabled={monthKey >= currentMonthKey()}
-            className="p-2 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-slate-700 hover:border-slate-300 transition-colors disabled:opacity-30 disabled:pointer-events-none"
+            className="p-2 rounded-lg bg-white/5 border border-white/[0.06] text-white/40 hover:text-white/70 hover:border-white/[0.1] transition-colors disabled:opacity-30 disabled:pointer-events-none"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -215,16 +215,16 @@ export default function LeaderboardPage() {
         {/* Prize tiers */}
         <div className="flex items-center gap-3">
           {PRIZE_TIERS.map((t) => (
-            <div key={t.rank} className="flex items-center gap-1.5 border border-slate-200 rounded-lg px-3 py-1.5">
+            <div key={t.rank} className="flex items-center gap-1.5 border border-white/[0.06] rounded-lg px-3 py-1.5">
               <span className="text-sm">{t.icon}</span>
-              <span className="text-sm font-semibold text-slate-900 font-mono">{t.amount}</span>
+              <span className="text-sm font-semibold text-white font-mono">{t.amount}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Platform Tabs */}
-      <div className="flex gap-1.5 border border-slate-200 rounded-lg p-1 w-fit">
+      <div className="flex gap-1.5 border border-white/[0.06] rounded-lg p-1 w-fit">
         {(['IG_REEL', 'TIKTOK'] as ProofPlatform[]).map((platform) => (
           <button
             key={platform}
@@ -232,7 +232,7 @@ export default function LeaderboardPage() {
             className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
               activeTab === platform
                 ? 'bg-cc-accent text-white'
-                : 'text-slate-600 hover:text-slate-900'
+                : 'text-white/60 hover:text-white'
             }`}
           >
             {platform === 'IG_REEL' ? 'IG Reel' : 'TikTok'}
@@ -241,18 +241,18 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Leaderboard Table */}
-      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden min-h-[500px]">
+      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg overflow-hidden min-h-[500px]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider w-16">Rank</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Creator</th>
-              <th className="px-4 py-3 text-right text-xs font-bold text-slate-400 uppercase tracking-wider">Score</th>
-              <th className="px-4 py-3 text-center text-xs font-bold text-slate-400 uppercase tracking-wider">Eligible</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Prize</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Payment</th>
-              <th className="px-4 py-3 text-right text-xs font-bold text-slate-400 uppercase tracking-wider">Actions</th>
+            <tr className="border-b border-white/[0.06] bg-white/5">
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider w-16">Rank</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Creator</th>
+              <th className="px-4 py-3 text-right text-xs font-bold text-white/40 uppercase tracking-wider">Score</th>
+              <th className="px-4 py-3 text-center text-xs font-bold text-white/40 uppercase tracking-wider">Eligible</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Status</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Prize</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Payment</th>
+              <th className="px-4 py-3 text-right text-xs font-bold text-white/40 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -260,9 +260,9 @@ export default function LeaderboardPage() {
               <tr>
                 <td colSpan={8} className="px-4 py-16 text-center">
                   <div className="flex flex-col items-center gap-3">
-                    <Trophy className="h-10 w-10 text-slate-200" />
-                    <p className="font-semibold text-slate-900">No entries for this month</p>
-                    <p className="text-sm text-slate-400">Entries will appear once proofs are approved.</p>
+                    <Trophy className="h-10 w-10 text-white/10" />
+                    <p className="font-semibold text-white">No entries for this month</p>
+                    <p className="text-sm text-white/40">Entries will appear once proofs are approved.</p>
                   </div>
                 </td>
               </tr>
@@ -276,17 +276,17 @@ export default function LeaderboardPage() {
                 return (
                   <tr
                     key={entry.id}
-                    className={`border-b border-slate-100 transition-colors ${
+                    className={`border-b border-white/[0.06] transition-colors ${
                       rankDisplay.isTop3
-                        ? 'bg-blue-50/20 hover:bg-blue-50/40'
-                        : 'hover:bg-slate-50/50'
+                        ? 'bg-blue-500/5 hover:bg-blue-500/10'
+                        : 'hover:bg-white/5'
                     } ${entry.disqualified ? 'opacity-40' : ''}`}
                   >
                     <td className="px-4 py-4">
                       {rankDisplay.isTop3 ? (
                         <span className="text-xl">{rankDisplay.display}</span>
                       ) : (
-                        <span className="text-2xl font-black text-slate-200">{rankDisplay.display}</span>
+                        <span className="text-2xl font-black text-white/10">{rankDisplay.display}</span>
                       )}
                     </td>
                     <td className="px-4 py-4">
@@ -294,12 +294,12 @@ export default function LeaderboardPage() {
                         <img
                           src={entry.creator_photo ?? undefined}
                           alt={entry.creator_name}
-                          className="h-8 w-8 rounded-full border border-slate-100 object-cover"
+                          className="h-8 w-8 rounded-full border border-white/[0.06] object-cover"
                           onError={(e) => { e.currentTarget.style.display = 'none' }}
                         />
                         <div>
-                          <p className="font-semibold text-slate-900">{entry.creator_name}</p>
-                          <p className="text-xs text-slate-400">{entry.creator_id}</p>
+                          <p className="font-semibold text-white">{entry.creator_name}</p>
+                          <p className="text-xs text-white/40">{entry.creator_id}</p>
                         </div>
                       </div>
                     </td>
@@ -310,29 +310,29 @@ export default function LeaderboardPage() {
                       {entry.eligible && !entry.disqualified ? (
                         <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto" />
                       ) : (
-                        <span className="text-slate-300 text-lg">—</span>
+                        <span className="text-white/30 text-lg">—</span>
                       )}
                     </td>
                     <td className="px-4 py-4">
                       {entry.disqualified ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-slate-200 text-slate-500">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-white/[0.06] text-white/50">
                           Disqualified
                         </span>
                       ) : entry.eligible ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-slate-200 text-slate-600">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-white/[0.06] text-white/60">
                           Eligible
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-slate-200 text-slate-500">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border border-white/[0.06] text-white/50">
                           Ineligible
                         </span>
                       )}
                     </td>
                     <td className="px-4 py-4">
                       {prize && !entry.disqualified && entry.eligible ? (
-                        <span className="font-mono text-emerald-600 font-semibold">{prize}</span>
+                        <span className="font-mono text-emerald-400 font-semibold">{prize}</span>
                       ) : (
-                        <span className="text-slate-300">—</span>
+                        <span className="text-white/30">—</span>
                       )}
                     </td>
                     <td className="px-4 py-4">
@@ -341,22 +341,22 @@ export default function LeaderboardPage() {
                           onClick={() => togglePayment(entry.id)}
                           className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md border transition-colors ${
                             payStatus === 'paid'
-                              ? 'border-slate-200 text-slate-600'
-                              : 'border-slate-200 text-slate-500 hover:border-slate-300'
+                              ? 'border-white/[0.06] text-white/60'
+                              : 'border-white/[0.06] text-white/50 hover:border-white/[0.1]'
                           }`}
                         >
                           <CreditCard className="h-3 w-3" />
                           {payStatus === 'paid' ? 'Paid' : 'Pending'}
                         </button>
                       ) : (
-                        <span className="text-xs text-slate-300">N/A</span>
+                        <span className="text-xs text-white/30">N/A</span>
                       )}
                     </td>
                     <td className="px-4 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <a
                           href={`/admin/proof/${entry.proof_id}`}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                          className="p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
                           title="View proof"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
@@ -367,7 +367,7 @@ export default function LeaderboardPage() {
                               setSelectedEntry(entry)
                               setShowDQModal(true)
                             }}
-                            className="px-2 py-1 rounded-lg border border-red-200 text-red-600 text-xs font-medium hover:bg-red-50 transition-colors"
+                            className="px-2 py-1 rounded-lg border border-red-500/20 text-red-400 text-xs font-medium hover:bg-red-500/20 transition-colors"
                           >
                             DQ
                           </button>
@@ -377,7 +377,7 @@ export default function LeaderboardPage() {
                               setSelectedEntry(entry)
                               setShowReinstate(true)
                             }}
-                            className="px-2 py-1 rounded-lg border border-emerald-200 text-emerald-600 text-xs font-medium hover:bg-emerald-50 transition-colors"
+                            className="px-2 py-1 rounded-lg border border-emerald-500/20 text-emerald-400 text-xs font-medium hover:bg-emerald-500/20 transition-colors"
                           >
                             Reinstate
                           </button>
@@ -393,17 +393,17 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Payout note */}
-      <div className="flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-500">
-        <CreditCard className="h-4 w-4 text-slate-400 shrink-0" />
+      <div className="flex items-center gap-2 border border-white/[0.06] rounded-lg px-4 py-3 text-sm text-white/50">
+        <CreditCard className="h-4 w-4 text-white/40 shrink-0" />
         <span>
-          <strong className="text-slate-900">Stripe integration coming in v2.</strong> Payments are currently tracked manually. Use the payment toggle above to mark winners.
+          <strong className="text-white">Stripe integration coming in v2.</strong> Payments are currently tracked manually. Use the payment toggle above to mark winners.
         </span>
       </div>
 
       {/* Reset note */}
-      <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
-        <Trophy className="h-4 w-4 text-slate-300 shrink-0" />
-        <span>Leaderboard resets on <strong className="text-slate-500">March 1, 2026</strong></span>
+      <div className="flex items-center justify-center gap-2 text-sm text-white/40">
+        <Trophy className="h-4 w-4 text-white/30 shrink-0" />
+        <span>Leaderboard resets on <strong className="text-white/50">March 1, 2026</strong></span>
       </div>
 
       {/* Lock Contest Modal */}
@@ -413,11 +413,11 @@ export default function LeaderboardPage() {
         title="Lock Contest Snapshot"
         description="Freeze scores at this moment for final standings."
       >
-        <div className="flex items-start gap-3 p-4 border border-slate-200 rounded-lg">
+        <div className="flex items-start gap-3 p-4 border border-white/[0.06] rounded-lg">
           <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-white/60">
             Locking the contest will freeze the current scores. New proofs can still be submitted,
-            but they will not affect the standings for <strong className="text-slate-900">{monthLabel(monthKey)}</strong>.
+            but they will not affect the standings for <strong className="text-white">{monthLabel(monthKey)}</strong>.
           </p>
         </div>
         <ModalFooter>
@@ -440,7 +440,7 @@ export default function LeaderboardPage() {
           onChange={(e) => setDqReason(e.target.value)}
           placeholder="Reason for disqualification..."
           rows={3}
-          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
+          className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
         />
         <ModalFooter>
           <Button variant="ghost" onClick={() => setShowDQModal(false)}>Cancel</Button>
@@ -462,7 +462,7 @@ export default function LeaderboardPage() {
         title={`Reinstate ${selectedEntry?.creator_name}`}
         description="Confirm reinstating this creator on the leaderboard."
       >
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-white/60">
           {selectedEntry?.creator_name} will be restored to their ranked position based on score.
         </p>
         <ModalFooter>

@@ -71,8 +71,8 @@ function getPriority(ticket: SupportTicket): PriorityLabel {
 }
 
 function StatusBadge({ status }: { status: TicketStatus }) {
-  if (status === 'open') return <div className="px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">Open</div>
-  return <div className="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Resolved</div>
+  if (status === 'open') return <div className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-medium">Open</div>
+  return <div className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">Resolved</div>
 }
 
 export default function InboxPage() {
@@ -108,10 +108,10 @@ export default function InboxPage() {
   return (
     <div className="flex h-full">
       {/* List Panel */}
-      <div className="w-80 shrink-0 border-r border-slate-200 flex flex-col bg-slate-50">
-        <div className="p-5 border-b border-slate-200">
+      <div className="w-80 shrink-0 border-r border-white/[0.06] flex flex-col bg-white/5">
+        <div className="p-5 border-b border-white/[0.06]">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-lg font-black text-slate-900">Support Inbox</h1>
+            <h1 className="text-lg font-black text-white">Support Inbox</h1>
             {openCount > 0 && (
               <div className="px-2.5 py-1 rounded-full bg-cc-accent text-white text-xs font-semibold">
                 {openCount} open
@@ -121,13 +121,13 @@ export default function InboxPage() {
 
           {/* Search */}
           <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search tickets..."
-              className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-cc-accent"
+              className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cc-accent"
             />
           </div>
 
@@ -136,7 +136,7 @@ export default function InboxPage() {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value as TicketType | 'all')}
-              className="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none"
+              className="flex-1 px-2.5 py-1.5 bg-white/5 border border-white/[0.06] rounded-lg text-xs text-white focus:outline-none"
             >
               <option value="all">All Types</option>
               <option value="creator">Creator</option>
@@ -146,7 +146,7 @@ export default function InboxPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value as TicketStatus | 'all')}
-              className="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none"
+              className="flex-1 px-2.5 py-1.5 bg-white/5 border border-white/[0.06] rounded-lg text-xs text-white focus:outline-none"
             >
               <option value="all">All Status</option>
               <option value="open">Open</option>
@@ -163,16 +163,16 @@ export default function InboxPage() {
               <button
                 key={ticket.id}
                 onClick={() => setSelectedTicket(ticket)}
-                className={`w-full p-4 border-b border-slate-200 text-left hover:bg-white transition-colors ${
-                  selectedTicket?.id === ticket.id ? 'bg-white shadow-sm' : ''
+                className={`w-full p-4 border-b border-white/[0.06] text-left hover:bg-white/5 transition-colors ${
+                  selectedTicket?.id === ticket.id ? 'bg-white/10' : ''
                 }`}
               >
                 <div className="flex items-start justify-between mb-1">
-                  <p className="text-sm font-semibold text-slate-900 truncate flex-1 mr-2">{ticket.name}</p>
+                  <p className="text-sm font-semibold text-white truncate flex-1 mr-2">{ticket.name}</p>
                   <StatusBadge status={ticket.status} />
                 </div>
-                <p className="text-sm text-slate-700 truncate mb-0.5">{ticket.subject}</p>
-                <div className="flex items-center gap-2 text-xs text-slate-400">
+                <p className="text-sm text-white/70 truncate mb-0.5">{ticket.subject}</p>
+                <div className="flex items-center gap-2 text-xs text-white/40">
                   <span>{ticket.submittedAt}</span>
                   <span className="capitalize">{ticket.type}</span>
                   {priority === 'High' && (
@@ -183,7 +183,7 @@ export default function InboxPage() {
             )
           })}
           {filteredTickets.length === 0 && (
-            <div className="py-12 text-center text-slate-400 text-sm">No tickets found</div>
+            <div className="py-12 text-center text-white/40 text-sm">No tickets found</div>
           )}
         </div>
       </div>
@@ -193,16 +193,16 @@ export default function InboxPage() {
         {selectedTicket ? (
           <div className="p-8 max-w-2xl">
             {/* Header */}
-            <div className="flex items-start justify-between mb-8 border-b border-slate-200 pb-6">
+            <div className="flex items-start justify-between mb-8 border-b border-white/[0.06] pb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
-                  <User className="w-5 h-5 text-slate-500" />
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                  <User className="w-5 h-5 text-white/50" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-black text-slate-900">{selectedTicket.name}</h2>
-                  <p className="text-sm text-slate-500">{selectedTicket.email}</p>
+                  <h2 className="text-lg font-black text-white">{selectedTicket.name}</h2>
+                  <p className="text-sm text-white/50">{selectedTicket.email}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded capitalize">{selectedTicket.type}</span>
+                    <span className="text-xs text-white/40 bg-white/10 px-2 py-0.5 rounded capitalize">{selectedTicket.type}</span>
                     <StatusBadge status={selectedTicket.status} />
                   </div>
                 </div>
@@ -220,46 +220,46 @@ export default function InboxPage() {
             </div>
 
             {/* Message Thread */}
-            <div className="border border-slate-200 rounded-lg p-5 mb-5">
+            <div className="border border-white/[0.06] rounded-lg p-5 mb-5 bg-[#1a1a1a]">
               <div className="flex items-center gap-2 mb-4">
                 <Mail className="w-4 h-4 text-orange-500" />
-                <h3 className="text-sm font-semibold text-slate-900">{selectedTicket.subject}</h3>
+                <h3 className="text-sm font-semibold text-white">{selectedTicket.subject}</h3>
               </div>
 
               {/* Original message */}
-              <div className="bg-slate-50 rounded-lg p-4 mb-4">
+              <div className="bg-white/5 rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-slate-700">{selectedTicket.name}</p>
-                  <p className="text-xs text-slate-400">{selectedTicket.submittedAt}</p>
+                  <p className="text-xs font-semibold text-white/70">{selectedTicket.name}</p>
+                  <p className="text-xs text-white/40">{selectedTicket.submittedAt}</p>
                 </div>
-                <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">{selectedTicket.message}</p>
+                <p className="text-sm text-white/70 leading-relaxed whitespace-pre-wrap">{selectedTicket.message}</p>
               </div>
 
               {selectedTicket.status === 'resolved' && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="bg-emerald-500/20 border border-emerald-500/20 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <Check className="w-4 h-4 text-green-600 shrink-0" />
-                    <p className="text-xs font-semibold text-green-700">Resolved by Admin</p>
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <p className="text-xs font-semibold text-emerald-400">Resolved by Admin</p>
                   </div>
-                  <p className="text-sm text-green-700">This ticket has been marked as resolved.</p>
+                  <p className="text-sm text-emerald-400">This ticket has been marked as resolved.</p>
                 </div>
               )}
             </div>
 
             {/* Reply Composer */}
             {selectedTicket.status === 'open' && (
-              <div className="border border-slate-200 rounded-lg p-5">
-                <h3 className="text-sm font-semibold text-slate-900 mb-3">
+              <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+                <h3 className="text-sm font-semibold text-white mb-3">
                   Reply to {selectedTicket.name}
                 </h3>
                 <textarea
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Type your response..."
-                  className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-cc-accent h-32 resize-none mb-3"
+                  className="w-full px-3 py-2.5 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cc-accent h-32 resize-none mb-3"
                 />
                 <div className="flex justify-end gap-2">
-                  <button className="px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+                  <button className="px-4 py-2 rounded-lg border border-white/[0.06] text-sm font-medium text-white/60 hover:bg-white/5 transition-colors">
                     Save Draft
                   </button>
                   <button
@@ -273,7 +273,7 @@ export default function InboxPage() {
             )}
           </div>
         ) : (
-          <div className="h-full flex items-center justify-center text-slate-400 text-sm">
+          <div className="h-full flex items-center justify-center text-white/40 text-sm">
             Select a ticket to view details
           </div>
         )}

@@ -74,9 +74,9 @@ const mockApplications: Application[] = [
 ]
 
 function StatusBadge({ status }: { status: ApplicationStatus }) {
-  if (status === 'pending') return <div className="px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 text-xs font-medium">Pending</div>
-  if (status === 'approved') return <div className="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Approved</div>
-  return <div className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-xs font-medium">Rejected</div>
+  if (status === 'pending') return <div className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-medium">Pending</div>
+  if (status === 'approved') return <div className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">Approved</div>
+  return <div className="px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-xs font-medium">Rejected</div>
 }
 
 export default function ApplicationsPage() {
@@ -116,10 +116,10 @@ export default function ApplicationsPage() {
   return (
     <div className="flex h-full">
       {/* List Panel */}
-      <div className="w-80 shrink-0 border-r border-slate-200 flex flex-col bg-slate-50">
-        <div className="p-5 border-b border-slate-200">
+      <div className="w-80 shrink-0 border-r border-white/[0.06] flex flex-col bg-white/5">
+        <div className="p-5 border-b border-white/[0.06]">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-lg font-black text-slate-900">Applications</h1>
+            <h1 className="text-lg font-black text-white">Applications</h1>
             {pendingCount > 0 && (
               <div className="px-2.5 py-1 rounded-full bg-cc-accent text-white text-xs font-semibold">
                 {pendingCount} pending
@@ -129,13 +129,13 @@ export default function ApplicationsPage() {
 
           {/* Search */}
           <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search applications..."
-              className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-cc-accent"
+              className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/[0.06] rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cc-accent"
             />
           </div>
 
@@ -144,7 +144,7 @@ export default function ApplicationsPage() {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value as ApplicationType | 'all')}
-              className="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none"
+              className="flex-1 px-2.5 py-1.5 bg-white/5 border border-white/[0.06] rounded-lg text-xs text-white focus:outline-none"
             >
               <option value="all">All Types</option>
               <option value="creator">Creators</option>
@@ -153,7 +153,7 @@ export default function ApplicationsPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value as ApplicationStatus | 'all')}
-              className="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none"
+              className="flex-1 px-2.5 py-1.5 bg-white/5 border border-white/[0.06] rounded-lg text-xs text-white focus:outline-none"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -169,13 +169,13 @@ export default function ApplicationsPage() {
             <button
               key={app.id}
               onClick={() => setSelectedApp(app)}
-              className={`w-full p-4 border-b border-slate-200 text-left hover:bg-white transition-colors ${
-                selectedApp?.id === app.id ? 'bg-white shadow-sm' : ''
+              className={`w-full p-4 border-b border-white/[0.06] text-left hover:bg-white/5 transition-colors ${
+                selectedApp?.id === app.id ? 'bg-white/10' : ''
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
-                  app.type === 'creator' ? 'bg-orange-100' : 'bg-blue-100'
+                  app.type === 'creator' ? 'bg-orange-500/20' : 'bg-blue-500/20'
                 }`}>
                   {app.type === 'creator'
                     ? <User className="w-4 h-4 text-orange-600" />
@@ -184,17 +184,17 @@ export default function ApplicationsPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
-                    <p className="text-sm font-semibold text-slate-900 truncate">{app.name}</p>
+                    <p className="text-sm font-semibold text-white truncate">{app.name}</p>
                     <StatusBadge status={app.status} />
                   </div>
-                  <p className="text-xs text-slate-500 truncate">{app.email}</p>
-                  <p className="text-xs text-slate-400 mt-0.5">{app.submittedAt}</p>
+                  <p className="text-xs text-white/50 truncate">{app.email}</p>
+                  <p className="text-xs text-white/40 mt-0.5">{app.submittedAt}</p>
                 </div>
               </div>
             </button>
           ))}
           {filteredApplications.length === 0 && (
-            <div className="py-12 text-center text-slate-400 text-sm">No applications found</div>
+            <div className="py-12 text-center text-white/40 text-sm">No applications found</div>
           )}
         </div>
       </div>
@@ -204,10 +204,10 @@ export default function ApplicationsPage() {
         {selectedApp ? (
           <div className="p-8 max-w-2xl">
             {/* Header */}
-            <div className="flex items-start justify-between mb-8 border-b border-slate-200 pb-6">
+            <div className="flex items-start justify-between mb-8 border-b border-white/[0.06] pb-6">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                  selectedApp.type === 'creator' ? 'bg-orange-100' : 'bg-blue-100'
+                  selectedApp.type === 'creator' ? 'bg-orange-500/20' : 'bg-blue-500/20'
                 }`}>
                   {selectedApp.type === 'creator'
                     ? <User className="w-6 h-6 text-orange-600" />
@@ -215,8 +215,8 @@ export default function ApplicationsPage() {
                   }
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-slate-900">{selectedApp.name}</h2>
-                  <p className="text-sm text-slate-500 capitalize">{selectedApp.type} Application</p>
+                  <h2 className="text-xl font-black text-white">{selectedApp.name}</h2>
+                  <p className="text-sm text-white/50 capitalize">{selectedApp.type} Application</p>
                   <div className="mt-1"><StatusBadge status={selectedApp.status} /></div>
                 </div>
               </div>
@@ -224,7 +224,7 @@ export default function ApplicationsPage() {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleReject(selectedApp.id)}
-                    className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100 transition-colors flex items-center gap-2"
+                    className="px-4 py-2 rounded-lg border border-red-500/20 bg-red-500/20 text-red-400 text-sm font-semibold hover:bg-red-500/30 transition-colors flex items-center gap-2"
                   >
                     <X className="w-4 h-4" /> Reject
                   </button>
@@ -241,21 +241,21 @@ export default function ApplicationsPage() {
 
             <div className="space-y-5">
               {/* Contact Info */}
-              <div className="border border-slate-200 rounded-lg p-5">
-                <h3 className="text-sm font-semibold text-slate-900 mb-4">Contact Information</h3>
+              <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+                <h3 className="text-sm font-semibold text-white mb-4">Contact Information</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-slate-400 shrink-0" />
+                    <Mail className="w-4 h-4 text-white/40 shrink-0" />
                     <div>
-                      <p className="text-xs text-slate-400">Email</p>
-                      <p className="text-sm text-slate-700">{selectedApp.email}</p>
+                      <p className="text-xs text-white/40">Email</p>
+                      <p className="text-sm text-white/70">{selectedApp.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Phone className="w-4 h-4 text-slate-400 shrink-0" />
+                    <Phone className="w-4 h-4 text-white/40 shrink-0" />
                     <div>
-                      <p className="text-xs text-slate-400">Phone</p>
-                      <p className="text-sm text-slate-700">{selectedApp.phone}</p>
+                      <p className="text-xs text-white/40">Phone</p>
+                      <p className="text-sm text-white/70">{selectedApp.phone}</p>
                     </div>
                   </div>
                 </div>
@@ -263,13 +263,13 @@ export default function ApplicationsPage() {
 
               {/* Creator: Social Media */}
               {selectedApp.type === 'creator' && (
-                <div className="border border-slate-200 rounded-lg p-5">
-                  <h3 className="text-sm font-semibold text-slate-900 mb-4">Social Media</h3>
+                <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+                  <h3 className="text-sm font-semibold text-white mb-4">Social Media</h3>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <Instagram className="w-4 h-4 text-orange-500 shrink-0" />
                       <div>
-                        <p className="text-xs text-slate-400">Instagram</p>
+                        <p className="text-xs text-white/40">Instagram</p>
                         <a
                           href={`https://instagram.com/${selectedApp.instagram?.replace('@', '')}`}
                           target="_blank"
@@ -283,7 +283,7 @@ export default function ApplicationsPage() {
                     <div className="flex items-center gap-3">
                       <Music2 className="w-4 h-4 text-blue-500 shrink-0" />
                       <div>
-                        <p className="text-xs text-slate-400">TikTok</p>
+                        <p className="text-xs text-white/40">TikTok</p>
                         <a
                           href={`https://tiktok.com/${selectedApp.tiktok}`}
                           target="_blank"
@@ -295,10 +295,10 @@ export default function ApplicationsPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <User className="w-4 h-4 text-slate-400 shrink-0" />
+                      <User className="w-4 h-4 text-white/40 shrink-0" />
                       <div>
-                        <p className="text-xs text-slate-400">Total Followers</p>
-                        <p className="text-sm font-semibold text-slate-900">{selectedApp.followers?.toLocaleString()}</p>
+                        <p className="text-xs text-white/40">Total Followers</p>
+                        <p className="text-sm font-semibold text-white">{selectedApp.followers?.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
@@ -307,19 +307,19 @@ export default function ApplicationsPage() {
 
               {/* Restaurant: Details */}
               {selectedApp.type === 'restaurant' && (
-                <div className="border border-slate-200 rounded-lg p-5">
-                  <h3 className="text-sm font-semibold text-slate-900 mb-4">Restaurant Details</h3>
+                <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+                  <h3 className="text-sm font-semibold text-white mb-4">Restaurant Details</h3>
                   <div className="space-y-3">
                     <div>
-                      <p className="text-xs text-slate-400">Restaurant Name</p>
-                      <p className="text-sm font-semibold text-slate-900">{selectedApp.restaurantName}</p>
+                      <p className="text-xs text-white/40">Restaurant Name</p>
+                      <p className="text-sm font-semibold text-white">{selectedApp.restaurantName}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400">Address</p>
-                      <p className="text-sm text-slate-700">{selectedApp.address}</p>
+                      <p className="text-xs text-white/40">Address</p>
+                      <p className="text-sm text-white/70">{selectedApp.address}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400">Website</p>
+                      <p className="text-xs text-white/40">Website</p>
                       <a
                         href={selectedApp.website}
                         target="_blank"
@@ -334,15 +334,15 @@ export default function ApplicationsPage() {
               )}
 
               {/* Application Status */}
-              <div className="border border-slate-200 rounded-lg p-5">
-                <h3 className="text-sm font-semibold text-slate-900 mb-4">Application Status</h3>
+              <div className="border border-white/[0.06] rounded-lg p-5 bg-[#1a1a1a]">
+                <h3 className="text-sm font-semibold text-white mb-4">Application Status</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Submitted</span>
-                    <span className="text-slate-900">{selectedApp.submittedAt}</span>
+                    <span className="text-white/50">Submitted</span>
+                    <span className="text-white">{selectedApp.submittedAt}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Status</span>
+                    <span className="text-white/50">Status</span>
                     <StatusBadge status={selectedApp.status} />
                   </div>
                 </div>
@@ -350,7 +350,7 @@ export default function ApplicationsPage() {
             </div>
           </div>
         ) : (
-          <div className="h-full flex items-center justify-center text-slate-400 text-sm">
+          <div className="h-full flex items-center justify-center text-white/40 text-sm">
             Select an application to view details
           </div>
         )}

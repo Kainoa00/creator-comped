@@ -93,9 +93,9 @@ type SortKey = 'submitted_at' | 'name' | 'follower_count'
 type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected'
 
 const DM_STATUS_CONFIG = {
-  pending: { label: 'Pending', dot: 'bg-slate-300', bg: 'bg-slate-50', text: 'text-slate-500', border: 'border-slate-200' },
-  sent: { label: 'Code Sent', dot: 'bg-amber-400', bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
-  verified: { label: 'Verified', dot: 'bg-emerald-400', bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+  pending: { label: 'Pending', dot: 'bg-white/30', bg: 'bg-white/5', text: 'text-white/50', border: 'border-white/[0.06]' },
+  sent: { label: 'Code Sent', dot: 'bg-amber-400', bg: 'bg-amber-500/20', text: 'text-amber-400', border: 'border-amber-500/20' },
+  verified: { label: 'Verified', dot: 'bg-emerald-400', bg: 'bg-emerald-500/20', text: 'text-emerald-400', border: 'border-emerald-500/20' },
 }
 
 const STATUS_CONFIG = {
@@ -175,19 +175,19 @@ export default function VettingQueuePage() {
   return (
     <div className="px-8 py-6 space-y-5">
       {/* Page Header */}
-      <div className="border-b border-slate-100 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-white/[0.06] pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-4">
             <div className="w-1 self-stretch rounded-full bg-cc-accent shrink-0" />
             <div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight">Creator Vetting</h1>
-              <p className="text-sm font-semibold text-slate-400 mt-0.5">
+              <h1 className="text-2xl font-black text-white tracking-tight">Creator Vetting</h1>
+              <p className="text-sm font-semibold text-white/40 mt-0.5">
                 Review and approve incoming creator applications
               </p>
             </div>
           </div>
           {pendingCount > 0 && (
-            <span className="inline-flex items-center gap-1.5 border border-slate-200 text-slate-600 text-sm font-bold px-3 py-1.5 rounded-md">
+            <span className="inline-flex items-center gap-1.5 border border-white/[0.06] text-white/60 text-sm font-bold px-3 py-1.5 rounded-md">
               <span className="h-2 w-2 rounded-full bg-amber-500 inline-block animate-pulse" />
               {pendingCount} pending review
             </span>
@@ -196,7 +196,7 @@ export default function VettingQueuePage() {
       </div>
 
       {/* Filter Row */}
-      <div className="border border-slate-200 rounded-lg p-3 flex items-center gap-3 mb-4">
+      <div className="border border-white/[0.06] rounded-lg p-3 flex items-center gap-3 mb-4">
         {/* Status filter pills */}
         <div className="flex items-center gap-1.5">
           {(['all', 'pending', 'approved', 'rejected'] as StatusFilter[]).map((s) => (
@@ -206,7 +206,7 @@ export default function VettingQueuePage() {
               className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-all capitalize ${
                 statusFilter === s
                   ? 'bg-cc-accent text-white'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'
+                  : 'bg-white/5 border border-white/[0.06] text-white/60 hover:border-white/[0.1]'
               }`}
             >
               {s}
@@ -216,40 +216,40 @@ export default function VettingQueuePage() {
 
         {/* Search — right side */}
         <div className="relative ml-auto w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
           <input
             type="text"
             placeholder="Search by name, email, or handle..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden min-h-[500px]">
+      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg overflow-hidden min-h-[500px]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
+            <tr className="border-b border-white/[0.06] bg-white/5">
               <th className="px-4 py-3 text-left">
                 <button
                   onClick={() => toggleSort('name')}
-                  className="flex items-center gap-1 text-xs font-bold text-slate-400 uppercase tracking-wider hover:text-slate-700"
+                  className="flex items-center gap-1 text-xs font-bold text-white/40 uppercase tracking-wider hover:text-white/70"
                 >
                   Creator <SortIcon field="name" />
                 </button>
               </th>
               <th className="px-4 py-3 text-left">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">IG Handle</span>
+                <span className="text-xs font-bold text-white/40 uppercase tracking-wider">IG Handle</span>
               </th>
               <th className="px-4 py-3 text-left">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">TikTok</span>
+                <span className="text-xs font-bold text-white/40 uppercase tracking-wider">TikTok</span>
               </th>
               <th className="px-4 py-3 text-right">
                 <button
                   onClick={() => toggleSort('follower_count')}
-                  className="flex items-center gap-1 text-xs font-bold text-slate-400 uppercase tracking-wider hover:text-slate-700 ml-auto"
+                  className="flex items-center gap-1 text-xs font-bold text-white/40 uppercase tracking-wider hover:text-white/70 ml-auto"
                 >
                   Followers <SortIcon field="follower_count" />
                 </button>
@@ -257,19 +257,19 @@ export default function VettingQueuePage() {
               <th className="px-4 py-3 text-left">
                 <button
                   onClick={() => toggleSort('submitted_at')}
-                  className="flex items-center gap-1 text-xs font-bold text-slate-400 uppercase tracking-wider hover:text-slate-700"
+                  className="flex items-center gap-1 text-xs font-bold text-white/40 uppercase tracking-wider hover:text-white/70"
                 >
                   Applied <SortIcon field="submitted_at" />
                 </button>
               </th>
               <th className="px-4 py-3 text-left">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Status</span>
+                <span className="text-xs font-bold text-white/40 uppercase tracking-wider">Status</span>
               </th>
               <th className="px-4 py-3 text-left">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">DM Verification</span>
+                <span className="text-xs font-bold text-white/40 uppercase tracking-wider">DM Verification</span>
               </th>
               <th className="px-4 py-3 text-right">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Action</span>
+                <span className="text-xs font-bold text-white/40 uppercase tracking-wider">Action</span>
               </th>
             </tr>
           </thead>
@@ -278,11 +278,11 @@ export default function VettingQueuePage() {
               <tr>
                 <td colSpan={8} className="px-4 py-20 text-center">
                   <div className="flex flex-col items-center gap-3">
-                    <div className="h-16 w-16 rounded-lg border border-slate-200 flex items-center justify-center">
-                      <UserCheck className="h-7 w-7 text-slate-300" />
+                    <div className="h-16 w-16 rounded-lg border border-white/[0.06] flex items-center justify-center">
+                      <UserCheck className="h-7 w-7 text-white/30" />
                     </div>
-                    <p className="font-bold text-slate-900">Queue is clear</p>
-                    <p className="text-sm text-slate-400">No applications match your filters.</p>
+                    <p className="font-bold text-white">Queue is clear</p>
+                    <p className="text-sm text-white/40">No applications match your filters.</p>
                   </div>
                 </td>
               </tr>
@@ -292,15 +292,15 @@ export default function VettingQueuePage() {
                 return (
                   <tr
                     key={app.id}
-                    className="border-b border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer"
+                    className="border-b border-white/[0.06] hover:bg-white/5 transition-colors cursor-pointer"
                     onClick={() => router.push(`/admin/vetting/${app.id}`)}
                   >
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
                         <Avatar src={null} name={app.name} size="sm" />
                         <div>
-                          <p className="font-bold text-slate-900">{app.name}</p>
-                          <p className="text-xs text-slate-400">{app.email}</p>
+                          <p className="font-bold text-white">{app.name}</p>
+                          <p className="text-xs text-white/40">{app.email}</p>
                         </div>
                       </div>
                     </td>
@@ -317,7 +317,7 @@ export default function VettingQueuePage() {
                           <ExternalLink className="h-3 w-3" />
                         </a>
                       ) : (
-                        <span className="text-slate-300">—</span>
+                        <span className="text-white/30">—</span>
                       )}
                     </td>
                     <td className="px-4 py-4">
@@ -333,11 +333,11 @@ export default function VettingQueuePage() {
                           <ExternalLink className="h-3 w-3" />
                         </a>
                       ) : (
-                        <span className="text-slate-300">—</span>
+                        <span className="text-white/30">—</span>
                       )}
                     </td>
                     <td className="px-4 py-4 text-right">
-                      <span className="text-sm text-slate-900 font-mono font-bold">
+                      <span className="text-sm text-white font-mono font-bold">
                         {app.follower_count != null
                           ? app.follower_count >= 1000
                             ? `${(app.follower_count / 1000).toFixed(1)}K`
@@ -346,7 +346,7 @@ export default function VettingQueuePage() {
                       </span>
                     </td>
                     <td className="px-4 py-4">
-                      <span className="text-sm text-slate-500">{relativeTime(app.submitted_at)}</span>
+                      <span className="text-sm text-white/50">{relativeTime(app.submitted_at)}</span>
                     </td>
                     <td className="px-4 py-4">
                       <Badge variant={STATUS_CONFIG[app.status].variant} dot>
@@ -354,7 +354,7 @@ export default function VettingQueuePage() {
                       </Badge>
                     </td>
                     <td className="px-4 py-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 text-slate-600">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border border-white/[0.06] text-white/60">
                         <span className={`h-1.5 w-1.5 rounded-full ${dmCfg.dot} shrink-0`} />
                         {dmCfg.label}
                       </span>

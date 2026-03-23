@@ -9,8 +9,7 @@ export async function GET(req: NextRequest) {
   const auth = await requireRestaurantSession()
   if (auth instanceof NextResponse) return auth
 
-  const { searchParams } = new URL(req.url)
-  const restaurant_id = searchParams.get('restaurant_id')
+  const restaurant_id = auth.restaurantId
 
   if (isDemoMode) {
     const r = restaurant_id
@@ -43,11 +42,11 @@ export async function PATCH(req: NextRequest) {
   const supabase = createServerClient()
   if (!supabase) return NextResponse.json({ error: 'Server error' }, { status: 500 })
 
-  const { id, ...updates } = await req.json()
+  const { id: _id, ...updates } = await req.json()
   const { data, error } = await supabase
     .from('restaurants')
     .update(updates)
-    .eq('id', id)
+    .eq('id', auth.restaurantId)
     .select()
     .single()
 

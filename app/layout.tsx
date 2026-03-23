@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Manrope } from 'next/font/google'
 import './globals.css'
 import { ToastProvider } from '@/components/ui/toast'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -127,6 +129,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ToastProvider>
           {children}
         </ToastProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

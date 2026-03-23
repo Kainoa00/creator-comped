@@ -134,7 +134,7 @@ function StrikeDots({ count }: { count: number }) {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className={`h-3 w-3 rounded-full ${i < count ? 'bg-red-500' : 'bg-slate-200'}`}
+          className={`h-3 w-3 rounded-full ${i < count ? 'bg-red-500' : 'bg-white/10'}`}
         />
       ))}
     </div>
@@ -211,11 +211,11 @@ export default function StrikesPage() {
   return (
     <div className="px-8 py-6 space-y-6">
       {/* Header */}
-      <div className="border-b border-slate-100 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-white/[0.06] pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">Strikes & Bans</h1>
-            <p className="text-sm text-slate-400 mt-0.5">
+            <h1 className="text-xl font-bold text-white">Strikes & Bans</h1>
+            <p className="text-sm text-white/40 mt-0.5">
               Manage creator violations and account restrictions
             </p>
           </div>
@@ -230,11 +230,11 @@ export default function StrikesPage() {
       </div>
 
       {/* Section 1: Active Issues */}
-      <div className="bg-white border border-slate-200 rounded-lg">
-        <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
+      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+        <div className="flex items-center gap-2 px-5 py-4 border-b border-white/[0.06]">
           <Zap className="h-4 w-4 text-red-500" />
-          <h2 className="text-sm font-semibold text-slate-900">Active Issues</h2>
-          <span className="inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-md border border-slate-200 text-slate-600 text-xs font-bold">
+          <h2 className="text-sm font-semibold text-white">Active Issues</h2>
+          <span className="inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-md border border-white/[0.06] text-white/60 text-xs font-bold">
             {DEMO_ACTIVE_ISSUES.length}
           </span>
         </div>
@@ -245,30 +245,30 @@ export default function StrikesPage() {
             const isBanned = creator.ban_state !== 'none'
 
             return (
-              <div key={creator.id} className="px-5 py-5 border-b border-slate-50 last:border-0">
+              <div key={creator.id} className="px-5 py-5 border-b border-white/[0.06] last:border-0">
                 <div className="flex items-center gap-4 mb-3">
                   {/* Creator info */}
                   <img
                     src={creator.photo_url ?? undefined}
                     alt={creator.name}
-                    className="h-10 w-10 rounded-full border border-slate-100 object-cover"
+                    className="h-10 w-10 rounded-full border border-white/[0.06] object-cover"
                     onError={(e) => { e.currentTarget.style.display = 'none' }}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <p className="font-semibold text-slate-900">{creator.name}</p>
+                      <p className="font-semibold text-white">{creator.name}</p>
                       {creator.ban_state === 'permanent' && (
-                        <span className="border border-slate-200 text-slate-600 rounded-md px-3 py-0.5 text-xs font-semibold">
+                        <span className="border border-white/[0.06] text-white/60 rounded-md px-3 py-0.5 text-xs font-semibold">
                           Permanently Banned
                         </span>
                       )}
                       {creator.ban_state === 'temporary' && (
-                        <span className="border border-slate-200 text-slate-600 rounded-md px-3 py-0.5 text-xs font-semibold">
+                        <span className="border border-white/[0.06] text-white/60 rounded-md px-3 py-0.5 text-xs font-semibold">
                           Temp Ban until {creator.ban_until ? formatDate(creator.ban_until) : '—'}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-white/40">
                       {creator.ig_handle ?? '—'} · {creator.email}
                     </p>
                   </div>
@@ -276,16 +276,16 @@ export default function StrikesPage() {
                   {/* Strike dots */}
                   <div className="flex flex-col items-center gap-1">
                     <StrikeDots count={creator.strike_count} />
-                    <span className="text-xs text-slate-400">{creator.strike_count}/3</span>
+                    <span className="text-xs text-white/40">{creator.strike_count}/3</span>
                   </div>
 
                   {/* Last violation */}
                   <div className="w-44 min-w-0">
-                    <p className="text-xs text-slate-400">Last Violation</p>
-                    <p className="text-sm text-slate-700 capitalize truncate">
+                    <p className="text-xs text-white/40">Last Violation</p>
+                    <p className="text-sm text-white/70 capitalize truncate">
                       {lastStrike?.reason.replace(/_/g, ' ') ?? '—'}
                     </p>
-                    <p className="text-xs text-slate-400">{lastStrike ? relativeTime(lastStrike.created_at) : '—'}</p>
+                    <p className="text-xs text-white/40">{lastStrike ? relativeTime(lastStrike.created_at) : '—'}</p>
                   </div>
 
                   {/* Actions */}
@@ -297,7 +297,7 @@ export default function StrikesPage() {
                             setIssueCreatorId(creator.id)
                             setShowIssueModal(true)
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.06] text-white/60 text-sm font-medium hover:bg-white/5 transition-colors"
                         >
                           <Zap className="h-3.5 w-3.5" />
                           Strike
@@ -307,7 +307,7 @@ export default function StrikesPage() {
                             setBanCreator(creator)
                             setShowTempBanModal(true)
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.06] text-white/60 text-sm font-medium hover:bg-white/5 transition-colors"
                         >
                           <Calendar className="h-3.5 w-3.5" />
                           Temp Ban
@@ -317,7 +317,7 @@ export default function StrikesPage() {
                             setPermBanCreator(creator)
                             setShowPermBanModal(true)
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.06] text-white/60 text-sm font-medium hover:bg-white/5 transition-colors"
                         >
                           <Ban className="h-3.5 w-3.5" />
                           Perm Ban
@@ -330,7 +330,7 @@ export default function StrikesPage() {
                           setLiftCreator(creator)
                           setShowLiftModal(true)
                         }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.06] text-white/60 text-sm font-medium hover:bg-white/5 transition-colors"
                       >
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         Lift Ban
@@ -345,18 +345,18 @@ export default function StrikesPage() {
                     {creator.strikes.map((strike, i) => (
                       <div
                         key={strike.id}
-                        className="flex items-start gap-2 border border-slate-200 rounded-lg px-3 py-2"
+                        className="flex items-start gap-2 border border-white/[0.06] rounded-lg px-3 py-2"
                       >
                         <span className="text-xs font-bold text-red-500 shrink-0 mt-0.5">#{i + 1}</span>
                         <div className="flex-1 min-w-0">
-                          <span className="text-xs font-medium text-slate-700 capitalize">
+                          <span className="text-xs font-medium text-white/70 capitalize">
                             {strike.reason.replace(/_/g, ' ')}
                           </span>
                           {strike.notes && (
-                            <p className="text-xs text-slate-400 truncate">{strike.notes}</p>
+                            <p className="text-xs text-white/40 truncate">{strike.notes}</p>
                           )}
                         </div>
-                        <span className="text-xs text-slate-400 shrink-0">{relativeTime(strike.created_at)}</span>
+                        <span className="text-xs text-white/40 shrink-0">{relativeTime(strike.created_at)}</span>
                       </div>
                     ))}
                   </div>
@@ -368,24 +368,24 @@ export default function StrikesPage() {
       </div>
 
       {/* Section 2: Strike History Log */}
-      <div className="bg-white border border-slate-200 rounded-lg">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-2">
-            <Shield className="h-4 w-4 text-slate-400" />
-            <h2 className="text-sm font-semibold text-slate-900">Strike History</h2>
-            <span className="text-xs text-slate-500 font-medium border border-slate-200 rounded-md px-2 py-0.5">
+            <Shield className="h-4 w-4 text-white/40" />
+            <h2 className="text-sm font-semibold text-white">Strike History</h2>
+            <span className="text-xs text-white/50 font-medium border border-white/[0.06] rounded-md px-2 py-0.5">
               {ALL_STRIKES.length} total
             </span>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
               <input
                 type="text"
                 placeholder="Filter by creator..."
                 value={historySearch}
                 onChange={(e) => setHistorySearch(e.target.value)}
-                className="bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent w-48"
+                className="bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent w-48"
               />
             </div>
             <Button
@@ -401,13 +401,13 @@ export default function StrikesPage() {
 
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Creator</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Strike #</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Reason</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Admin</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Date</th>
-              <th className="px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Notes</th>
+            <tr className="border-b border-white/[0.06] bg-white/5">
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Creator</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Strike #</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Reason</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Admin</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Date</th>
+              <th className="px-4 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Notes</th>
             </tr>
           </thead>
           <tbody>
@@ -417,34 +417,34 @@ export default function StrikesPage() {
               const strikeNum = strikesForCreator.findIndex((s) => s.id === strike.id) + 1
 
               return (
-                <tr key={strike.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+                <tr key={strike.id} className="border-b border-white/[0.06] hover:bg-white/5 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <img
                         src={creatorData?.photo_url ?? undefined}
                         alt={strike.creator_name}
-                        className="h-6 w-6 rounded-full border border-slate-100"
+                        className="h-6 w-6 rounded-full border border-white/[0.06]"
                         onError={(e) => { e.currentTarget.style.display = 'none' }}
                       />
-                      <span className="font-medium text-slate-900">{strike.creator_name}</span>
+                      <span className="font-medium text-white">{strike.creator_name}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-md border border-slate-200 text-slate-600 text-xs font-bold">
+                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-md border border-white/[0.06] text-white/60 text-xs font-bold">
                       {strikeNum}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-slate-700 capitalize">{strike.reason.replace(/_/g, ' ')}</span>
+                    <span className="text-white/70 capitalize">{strike.reason.replace(/_/g, ' ')}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-slate-500">Admin</span>
+                    <span className="text-white/50">Admin</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-slate-500">{formatDate(strike.created_at)}</span>
+                    <span className="text-white/50">{formatDate(strike.created_at)}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-slate-400 text-xs truncate max-w-xs block">
+                    <span className="text-white/40 text-xs truncate max-w-xs block">
                       {strike.notes ?? '—'}
                     </span>
                   </td>
@@ -464,13 +464,13 @@ export default function StrikesPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Creator
             </label>
             <select
               value={issueCreatorId}
               onChange={(e) => setIssueCreatorId(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
             >
               <option value="">Select creator...</option>
               {[...DEMO_CREATORS, ...DEMO_ACTIVE_ISSUES.filter(c => !DEMO_CREATORS.find(dc => dc.id === c.id))].map((c) => (
@@ -480,13 +480,13 @@ export default function StrikesPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Reason
             </label>
             <select
               value={issueReason}
               onChange={(e) => setIssueReason(e.target.value as StrikeReason)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
             >
               {STRIKE_REASONS.map((r) => (
                 <option key={r.value} value={r.value}>{r.label}</option>
@@ -495,7 +495,7 @@ export default function StrikesPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Notes
             </label>
             <textarea
@@ -503,13 +503,13 @@ export default function StrikesPage() {
               onChange={(e) => setIssueNotes(e.target.value)}
               placeholder="Document the violation..."
               rows={3}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 resize-none focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:border-cc-accent"
             />
           </div>
 
-          <div className="flex items-start gap-2 border border-slate-200 rounded-lg px-3 py-2.5">
+          <div className="flex items-start gap-2 border border-white/[0.06] rounded-lg px-3 py-2.5">
             <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-white/60">
               Strikes are cumulative. 2 strikes = 7-day ban. 3 strikes = permanent ban.
             </p>
           </div>
@@ -536,14 +536,14 @@ export default function StrikesPage() {
         description={`Set a temporary ban end date for ${banCreator?.name}.`}
       >
         <div>
-          <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
             Ban Until
           </label>
           <input
             type="date"
             value={banUntil}
             onChange={(e) => setBanUntil(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-cc-accent"
+            className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cc-accent"
           />
         </div>
         <ModalFooter>
@@ -567,8 +567,8 @@ export default function StrikesPage() {
         title="Permanent Ban"
         description="This action cannot be undone without manual reversal."
       >
-        <div className="p-4 border border-slate-200 rounded-lg">
-          <p className="text-sm text-slate-600">
+        <div className="p-4 border border-white/[0.06] rounded-lg">
+          <p className="text-sm text-white/60">
             You are about to permanently ban{' '}
             <span className="font-bold text-red-600">{permBanCreator?.name}</span>. They will lose
             all access to the HIVE network immediately.
@@ -589,9 +589,9 @@ export default function StrikesPage() {
         title="Lift Ban / Clear Strike"
         description={`Confirm lifting restriction on ${liftCreator?.name}.`}
       >
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-white/60">
           This will remove the active ban for{' '}
-          <span className="font-semibold text-slate-900">{liftCreator?.name}</span> and restore their access.
+          <span className="font-semibold text-white">{liftCreator?.name}</span> and restore their access.
           Strike count will not be automatically cleared.
         </p>
         <ModalFooter>

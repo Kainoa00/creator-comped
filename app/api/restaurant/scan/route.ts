@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
     const auth = await requireRestaurantSession()
     if (auth instanceof NextResponse) return auth
 
-    const { code, qr_token, restaurant_id } = await req.json()
+    const { code, qr_token } = await req.json()
+    const restaurant_id = auth.restaurantId
 
     if (!code && !qr_token) {
       return NextResponse.json({ error: 'code or qr_token required' }, { status: 400 })
@@ -39,9 +40,7 @@ export async function POST(req: NextRequest) {
     } else {
       query = query.eq('redemption_code', code)
     }
-    if (restaurant_id) {
-      query = query.eq('restaurant_id', restaurant_id)
-    }
+    query = query.eq('restaurant_id', restaurant_id)
 
     const { data: orders, error } = await query.limit(1)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })

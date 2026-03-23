@@ -48,12 +48,14 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>CreatorComped uses your camera to photograph dishes for proof of visit</string>
+	<string>HIVE uses your camera to scan QR codes and photograph dishes for proof of visit</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>CreatorComped accesses your photo library to select proof images</string>
+	<string>HIVE accesses your photo library to select proof images</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>CreatorComped saves QR codes to your photo library</string>
+	<string>HIVE saves QR codes to your photo library</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>CreatorComped uses your location to show nearby restaurants</string>
+	<string>HIVE uses your location to show nearby restaurants and businesses</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

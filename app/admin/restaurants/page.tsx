@@ -94,11 +94,11 @@ export default function RestaurantsPage() {
   return (
     <div className="px-8 py-6 space-y-5">
       {/* Header */}
-      <div className="border-b border-slate-200 pb-5 -mx-8 px-8 mb-6">
+      <div className="border-b border-white/[0.06] pb-5 -mx-8 px-8 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">Restaurants</h1>
-            <p className="text-sm text-slate-400 mt-0.5">
+            <h1 className="text-xl font-bold text-white">Restaurants</h1>
+            <p className="text-sm text-white/40 mt-0.5">
               Manage participating restaurants and their settings
             </p>
           </div>
@@ -114,28 +114,28 @@ export default function RestaurantsPage() {
 
       {/* Search */}
       <div className="relative w-72">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
         <input
           type="text"
           placeholder="Search restaurants..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
+          className="w-full bg-white/5 border border-white/[0.06] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
         />
       </div>
 
       {/* Restaurants Table */}
-      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+      <div className="bg-[#1a1a1a] border border-white/[0.06] rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="px-5 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Name</th>
-              <th className="px-5 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Address</th>
-              <th className="px-5 py-3 text-center text-xs font-bold text-slate-400 uppercase tracking-wider">Active</th>
-              <th className="px-5 py-3 text-center text-xs font-bold text-slate-400 uppercase tracking-wider">Comps Today</th>
-              <th className="px-5 py-3 text-center text-xs font-bold text-slate-400 uppercase tracking-wider">Menu Items</th>
-              <th className="px-5 py-3 text-center text-xs font-bold text-slate-400 uppercase tracking-wider">Comps</th>
-              <th className="px-5 py-3 text-right text-xs font-bold text-slate-400 uppercase tracking-wider">Actions</th>
+            <tr className="border-b border-white/[0.06] bg-white/5">
+              <th className="px-5 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Name</th>
+              <th className="px-5 py-3 text-left text-xs font-bold text-white/40 uppercase tracking-wider">Address</th>
+              <th className="px-5 py-3 text-center text-xs font-bold text-white/40 uppercase tracking-wider">Active</th>
+              <th className="px-5 py-3 text-center text-xs font-bold text-white/40 uppercase tracking-wider">Comps Today</th>
+              <th className="px-5 py-3 text-center text-xs font-bold text-white/40 uppercase tracking-wider">Menu Items</th>
+              <th className="px-5 py-3 text-center text-xs font-bold text-white/40 uppercase tracking-wider">Comps</th>
+              <th className="px-5 py-3 text-right text-xs font-bold text-white/40 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -143,10 +143,10 @@ export default function RestaurantsPage() {
               <tr>
                 <td colSpan={7} className="px-5 py-16 text-center">
                   <div className="flex flex-col items-center gap-3">
-                    <div className="h-14 w-14 rounded-lg border border-slate-200 flex items-center justify-center">
-                      <UtensilsCrossed className="h-6 w-6 text-slate-300" />
+                    <div className="h-14 w-14 rounded-lg border border-white/[0.06] flex items-center justify-center">
+                      <UtensilsCrossed className="h-6 w-6 text-white/30" />
                     </div>
-                    <p className="font-semibold text-slate-900">No restaurants found</p>
+                    <p className="font-semibold text-white">No restaurants found</p>
                   </div>
                 </td>
               </tr>
@@ -160,16 +160,16 @@ export default function RestaurantsPage() {
                 return (
                   <tr
                     key={restaurant.id}
-                    className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors cursor-pointer"
+                    className="border-b border-white/[0.06] hover:bg-white/5 transition-colors cursor-pointer"
                     onClick={() => router.push(`/admin/restaurants/${restaurant.id}`)}
                   >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-9 w-9 rounded-lg border border-slate-200 flex items-center justify-center shrink-0">
-                          <UtensilsCrossed className="h-4 w-4 text-slate-400" />
+                        <div className="h-9 w-9 rounded-lg border border-white/[0.06] flex items-center justify-center shrink-0">
+                          <UtensilsCrossed className="h-4 w-4 text-white/40" />
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-900">{restaurant.name}</p>
+                          <p className="font-semibold text-white">{restaurant.name}</p>
                           {isPaused && (
                             <span className="text-xs text-amber-600">Comps paused</span>
                           )}
@@ -178,8 +178,8 @@ export default function RestaurantsPage() {
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-1.5">
-                        <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                        <span className="text-sm text-slate-500">{restaurant.address}</span>
+                        <MapPin className="h-3.5 w-3.5 text-white/40 shrink-0" />
+                        <span className="text-sm text-white/50">{restaurant.address}</span>
                       </div>
                     </td>
                     <td className="px-5 py-4 text-center">
@@ -194,20 +194,20 @@ export default function RestaurantsPage() {
                         {isActive ? (
                           <ToggleRight className="h-6 w-6 text-emerald-500" />
                         ) : (
-                          <ToggleLeft className="h-6 w-6 text-slate-300" />
+                          <ToggleLeft className="h-6 w-6 text-white/30" />
                         )}
                       </button>
                     </td>
                     <td className="px-5 py-4 text-center">
                       <div className="flex flex-col items-center">
-                        <span className="font-semibold text-slate-900 font-mono">
+                        <span className="font-semibold text-white font-mono">
                           {compsToday}
-                          {cap ? <span className="text-slate-400 font-normal"> / {cap}</span> : null}
+                          {cap ? <span className="text-white/40 font-normal"> / {cap}</span> : null}
                         </span>
                       </div>
                     </td>
                     <td className="px-5 py-4 text-center">
-                      <span className="font-mono text-slate-700">{menuItemCount}</span>
+                      <span className="font-mono text-white/70">{menuItemCount}</span>
                     </td>
                     <td className="px-5 py-4 text-center">
                       <div className="flex items-center justify-center gap-1.5">
@@ -224,7 +224,7 @@ export default function RestaurantsPage() {
                             e.stopPropagation()
                             router.push(`/admin/restaurants/${restaurant.id}`)
                           }}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                          className="p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
                           title="View / Edit"
                         >
                           <Eye className="h-4 w-4" />
@@ -236,8 +236,8 @@ export default function RestaurantsPage() {
                           }}
                           className={`p-1.5 rounded-lg transition-colors ${
                             isPaused
-                              ? 'text-emerald-500 hover:bg-slate-50'
-                              : 'text-amber-500 hover:bg-slate-50'
+                              ? 'text-emerald-500 hover:bg-white/5'
+                              : 'text-amber-500 hover:bg-white/5'
                           }`}
                           title={isPaused ? 'Resume Comps' : 'Pause Comps'}
                         >
@@ -263,7 +263,7 @@ export default function RestaurantsPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Restaurant Name *
             </label>
             <input
@@ -271,12 +271,12 @@ export default function RestaurantsPage() {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="e.g. Brick Oven Restaurant"
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Address *
             </label>
             <input
@@ -284,13 +284,13 @@ export default function RestaurantsPage() {
               value={newAddress}
               onChange={(e) => setNewAddress(e.target.value)}
               placeholder="111 E 800 N, Provo, UT 84606"
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
                 Latitude
               </label>
               <input
@@ -299,11 +299,11 @@ export default function RestaurantsPage() {
                 value={newLat}
                 onChange={(e) => setNewLat(e.target.value)}
                 placeholder="40.2477"
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
+                className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
                 Longitude
               </label>
               <input
@@ -312,13 +312,13 @@ export default function RestaurantsPage() {
                 value={newLng}
                 onChange={(e) => setNewLng(e.target.value)}
                 placeholder="-111.6561"
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent"
+                className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-1.5">
               Manager PIN *
             </label>
             <input
@@ -327,7 +327,7 @@ export default function RestaurantsPage() {
               onChange={(e) => setNewPin(e.target.value.slice(0, 6))}
               placeholder="4–6 digit PIN"
               maxLength={6}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent font-mono tracking-widest"
+              className="w-full bg-white/5 border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-cc-accent font-mono tracking-widest"
             />
           </div>
         </div>

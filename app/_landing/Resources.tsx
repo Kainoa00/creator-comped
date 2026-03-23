@@ -45,7 +45,7 @@ export default function Resources() {
       <AnimatedSection>
         <div className="text-center">
           <Link
-            href="/internal-admin/login"
+            href="/admin"
             className="inline-flex items-center gap-1.5 text-sm text-white/30 hover:text-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm"
           >
             Admin Dashboard

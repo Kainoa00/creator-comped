@@ -74,8 +74,8 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         <aside className="hidden md:flex flex-col w-56 shrink-0 border-r border-slate-100 bg-white sticky top-0 h-screen">
           {/* Brand */}
           <div className="px-5 py-6 border-b border-slate-100">
-            <span className="text-sm font-bold tracking-tight text-slate-900">
-              Creator<span className="text-cc-accent">Comped</span>
+            <span className="text-sm font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-orange-400 to-blue-500 bg-clip-text text-transparent">HIVE</span>
             </span>
           </div>
 

@@ -8,10 +8,10 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="text-lg font-extrabold mb-3 tracking-tight">
-              Creator<span className="bg-gradient-to-r from-orange-400 to-blue-500 bg-clip-text text-transparent">Comped</span>
+              <span className="bg-gradient-to-r from-orange-400 to-blue-500 bg-clip-text text-transparent">HIVE</span>
             </div>
             <p className="text-sm text-white/40 max-w-xs leading-relaxed">
-              Connecting food creators with local restaurants for authentic content and comped meals.
+              Connecting creators with local businesses for authentic content and comps.
             </p>
           </div>
 
@@ -44,10 +44,10 @@ export default function Footer() {
         <div className="pt-8 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/25">&copy; 2026 Liaison Technologies. All rights reserved.</p>
           <Link
-            href="/restaurant-admin/login"
+            href="/login"
             className="text-xs text-white/25 hover:text-white/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm"
           >
-            Restaurant Login &rarr;
+            Login &rarr;
           </Link>
         </div>
       </div>

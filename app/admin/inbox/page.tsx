@@ -1,0 +1,283 @@
+'use client'
+
+import { useState } from 'react'
+import { Search, Check, Mail, User } from 'lucide-react'
+
+type TicketStatus = 'open' | 'resolved'
+type TicketType = 'creator' | 'restaurant' | 'general'
+
+interface SupportTicket {
+  id: string
+  name: string
+  email: string
+  type: TicketType
+  subject: string
+  message: string
+  submittedAt: string
+  status: TicketStatus
+}
+
+const mockTickets: SupportTicket[] = [
+  {
+    id: '1',
+    name: 'Sarah Johnson',
+    email: 'sarah@foodie.com',
+    type: 'creator',
+    subject: 'Issue with QR code redemption',
+    message:
+      "Hi, I tried to redeem my comp at Italian Place yesterday but the QR code wouldn't scan. The restaurant staff tried multiple times but it kept showing an error. Can you help? My comp ID is #12345.",
+    submittedAt: '2026-02-28 4:15 PM',
+    status: 'open',
+  },
+  {
+    id: '2',
+    name: 'Mike Chen',
+    email: 'mike@italianplace.com',
+    type: 'restaurant',
+    subject: 'Need to update menu items',
+    message:
+      "We need to update our menu but some items aren't appearing in the dashboard. When I try to add new items to the Pizza category, I get an error. Could you please look into this?",
+    submittedAt: '2026-02-28 11:30 AM',
+    status: 'open',
+  },
+  {
+    id: '3',
+    name: 'Emma Davis',
+    email: 'emma@eats.com',
+    type: 'creator',
+    subject: 'Payment for monthly leaderboard prize',
+    message:
+      "Hi! I was ranked #3 last month but haven't received my prize payment yet. Can you check on the status? Thanks!",
+    submittedAt: '2026-02-27 2:45 PM',
+    status: 'resolved',
+  },
+  {
+    id: '4',
+    name: 'John Smith',
+    email: 'john@example.com',
+    type: 'general',
+    subject: 'How do I sign up as a restaurant?',
+    message:
+      "I own a restaurant and I'm interested in joining HIVE. What are the requirements and how do I get started? Do you have any pricing information?",
+    submittedAt: '2026-02-27 10:20 AM',
+    status: 'resolved',
+  },
+]
+
+type PriorityLabel = 'High' | 'Normal'
+
+function getPriority(ticket: SupportTicket): PriorityLabel {
+  return ticket.status === 'open' && ticket.type !== 'general' ? 'High' : 'Normal'
+}
+
+function StatusBadge({ status }: { status: TicketStatus }) {
+  if (status === 'open') return <div className="px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">Open</div>
+  return <div className="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Resolved</div>
+}
+
+export default function InboxPage() {
+  const [tickets, setTickets] = useState<SupportTicket[]>(mockTickets)
+  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(tickets[0])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterStatus, setFilterStatus] = useState<TicketStatus | 'all'>('all')
+  const [filterType, setFilterType] = useState<TicketType | 'all'>('all')
+  const [replyText, setReplyText] = useState('')
+
+  const filteredTickets = tickets.filter((ticket) => {
+    const matchesSearch =
+      ticket.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.subject.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = filterStatus === 'all' || ticket.status === filterStatus
+    const matchesType = filterType === 'all' || ticket.type === filterType
+    return matchesSearch && matchesStatus && matchesType
+  })
+
+  const handleResolve = (id: string) => {
+    const updated = tickets.map((ticket) =>
+      ticket.id === id ? { ...ticket, status: 'resolved' as TicketStatus } : ticket
+    )
+    setTickets(updated)
+    const found = updated.find((t) => t.id === id)
+    if (found) setSelectedTicket(found)
+    setReplyText('')
+  }
+
+  const openCount = tickets.filter((ticket) => ticket.status === 'open').length
+
+  return (
+    <div className="flex h-full">
+      {/* List Panel */}
+      <div className="w-80 shrink-0 border-r border-slate-200 flex flex-col bg-slate-50">
+        <div className="p-5 border-b border-slate-200">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-lg font-black text-slate-900">Support Inbox</h1>
+            {openCount > 0 && (
+              <div className="px-2.5 py-1 rounded-full bg-cc-accent text-white text-xs font-semibold">
+                {openCount} open
+              </div>
+            )}
+          </div>
+
+          {/* Search */}
+          <div className="relative mb-3">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search tickets..."
+              className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-cc-accent"
+            />
+          </div>
+
+          {/* Filters */}
+          <div className="flex gap-2">
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value as TicketType | 'all')}
+              className="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none"
+            >
+              <option value="all">All Types</option>
+              <option value="creator">Creator</option>
+              <option value="restaurant">Restaurant</option>
+              <option value="general">General</option>
+            </select>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value as TicketStatus | 'all')}
+              className="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none"
+            >
+              <option value="all">All Status</option>
+              <option value="open">Open</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Ticket List */}
+        <div className="flex-1 overflow-y-auto">
+          {filteredTickets.map((ticket) => {
+            const priority = getPriority(ticket)
+            return (
+              <button
+                key={ticket.id}
+                onClick={() => setSelectedTicket(ticket)}
+                className={`w-full p-4 border-b border-slate-200 text-left hover:bg-white transition-colors ${
+                  selectedTicket?.id === ticket.id ? 'bg-white shadow-sm' : ''
+                }`}
+              >
+                <div className="flex items-start justify-between mb-1">
+                  <p className="text-sm font-semibold text-slate-900 truncate flex-1 mr-2">{ticket.name}</p>
+                  <StatusBadge status={ticket.status} />
+                </div>
+                <p className="text-sm text-slate-700 truncate mb-0.5">{ticket.subject}</p>
+                <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <span>{ticket.submittedAt}</span>
+                  <span className="capitalize">{ticket.type}</span>
+                  {priority === 'High' && (
+                    <span className="text-orange-500 font-medium">· High</span>
+                  )}
+                </div>
+              </button>
+            )
+          })}
+          {filteredTickets.length === 0 && (
+            <div className="py-12 text-center text-slate-400 text-sm">No tickets found</div>
+          )}
+        </div>
+      </div>
+
+      {/* Detail Panel */}
+      <div className="flex-1 overflow-y-auto">
+        {selectedTicket ? (
+          <div className="p-8 max-w-2xl">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-8 border-b border-slate-200 pb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                  <User className="w-5 h-5 text-slate-500" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-black text-slate-900">{selectedTicket.name}</h2>
+                  <p className="text-sm text-slate-500">{selectedTicket.email}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded capitalize">{selectedTicket.type}</span>
+                    <StatusBadge status={selectedTicket.status} />
+                  </div>
+                </div>
+              </div>
+              {selectedTicket.status === 'open' && (
+                <button
+                  onClick={() => handleResolve(selectedTicket.id)}
+                  className="px-4 py-2 rounded-lg text-white text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
+                  style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
+                >
+                  <Check className="w-4 h-4" />
+                  Mark Resolved
+                </button>
+              )}
+            </div>
+
+            {/* Message Thread */}
+            <div className="border border-slate-200 rounded-lg p-5 mb-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Mail className="w-4 h-4 text-orange-500" />
+                <h3 className="text-sm font-semibold text-slate-900">{selectedTicket.subject}</h3>
+              </div>
+
+              {/* Original message */}
+              <div className="bg-slate-50 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-semibold text-slate-700">{selectedTicket.name}</p>
+                  <p className="text-xs text-slate-400">{selectedTicket.submittedAt}</p>
+                </div>
+                <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">{selectedTicket.message}</p>
+              </div>
+
+              {selectedTicket.status === 'resolved' && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Check className="w-4 h-4 text-green-600 shrink-0" />
+                    <p className="text-xs font-semibold text-green-700">Resolved by Admin</p>
+                  </div>
+                  <p className="text-sm text-green-700">This ticket has been marked as resolved.</p>
+                </div>
+              )}
+            </div>
+
+            {/* Reply Composer */}
+            {selectedTicket.status === 'open' && (
+              <div className="border border-slate-200 rounded-lg p-5">
+                <h3 className="text-sm font-semibold text-slate-900 mb-3">
+                  Reply to {selectedTicket.name}
+                </h3>
+                <textarea
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  placeholder="Type your response..."
+                  className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-cc-accent h-32 resize-none mb-3"
+                />
+                <div className="flex justify-end gap-2">
+                  <button className="px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+                    Save Draft
+                  </button>
+                  <button
+                    className="px-4 py-2 rounded-lg text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                    style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
+                  >
+                    Send Reply
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="h-full flex items-center justify-center text-slate-400 text-sm">
+            Select a ticket to view details
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

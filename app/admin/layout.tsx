@@ -1,9 +1,11 @@
 'use client'
 
+import { useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { CCLogoWithMark } from '@/components/cc-logo'
+import { HiveLogoWithMark } from '@/components/hive-logo'
+import { useAuth } from '@/lib/hooks/useAuth'
 import {
   LayoutDashboard,
   UserCheck,
@@ -11,11 +13,16 @@ import {
   Zap,
   Trophy,
   UtensilsCrossed,
+  Users,
+  FileCheck,
+  Inbox,
   LogOut,
 } from 'lucide-react'
 
 const PENDING_VETTING = 3
 const PENDING_PROOFS = 5
+const PENDING_APPS = 2
+const PENDING_INBOX = 2
 
 interface NavItem {
   label: string
@@ -57,11 +64,47 @@ const NAV_ITEMS: NavItem[] = [
     href: '/admin/restaurants',
     icon: <UtensilsCrossed className="h-4 w-4" />,
   },
+  {
+    label: 'Applications',
+    href: '/admin/applications',
+    icon: <Users className="h-4 w-4" />,
+    badge: PENDING_APPS,
+  },
+  {
+    label: 'Submissions',
+    href: '/admin/submissions',
+    icon: <FileCheck className="h-4 w-4" />,
+  },
+  {
+    label: 'Support Inbox',
+    href: '/admin/inbox',
+    icon: <Inbox className="h-4 w-4" />,
+    badge: PENDING_INBOX,
+  },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
+  const { user, loading, signOut } = useAuth()
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/login')
+    } else if (!loading && user && user.role !== 'admin') {
+      router.replace(user.role === 'business' ? '/dashboard' : '/discover')
+    }
+  }, [loading, user, router])
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-white">
+        <div className="h-5 w-5 border-2 border-slate-200 border-t-slate-600 rounded-full animate-spin" />
+      </div>
+    )
+  }
+
+  if (!user || user.role !== 'admin') return null
 
   function isActive(href: string) {
     if (href === '/admin') return pathname === '/admin'
@@ -74,7 +117,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className="w-56 shrink-0 flex flex-col bg-white border-r border-slate-200">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-slate-200">
-          <CCLogoWithMark size="sm" />
+          <HiveLogoWithMark size="sm" />
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-2">
             Admin Panel
           </p>
@@ -114,10 +157,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Footer */}
         <div className="border-t border-slate-200 px-5 py-4">
-          <p className="text-xs font-semibold text-slate-900 mb-0.5">Admin User</p>
-          <p className="text-xs text-slate-400 mb-3">admin@creatorcomped.com</p>
+          <p className="text-xs font-semibold text-slate-900 mb-0.5">Admin</p>
+          <p className="text-xs text-slate-400 mb-3 truncate">{user.email}</p>
           <button
-            onClick={() => router.push('/')}
+            onClick={() => signOut().then(() => router.push('/login'))}
             className="flex items-center gap-2 text-xs text-slate-400 hover:text-slate-600 transition-colors"
           >
             <LogOut className="h-3.5 w-3.5" />

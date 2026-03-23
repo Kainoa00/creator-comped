@@ -29,7 +29,7 @@ export default function SocialProof() {
             <h2 className="text-3xl lg:text-4xl font-extrabold mb-4 tracking-tight">Trusted by local restaurants</h2>
             <p className="text-white/55 text-lg mb-12 max-w-xl mx-auto leading-relaxed">
               Join hundreds of restaurants and thousands of creators already
-              building authentic community with CreatorComped.
+              building authentic community with HIVE.
             </p>
 
             {/* Marquee container with edge fade */}

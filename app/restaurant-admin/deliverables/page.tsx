@@ -12,7 +12,7 @@ export default function EditDeliverablesPage() {
     instagramRequired: true,
     tiktokRequired: true,
     instagramStory: false,
-    hashtags: '#CreatorComped #YourRestaurant',
+    hashtags: '#HIVE #YourRestaurant',
     tagRestaurant: true,
     usageRights: true,
     additionalNotes: 'Please showcase the ambiance and plate presentation. Tag our location!',
@@ -57,7 +57,7 @@ export default function EditDeliverablesPage() {
             value={formData.hashtags}
             onChange={(e) => set('hashtags', e.target.value)}
             className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20"
-            placeholder="#CreatorComped #YourRestaurant"
+            placeholder="#HIVE #YourRestaurant"
           />
           <p className="text-xs text-white/30 mt-1.5">Separate hashtags with spaces</p>
         </div>

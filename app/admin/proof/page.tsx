@@ -45,7 +45,7 @@ const ALL_PROOFS = [
     screenshot_url: null,
     submitted_at: new Date(Date.now() - 8 * 3600 * 1000).toISOString(),
     review_status: 'needs_fix' as ProofReviewStatus,
-    reviewer_notes: 'Missing required hashtag #CreatorComped in caption.',
+    reviewer_notes: 'Missing required hashtag #HIVE in caption.',
     deadline: new Date(Date.now() + 6 * 3600 * 1000).toISOString(),
   },
 ]

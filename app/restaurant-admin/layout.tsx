@@ -95,9 +95,9 @@ export default function RestaurantAdminLayout({ children }: { children: React.Re
           {/* Brand */}
           <div className="px-5 py-6 border-b border-white/[0.06]">
             <span className="text-sm font-bold tracking-tight text-white">
-              Creator<span className="bg-gradient-to-r from-orange-400 to-rose-400 bg-clip-text text-transparent">Comped</span>
+              <span className="bg-gradient-to-r from-orange-400 to-blue-500 bg-clip-text text-transparent">HIVE</span>
             </span>
-            <p className="text-[10px] text-white/40 mt-0.5 font-medium tracking-widest uppercase">Restaurant</p>
+            <p className="text-[10px] text-white/40 mt-0.5 font-medium tracking-widest uppercase">Business</p>
           </div>
 
           {/* Nav links */}

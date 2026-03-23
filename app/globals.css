@@ -1,11 +1,27 @@
 @import "tailwindcss";
 
 /* ============================================================
-   CreatorComped — Design Tokens (Tailwind v4 @theme)
-   Light theme: Instagram meets Linear
+   HIVE — Design Tokens (Tailwind v4 @theme)
+   Dark theme: orange-to-blue gradient accent
    ============================================================ */
 @theme inline {
   /* Colors */
+  --color-hive-bg: #0B0B0D;
+  --color-hive-bg-secondary: #111114;
+  --color-hive-card: #1a1a1a;
+  --color-hive-card-secondary: #252525;
+  --color-hive-border: #2a2a2a;
+  --color-hive-accent: #ff6b35;
+  --color-hive-accent-blue: #4a90e2;
+  --color-hive-accent-subtle: rgba(255,107,53,0.1);
+  --color-hive-success: #10b981;
+  --color-hive-warning: #f59e0b;
+  --color-hive-error: #ef4444;
+  --color-hive-text: #ffffff;
+  --color-hive-text-secondary: rgba(255,255,255,0.6);
+  --color-hive-text-muted: rgba(255,255,255,0.4);
+
+  /* Legacy cc-* aliases for gradual migration */
   --color-cc-bg: #ffffff;
   --color-cc-bg-secondary: #f8fafc;
   --color-cc-card: #ffffff;
@@ -26,14 +42,30 @@
   --font-display: var(--font-manrope), system-ui, sans-serif;
 
   /* Border radius */
-  --radius-cc-sm: 8px;
-  --radius-cc: 12px;
-  --radius-cc-lg: 16px;
-  --radius-cc-xl: 24px;
+  --radius-hive-sm: 8px;
+  --radius-hive: 12px;
+  --radius-hive-lg: 16px;
+  --radius-hive-xl: 24px;
 }
 
 /* CSS custom properties for non-Tailwind usage */
 :root {
+  --hive-bg: #0B0B0D;
+  --hive-bg-secondary: #111114;
+  --hive-card: #1a1a1a;
+  --hive-card-secondary: #252525;
+  --hive-border: #2a2a2a;
+  --hive-accent: #ff6b35;
+  --hive-accent-blue: #4a90e2;
+  --hive-accent-subtle: rgba(255,107,53,0.1);
+  --hive-success: #10b981;
+  --hive-warning: #f59e0b;
+  --hive-error: #ef4444;
+  --hive-text: #ffffff;
+  --hive-text-secondary: rgba(255,255,255,0.6);
+  --hive-text-muted: rgba(255,255,255,0.4);
+
+  /* Legacy cc-* for existing components */
   --cc-bg: #ffffff;
   --cc-bg-secondary: #f8fafc;
   --cc-card: #ffffff;
@@ -63,13 +95,13 @@ html {
 
 body {
   overflow-x: hidden;
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: #0B0B0D;
+  color: #ffffff;
 }
 
 /* Dark theme for admin/marketing pages */
 .dark-page {
-  background-color: #0a0a0a;
+  background-color: #0B0B0D;
   color: #ffffff;
 }
 
@@ -90,17 +122,17 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: #111114;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
+  background: #2a2a2a;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #5c8ebf;
+  background: #ff6b35;
 }
 
-/* Mapbox — use light style */
+/* Mapbox */
 .mapboxgl-map {
   font-family: var(--font-manrope), system-ui, sans-serif;
 }
@@ -110,7 +142,7 @@ body {
   border-radius: 16px !important;
   padding: 0 !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
-  border: 1px solid #e2e8f0 !important;
+  border: 1px solid #2a2a2a !important;
 }
 .mapboxgl-popup-tip {
   display: none !important;
@@ -121,17 +153,17 @@ body {
 
 /* Selection color */
 ::selection {
-  background: rgba(92, 142, 191, 0.2);
-  color: #0f172a;
+  background: rgba(255, 107, 53, 0.2);
+  color: #ffffff;
 }
 
 /* Focus ring global reset */
 :focus-visible {
-  outline: 2px solid #5c8ebf;
+  outline: 2px solid #ff6b35;
   outline-offset: 2px;
 }
 
-/* Centering container — bypasses Tailwind v4 class generation issues */
+/* Centering container */
 .cc-container {
   width: 100%;
   max-width: 1024px;
@@ -150,7 +182,6 @@ body {
   padding-right: 24px;
 }
 
-/* Use inside already-padded wrappers (no extra padding) */
 .cc-inner {
   width: 100%;
   max-width: 960px;
@@ -172,3 +203,11 @@ body {
 @keyframes border-beam {
   100% { offset-distance: 100%; }
 }
+
+/* html5-qrcode dark theme overrides for HIVE scanner */
+#qr-reader { border: none !important; background: transparent !important; }
+#qr-reader__scan_region { background: transparent !important; }
+#qr-reader__dashboard { background: transparent !important; }
+#qr-reader__dashboard_section_swaplink { color: #9ca3af !important; }
+#qr-reader__status_span { color: #9ca3af !important; font-size: 12px !important; }
+#qr-reader video { border-radius: 16px !important; }

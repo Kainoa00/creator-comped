@@ -258,7 +258,7 @@ export default function RestaurantsPage() {
         open={showAddModal}
         onClose={() => setShowAddModal(false)}
         title="Add Restaurant"
-        description="Add a new restaurant to the CreatorComped network."
+        description="Add a new restaurant to the HIVE network."
         maxWidth="max-w-lg"
       >
         <div className="space-y-4">

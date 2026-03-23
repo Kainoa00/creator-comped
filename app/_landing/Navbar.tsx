@@ -48,7 +48,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between" aria-label="Main navigation">
         {/* Logo */}
         <Link href="/" className="text-xl font-extrabold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm">
-          Creator<span className="bg-gradient-to-r from-orange-400 to-blue-500 bg-clip-text text-transparent">Comped</span>
+          <span className="bg-gradient-to-r from-orange-400 to-blue-500 bg-clip-text text-transparent">HIVE</span>
         </Link>
 
         {/* Desktop links */}
@@ -67,7 +67,7 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden md:block">
           <Link
-            href="/restaurant-admin/login"
+            href="/login"
             className="px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-orange-500 via-rose-500 to-blue-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25 hover:scale-[1.03] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
           >
             Login
@@ -105,7 +105,7 @@ export default function Navbar() {
             </a>
           ))}
           <Link
-            href="/restaurant-admin/login"
+            href="/login"
             className="mt-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white text-center bg-gradient-to-r from-orange-500 via-rose-500 to-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
             onClick={() => setOpen(false)}
           >

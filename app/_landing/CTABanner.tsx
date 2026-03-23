@@ -20,7 +20,7 @@ export default function CTABanner() {
             <div className="relative">
               <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 tracking-tight">Ready to get started?</h2>
               <p className="text-lg opacity-90 mb-10 max-w-xl mx-auto leading-relaxed">
-                Join CreatorComped today and start connecting with your local food community.
+                Join HIVE today and start connecting with your local community.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a

@@ -333,7 +333,7 @@ export default function CartPage() {
               My account will remain <strong className="text-slate-900 font-black">public</strong>. Posts must stay active for at least 30 days.
             </AgreementCheck>
             <AgreementCheck checked={agree3} onChange={setAgree3}>
-              I understand <strong className="text-slate-900 font-black">3 strikes = permanent ban</strong> from CreatorComped.
+              I understand <strong className="text-slate-900 font-black">3 strikes = permanent ban</strong> from HIVE.
             </AgreementCheck>
           </div>
 

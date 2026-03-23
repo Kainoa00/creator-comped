@@ -7,7 +7,7 @@ import AnimatedSection, { EyebrowLabel, StaggerContainer, StaggerItem } from './
 const faqs = [
   {
     q: 'How do I become a creator?',
-    a: 'Download the Creator Comped app, create an account with your Instagram and TikTok profiles, and start browsing participating restaurants immediately. No minimum follower count required to start.',
+    a: 'Download the HIVE app, create an account with your Instagram and TikTok profiles, and start browsing participating businesses immediately. No minimum follower count required to start.',
   },
   {
     q: 'How do restaurants benefit?',

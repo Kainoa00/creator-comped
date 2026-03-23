@@ -571,7 +571,7 @@ export default function StrikesPage() {
           <p className="text-sm text-slate-600">
             You are about to permanently ban{' '}
             <span className="font-bold text-red-600">{permBanCreator?.name}</span>. They will lose
-            all access to the CreatorComped network immediately.
+            all access to the HIVE network immediately.
           </p>
         </div>
         <ModalFooter>

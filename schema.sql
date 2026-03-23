@@ -1,5 +1,5 @@
 -- ============================================================
--- CreatorComped Database Schema
+-- HIVE Database Schema
 -- Run this in your Supabase SQL editor (Settings > SQL Editor)
 -- ============================================================
 
@@ -11,6 +11,7 @@ create extension if not exists "uuid-ossp";
 -- ─────────────────────────────────────────────────────────────
 create table creators (
   id uuid primary key default uuid_generate_v4(),
+  auth_user_id uuid unique references auth.users(id) on delete set null,
   name text not null,
   photo_url text,
   email text unique not null,
@@ -342,3 +343,25 @@ insert into restaurants (name, address, lat, lng, hours, settings) values
   '{"mon":{"open":"10:30","close":"22:00","closed":false},"tue":{"open":"10:30","close":"22:00","closed":false},"wed":{"open":"10:30","close":"22:00","closed":false},"thu":{"open":"10:30","close":"22:00","closed":false},"fri":{"open":"10:30","close":"23:00","closed":false},"sat":{"open":"10:30","close":"23:00","closed":false},"sun":{"open":"11:00","close":"21:00","closed":false}}',
   '{"daily_comp_cap":4,"blackout_start":"11:30","blackout_end":"13:00","cooldown_days":10,"max_items_per_order":2,"pause_comps":false}'
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- USER PROFILES (Phase 2 — unified auth role mapping)
+-- ─────────────────────────────────────────────────────────────
+create table user_profiles (
+  id uuid primary key default gen_random_uuid(),
+  auth_user_id uuid not null unique references auth.users(id) on delete cascade,
+  role text not null check (role in ('influencer', 'business', 'admin')),
+  creator_id uuid references creators(id) on delete set null,
+  restaurant_user_id uuid references restaurant_users(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+-- Index for fast role lookups
+create index user_profiles_auth_user_id_idx on user_profiles(auth_user_id);
+
+-- RLS: users can only read their own profile
+alter table user_profiles enable row level security;
+create policy "users read own profile" on user_profiles
+  for select using (auth.uid() = auth_user_id);
+create policy "users insert own profile" on user_profiles
+  for insert with check (auth.uid() = auth_user_id);

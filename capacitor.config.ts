@@ -11,12 +11,12 @@ import type { CapacitorConfig } from '@capacitor/cli'
  */
 const config: CapacitorConfig = {
   appId: 'com.creatorcomped.app',
-  appName: 'CreatorComped',
+  appName: 'HIVE',
   webDir: 'out',  // fallback for offline; server.url takes precedence when set
   server: {
     // Point to the /creator route on the production Vercel deployment.
     // Change this to your actual Vercel domain before App Store submission.
-    url: process.env.CAPACITOR_SERVER_URL ?? 'https://app.creatorcomped.com/creator',
+    url: process.env.CAPACITOR_SERVER_URL ?? 'https://creatorcomped.com/login',
     cleartext: false,
     androidScheme: 'https',
   },
@@ -37,7 +37,7 @@ const config: CapacitorConfig = {
   },
   ios: {
     // Set to true before release builds
-    appendUserAgent: 'CreatorComped',
+    appendUserAgent: 'HIVE',
   },
   android: {
     // Minimum Android API level

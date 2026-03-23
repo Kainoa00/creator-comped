@@ -59,7 +59,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg text-white/60 leading-relaxed mb-10 max-w-lg">
-              CreatorComped matches food creators with restaurants offering comped meals.
+              HIVE matches creators with local businesses offering comped meals and services.
               Post authentic content, climb the leaderboard, and earn monthly prizes.
             </p>
 

@@ -3,8 +3,9 @@
  * Unit tests for lib/auth.ts
  *
  * These tests mock the Supabase client so they run without a live database.
- * They verify the signInWithEmail logic: restaurantId lookup, error handling,
- * and demo-mode bypass.
+ * They verify signInWithEmail and getSession logic: role detection via
+ * user_profiles, legacy restaurant_users fallback, error handling, and
+ * demo-mode bypass.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
@@ -45,8 +46,9 @@ function mockSupabaseAuth(user: { id: string; email: string } | null, error: str
   })
 }
 
-function mockRestaurantUsersQuery(
-  result: { restaurant_id: string; role: string } | null,
+/** Mock a user_profiles row returned from .single() */
+function mockUserProfilesQuery(
+  result: { role: string; creator_id: string | null; restaurant_user_id: string | null } | null,
   error = false
 ) {
   const chainMock = {
@@ -61,6 +63,42 @@ function mockRestaurantUsersQuery(
   return chainMock
 }
 
+/** Mock both user_profiles (first call) and restaurant_users (second call) */
+function mockProfileThenRestaurant(
+  profile: { role: string; creator_id: string | null; restaurant_user_id: string | null },
+  restaurantId: string
+) {
+  mockFrom
+    .mockReturnValueOnce({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      single: vi.fn().mockResolvedValue({ data: profile, error: null }),
+    })
+    .mockReturnValueOnce({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      single: vi.fn().mockResolvedValue({ data: { restaurant_id: restaurantId }, error: null }),
+    })
+}
+
+/** Mock user_profiles miss then restaurant_users hit (legacy fallback) */
+function mockLegacyFallback(
+  restaurantId: string,
+  role = 'business'
+) {
+  mockFrom
+    .mockReturnValueOnce({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      single: vi.fn().mockResolvedValue({ data: null, error: { message: 'not found' } }),
+    })
+    .mockReturnValueOnce({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      single: vi.fn().mockResolvedValue({ data: { restaurant_id: restaurantId, role }, error: null }),
+    })
+}
+
 // ─── Tests ──────────────────────────────────────────────────────────────────
 
 describe('signInWithEmail', () => {
@@ -70,20 +108,36 @@ describe('signInWithEmail', () => {
   })
 
   describe('demo mode', () => {
-    it('returns a session for any email + password', async () => {
-      setDemoMode(true)
-      const { session, error } = await signInWithEmail('owner@test.com', 'any-pass')
+    beforeEach(() => setDemoMode(true))
+
+    it('returns influencer session for a regular email', async () => {
+      const { session, error } = await signInWithEmail('user@test.com', 'any-pass')
       expect(error).toBeNull()
       expect(session).toMatchObject({
         userId: 'demo-user',
-        email: 'owner@test.com',
-        role: 'restaurant_admin',
-        restaurantId: 'restaurant-001',
+        email: 'user@test.com',
+        role: 'influencer',
+        creatorId: 'creator-001',
       })
     })
 
+    it('returns business session for a biz email', async () => {
+      const { session, error } = await signInWithEmail('owner@biz.com', 'any-pass')
+      expect(error).toBeNull()
+      expect(session).toMatchObject({
+        role: 'business',
+        restaurantId: 'restaurant-001',
+        creatorId: null,
+      })
+    })
+
+    it('returns admin session for an admin email', async () => {
+      const { session, error } = await signInWithEmail('admin@hive.app', 'any-pass')
+      expect(error).toBeNull()
+      expect(session).toMatchObject({ role: 'admin' })
+    })
+
     it('returns error when email or password is missing', async () => {
-      setDemoMode(true)
       const { session, error } = await signInWithEmail('', '')
       expect(session).toBeNull()
       expect(error).toBe('Email and password required')
@@ -91,9 +145,12 @@ describe('signInWithEmail', () => {
   })
 
   describe('live mode', () => {
-    it('returns session with restaurantId when restaurant_users record exists', async () => {
+    it('returns business session via user_profiles + restaurant_users', async () => {
       mockSupabaseAuth({ id: 'user-abc', email: 'owner@burger.com' })
-      mockRestaurantUsersQuery({ restaurant_id: 'rest-001', role: 'restaurant_admin' })
+      mockProfileThenRestaurant(
+        { role: 'business', creator_id: null, restaurant_user_id: 'ru-001' },
+        'rest-001'
+      )
 
       const { session, error } = await signInWithEmail('owner@burger.com', 'password123')
 
@@ -101,20 +158,47 @@ describe('signInWithEmail', () => {
       expect(session).toMatchObject({
         userId: 'user-abc',
         email: 'owner@burger.com',
-        role: 'restaurant_admin',
+        role: 'business',
         restaurantId: 'rest-001',
+        creatorId: null,
       })
     })
 
-    it('signs out and returns error when user has no restaurant_users record', async () => {
+    it('falls back to legacy restaurant_users when no user_profiles row', async () => {
+      mockSupabaseAuth({ id: 'user-legacy', email: 'legacy@burger.com' })
+      mockLegacyFallback('rest-legacy')
+      mockSignOut.mockResolvedValue({})
+
+      const { session, error } = await signInWithEmail('legacy@burger.com', 'password123')
+
+      expect(error).toBeNull()
+      expect(session).toMatchObject({
+        role: 'business',
+        restaurantId: 'rest-legacy',
+      })
+    })
+
+    it('signs out and returns error when no profile and no restaurant_users row', async () => {
       mockSupabaseAuth({ id: 'user-xyz', email: 'orphan@test.com' })
-      mockRestaurantUsersQuery(null, true) // DB error / not found
+      // user_profiles miss
+      mockFrom
+        .mockReturnValueOnce({
+          select: vi.fn().mockReturnThis(),
+          eq: vi.fn().mockReturnThis(),
+          single: vi.fn().mockResolvedValue({ data: null, error: { message: 'not found' } }),
+        })
+        // restaurant_users miss
+        .mockReturnValueOnce({
+          select: vi.fn().mockReturnThis(),
+          eq: vi.fn().mockReturnThis(),
+          single: vi.fn().mockResolvedValue({ data: null, error: { message: 'not found' } }),
+        })
       mockSignOut.mockResolvedValue({})
 
       const { session, error } = await signInWithEmail('orphan@test.com', 'password123')
 
       expect(session).toBeNull()
-      expect(error).toContain('not linked to a restaurant')
+      expect(error).toContain('not set up')
       expect(mockSignOut).toHaveBeenCalledOnce()
     })
 
@@ -137,14 +221,15 @@ describe('signInWithEmail', () => {
       expect(error).toBe('No user returned')
     })
 
-    it('includes role in session for admin role', async () => {
-      mockSupabaseAuth({ id: 'admin-001', email: 'admin@creatorcomped.com' })
-      mockRestaurantUsersQuery({ restaurant_id: 'rest-hq', role: 'admin' })
+    it('returns influencer session for role=influencer profile', async () => {
+      mockSupabaseAuth({ id: 'creator-001', email: 'creator@hive.app' })
+      mockUserProfilesQuery({ role: 'influencer', creator_id: 'c-001', restaurant_user_id: null })
 
-      const { session } = await signInWithEmail('admin@creatorcomped.com', 'pass')
+      const { session } = await signInWithEmail('creator@hive.app', 'pass')
 
-      expect(session?.role).toBe('admin')
-      expect(session?.restaurantId).toBe('rest-hq')
+      expect(session?.role).toBe('influencer')
+      expect(session?.creatorId).toBe('c-001')
+      expect(session?.restaurantId).toBeNull()
     })
   })
 })
@@ -162,7 +247,7 @@ describe('getSession', () => {
     expect(session).toBeNull()
   })
 
-  it('re-fetches restaurantId on session restore', async () => {
+  it('re-fetches role and restaurantId on session restore', async () => {
     mockGetSession.mockResolvedValue({
       data: {
         session: {
@@ -170,18 +255,21 @@ describe('getSession', () => {
         },
       },
     })
-    mockRestaurantUsersQuery({ restaurant_id: 'rest-001', role: 'restaurant_admin' })
+    mockProfileThenRestaurant(
+      { role: 'business', creator_id: null, restaurant_user_id: 'ru-001' },
+      'rest-001'
+    )
 
     const session = await getSession()
 
     expect(session).toMatchObject({
       userId: 'user-abc',
+      role: 'business',
       restaurantId: 'rest-001',
-      role: 'restaurant_admin',
     })
   })
 
-  it('returns null restaurantId if restaurant_users lookup fails on restore', async () => {
+  it('returns null if no profile and no legacy restaurant_users row', async () => {
     mockGetSession.mockResolvedValue({
       data: {
         session: {
@@ -189,10 +277,21 @@ describe('getSession', () => {
         },
       },
     })
-    mockRestaurantUsersQuery(null, false) // no error but no data
+    // user_profiles miss
+    mockFrom
+      .mockReturnValueOnce({
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({ data: null, error: null }),
+      })
+      // restaurant_users miss
+      .mockReturnValueOnce({
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({ data: null, error: null }),
+      })
 
     const session = await getSession()
-
-    expect(session?.restaurantId).toBeNull()
+    expect(session).toBeNull()
   })
 })

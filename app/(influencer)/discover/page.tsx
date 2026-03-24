@@ -11,12 +11,12 @@ import { FullPageSpinner } from '@/components/ui/spinner'
 import type { Restaurant } from '@/lib/types'
 
 const MapView = dynamic(
-  () => import('@/app/creator/discover/MapView').then((mod) => ({ default: mod.MapView })),
+  () => import('@/components/map/MapView').then((mod) => ({ default: mod.MapView })),
   { ssr: false, loading: () => <FullPageSpinner /> }
 )
 
 const MapPlaceholder = dynamic(
-  () => import('@/app/creator/discover/MapPlaceholder').then((mod) => ({ default: mod.MapPlaceholder })),
+  () => import('@/components/map/MapPlaceholder').then((mod) => ({ default: mod.MapPlaceholder })),
   { ssr: false }
 )
 
@@ -88,9 +88,9 @@ export default function DiscoverPage() {
       {/* Map */}
       <div className="relative mx-4 rounded-2xl overflow-hidden" style={{ height: '240px' }}>
         {hasMapboxToken ? (
-          <MapView restaurants={restaurants} />
+          <MapView restaurants={restaurants} basePath="/discover" />
         ) : (
-          <MapPlaceholder restaurants={restaurants} />
+          <MapPlaceholder restaurants={restaurants} basePath="/discover" />
         )}
       </div>
 

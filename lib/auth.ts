@@ -77,7 +77,7 @@ export async function signInWithEmail(
     await supabase!.auth.signOut()
     return {
       session: null,
-      error: 'Your account is not set up. Contact support@hive.app.',
+      error: 'Your account is not set up. Please contact support.',
     }
   }
 

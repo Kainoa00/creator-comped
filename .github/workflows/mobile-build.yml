@@ -1,0 +1,52 @@
+name: Mobile Build (iOS)
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'ios/App/App/public/**'
+      - 'ios/App/App/capacitor.config.json'
+      - 'ios/App/App/config.xml'
+
+jobs:
+  build-mobile:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build mobile (static export)
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          BUILD_MODE: mobile
+          NEXT_PUBLIC_BUILD_MODE: mobile
+        run: npm run build:mobile
+
+      - name: Sync Capacitor iOS
+        run: npx cap sync ios
+
+      - name: Commit iOS web assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ios/App/App/public/ ios/App/App/capacitor.config.json ios/App/App/config.xml
+          if git diff --cached --quiet; then
+            echo "No iOS asset changes to commit."
+          else
+            git commit -m "chore: update iOS web assets [skip ci]"
+            git push
+          fi

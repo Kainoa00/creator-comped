@@ -4,13 +4,13 @@ import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
 import { isDemoMode } from '@/lib/supabase'
 import { DEMO_RESTAURANTS } from '@/lib/demo-data'
-import { MapPlaceholder } from './MapPlaceholder'
+import { MapPlaceholder } from '@/components/map/MapPlaceholder'
 import { FullPageSpinner } from '@/components/ui/spinner'
 import type { Restaurant } from '@/lib/types'
 
 // Dynamically import the real map to avoid SSR hydration issues
 const MapView = dynamic(
-  () => import('./MapView').then((mod) => ({ default: mod.MapView })),
+  () => import('@/components/map/MapView').then((mod) => ({ default: mod.MapView })),
   {
     ssr: false,
     loading: () => <FullPageSpinner />,

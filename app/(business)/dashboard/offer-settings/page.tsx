@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { Info, CheckCircle } from 'lucide-react'
-import { DarkToggle } from '@/components/restaurant-ui/DarkToggle'
+import { CheckCircle, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 
@@ -15,9 +14,9 @@ type CreatorTier = 'starter' | 'rising' | 'established' | 'premium' | 'elite'
 // ── Data ───────────────────────────────────────────────────────
 
 const OFFER_TYPES: { value: OfferType; label: string; desc: string }[] = [
-  { value: 'spotlight',     label: 'Spotlight',     desc: '1 Instagram Story' },
-  { value: 'showcase',      label: 'Showcase',      desc: '1 Video (Instagram Reel or TikTok Video)' },
-  { value: 'full_campaign', label: 'Full Campaign', desc: '1 Instagram Reel + 1 TikTok Video' },
+  { value: 'spotlight',     label: 'Spotlight',      desc: '1 Instagram Story' },
+  { value: 'showcase',      label: 'Showcase',       desc: '1 Video (Instagram Reel or TikTok Video)' },
+  { value: 'full_campaign', label: 'Full Campaign',  desc: '1 Instagram Reel + 1 TikTok Video' },
 ]
 
 const PLATFORMS: { value: Platform; label: string }[] = [
@@ -68,31 +67,19 @@ function SelectRow({
   )
 }
 
-// ── Styles ─────────────────────────────────────────────────────
+// ── Page ───────────────────────────────────────────────────────
 
-const fieldClass = 'w-full bg-white/[0.06] border border-white/[0.06] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-white/15'
-const gradientLabel = { background: 'linear-gradient(90deg, #8B5CF6 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
-
-export default function DeliverablesPage() {
-  // Offer settings state
+export default function OfferSettingsPage() {
   const [offerType, setOfferType] = useState<OfferType>('showcase')
   const [platform, setPlatform] = useState<Platform>('instagram')
   const [creatorTier, setCreatorTier] = useState<CreatorTier>('established')
-
-  // Content requirements state
-  const [minVideoLength, setMinVideoLength] = useState('20-30 seconds')
-  const [hashtags, setHashtags] = useState('#HivePartner #LocalEats')
-  const [requiredTags, setRequiredTags] = useState('@yourbusiness')
-  const [captionRequirements, setCaptionRequirements] = useState('Mention the business name and location')
-  const [contentNotes, setContentNotes] = useState('Highlight your favorite item and the experience')
-  const [postingWindow, setPostingWindow] = useState('7 days from redemption')
-  const [usageRights, setUsageRights] = useState(true)
-
   const { saved, flash: handleSave } = useSaveFlash()
 
   const handleOfferTypeChange = useCallback((type: OfferType) => {
     setOfferType(type)
-    if (type === 'spotlight') setPlatform('instagram')
+    if (type === 'spotlight') {
+      setPlatform('instagram')
+    }
   }, [])
 
   return (
@@ -100,8 +87,8 @@ export default function DeliverablesPage() {
       {/* Header */}
       <div className="mb-6">
         <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
-        <h1 className="text-xl font-bold text-white">Edit Deliverables</h1>
-        <p className="text-sm text-white/40 mt-0.5">Content requirements for creators</p>
+        <h1 className="text-xl font-bold text-white">Offer Settings</h1>
+        <p className="text-sm text-white/40 mt-0.5">Configure offer type and creator access</p>
       </div>
 
       {/* Offer Type */}
@@ -161,7 +148,7 @@ export default function DeliverablesPage() {
       </div>
 
       {/* Eligible Creator Tiers */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-4">
+      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-6">
         <p className="text-base font-bold text-white mb-1">Eligible Creator Tiers</p>
         <p className="text-sm text-white/40 mb-4">
           Select the minimum creator tier. Creators in this tier and above can access your offer.
@@ -180,74 +167,6 @@ export default function DeliverablesPage() {
         <p className="text-xs text-white/30 mt-4 leading-relaxed">
           Creators qualify using either Instagram or TikTok follower count. They only need one connected social account to meet the tier threshold.
         </p>
-      </div>
-
-      {/* Content Requirements card */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-4">
-        <p className="text-base font-bold text-white mb-5">Content Requirements</p>
-
-        <div className="flex flex-col gap-4">
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Minimum Video Length</p>
-            <input type="text" value={minVideoLength} onChange={(e) => setMinVideoLength(e.target.value)} className={fieldClass} placeholder="e.g. 20-30 seconds" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Required Hashtags</p>
-            <input type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} className={fieldClass} placeholder="#HIVE #YourBusiness" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Required Tags (@)</p>
-            <input type="text" value={requiredTags} onChange={(e) => setRequiredTags(e.target.value)} className={fieldClass} placeholder="@yourbusiness" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Caption Requirements</p>
-            <textarea value={captionRequirements} onChange={(e) => setCaptionRequirements(e.target.value)} rows={2} className={`${fieldClass} resize-none`} placeholder="e.g. Mention the business name and location" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Content Notes</p>
-            <textarea value={contentNotes} onChange={(e) => setContentNotes(e.target.value)} rows={2} className={`${fieldClass} resize-none`} placeholder="Additional guidelines for creators" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Posting Window</p>
-            <input type="text" value={postingWindow} onChange={(e) => setPostingWindow(e.target.value)} className={fieldClass} placeholder="e.g. 7 days from redemption" />
-          </div>
-        </div>
-      </div>
-
-      {/* Avoid Topics card */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-4 flex gap-4">
-        <div className="w-8 h-8 rounded-full border border-orange-500/60 flex items-center justify-center shrink-0 mt-0.5">
-          <Info className="h-4 w-4 text-orange-400" />
-        </div>
-        <div>
-          <p className="text-base font-bold text-white mb-1">Avoid (Topics)</p>
-          <p className="text-sm text-white/60 leading-relaxed">
-            No profanity, no alcohol/drug references, no competitor brands, no controversial topics.
-          </p>
-        </div>
-      </div>
-
-      {/* Usage Rights card */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <p className="text-base font-bold text-white mb-2">Usage Rights</p>
-            <p className="text-sm text-white/60 leading-relaxed mb-3">
-              We have the right to repost your media on our social channels and marketing.
-            </p>
-            {usageRights && (
-              <p className="text-xs font-semibold" style={gradientLabel}>
-                Enabled — This statement will be included in creator requirements
-              </p>
-            )}
-          </div>
-          <DarkToggle checked={usageRights} onChange={setUsageRights} />
-        </div>
       </div>
 
       {/* Save */}

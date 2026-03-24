@@ -3,23 +3,13 @@ import type { CapacitorConfig } from '@capacitor/cli'
 /**
  * Capacitor config for CreatorComped iOS + Android apps.
  *
- * SERVER MODE: The app loads from the live Vercel URL rather than a static
- * export. This means app updates deploy automatically without an App Store
- * submission — only native code changes require a new binary.
- *
- * Set CAPACITOR_SERVER_URL in your environment to override (useful for staging).
+ * BUNDLED MODE: The app loads from the static export in `out/`.
+ * Run `npm run mobile` to build and sync.
  */
 const config: CapacitorConfig = {
   appId: 'com.creatorcomped.app',
   appName: 'HIVE',
-  webDir: 'out',  // fallback for offline; server.url takes precedence when set
-  server: {
-    // Point to the /creator route on the production Vercel deployment.
-    // Change this to your actual Vercel domain before App Store submission.
-    url: process.env.CAPACITOR_SERVER_URL ?? 'https://webapp-1uptf5rp8-kainoa-shintakus-projects.vercel.app/discover',
-    cleartext: false,
-    androidScheme: 'https',
-  },
+  webDir: 'out',
   plugins: {
     SplashScreen: {
       launchShowDuration: 0,

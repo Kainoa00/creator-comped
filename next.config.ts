@@ -1,29 +1,39 @@
 import type { NextConfig } from 'next'
 
+const isMobile = process.env.BUILD_MODE === 'mobile'
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  turbopack: {
-    // Silence "multiple lockfiles" warning from workspace root detection
-    root: __dirname,
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*.supabase.co',
-        pathname: '/storage/v1/object/public/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.dicebear.com', // demo avatar URLs
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-    ],
-  },
+  ...(isMobile
+    ? {
+        output: 'export',
+        images: { unoptimized: true },
+      }
+    : {
+        turbopack: {
+          // Silence "multiple lockfiles" warning from workspace root detection
+          root: __dirname,
+        },
+        images: {
+          remotePatterns: [
+            {
+              protocol: 'https',
+              hostname: '*.supabase.co',
+              pathname: '/storage/v1/object/public/**',
+            },
+            {
+              protocol: 'https',
+              hostname: 'api.dicebear.com', // demo avatar URLs
+            },
+            {
+              protocol: 'https',
+              hostname: 'images.unsplash.com',
+            },
+          ],
+        },
+      }),
   async redirects() {
+    if (isMobile) return []
     return [
       // Old creator routes → new influencer routes
       { source: '/creator', destination: '/discover', permanent: true },
@@ -55,6 +65,7 @@ const nextConfig: NextConfig = {
     ]
   },
   async headers() {
+    if (isMobile) return []
     return [
       {
         source: '/(.*)',

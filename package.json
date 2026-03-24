@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:mobile": "node scripts/build-mobile.js",
+    "sync:ios": "npx cap sync ios",
+    "mobile": "npm run build:mobile && npm run sync:ios"
   },
   "dependencies": {
     "@capacitor/android": "^8.2.0",
@@ -54,6 +57,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^4.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",

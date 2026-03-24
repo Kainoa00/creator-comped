@@ -1,129 +1,205 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
-import { Info } from 'lucide-react'
 import { DarkToggle } from '@/components/restaurant-ui/DarkToggle'
+import { Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 
-const fieldClass = 'w-full bg-white/[0.06] border border-white/[0.06] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-white/15'
-const gradientLabel = { background: 'linear-gradient(90deg, #8B5CF6 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
+type OfferType = 'IG_REEL' | 'TIKTOK' | 'BOTH' | 'CHOICE'
 
 export default function DeliverablesPage() {
-  const [minVideoLength, setMinVideoLength] = useState('20-30 seconds')
-  const [hashtags, setHashtags] = useState('#HivePartner #LocalEats')
+  const [offerType, setOfferType] = useState<OfferType>('BOTH')
+  const [minVideoLength, setMinVideoLength] = useState(30)
+  const [hashtags, setHashtags] = useState('#HIVE #YourBusiness')
   const [requiredTags, setRequiredTags] = useState('@yourbusiness')
-  const [captionRequirements, setCaptionRequirements] = useState('Mention the business name and location')
-  const [contentNotes, setContentNotes] = useState('Highlight your favorite item and the experience')
-  const [postingWindow, setPostingWindow] = useState('7 days from redemption')
+  const [captionRequirements, setCaptionRequirements] = useState('')
+  const [contentNotes, setContentNotes] = useState('Please showcase the ambiance and plate presentation. Tag our location!')
+  const [postingWindow, setPostingWindow] = useState(48)
+  const [avoidTopics, setAvoidTopics] = useState('Politics, religion, controversial topics')
   const [usageRights, setUsageRights] = useState(true)
   const { saved, flash: handleSave } = useSaveFlash()
+
+  const OFFER_TYPES: { value: OfferType; label: string; desc: string }[] = [
+    { value: 'IG_REEL', label: 'Instagram Reel', desc: 'Require an IG Reel only' },
+    { value: 'TIKTOK', label: 'TikTok', desc: 'Require a TikTok only' },
+    { value: 'BOTH', label: 'Both', desc: 'Require IG Reel + TikTok' },
+    { value: 'CHOICE', label: 'Creator\'s Choice', desc: 'Creator picks platform' },
+  ]
 
   return (
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-5">
         <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
-        <h1 className="text-xl font-bold text-white">Edit Deliverables</h1>
+        <h1 className="text-xl font-bold text-white">Deliverables</h1>
         <p className="text-sm text-white/40 mt-0.5">Content requirements for creators</p>
       </div>
 
-      {/* Offer Type / Platform summary card */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-5">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex gap-8">
-            <div>
-              <p className="text-xs text-white/40 mb-1">Current Offer Type</p>
-              <p className="text-base font-bold text-white">Showcase</p>
-            </div>
-            <div>
-              <p className="text-xs text-white/40 mb-1">Platform</p>
-              <p className="text-base font-bold text-white">Instagram Reel</p>
-            </div>
-          </div>
-          <Link
-            href="/dashboard/offer-settings"
-            className="text-sm font-semibold text-orange-400 hover:text-orange-300 transition-colors whitespace-nowrap shrink-0"
+      {/* Offer Type */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Current Offer Type</p>
+      <div className="grid grid-cols-2 gap-2 mb-6">
+        {OFFER_TYPES.map((type) => (
+          <button
+            key={type.value}
+            type="button"
+            onClick={() => setOfferType(type.value)}
+            className={cn(
+              'flex flex-col items-start p-4 rounded-2xl border transition-all text-left',
+              offerType === type.value
+                ? 'border-white/30 bg-white/10'
+                : 'border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06]'
+            )}
           >
-            Edit Offer Settings →
-          </Link>
+            <div className="flex items-center gap-2 mb-1">
+              <div className={cn(
+                'w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0',
+                offerType === type.value ? 'border-orange-500' : 'border-white/20'
+              )}>
+                {offerType === type.value && <div className="w-2 h-2 rounded-full bg-orange-500" />}
+              </div>
+              <p className="text-sm font-semibold text-white">{type.label}</p>
+            </div>
+            <p className="text-xs text-white/40 ml-6">{type.desc}</p>
+          </button>
+        ))}
+      </div>
+
+      {/* Content Requirements */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Content Requirements</p>
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-5">
+        {/* Min Video Length */}
+        <div className="px-4 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium text-white">Minimum Video Length</p>
+            <span className="text-sm font-bold text-white">{minVideoLength}s</span>
+          </div>
+          <input
+            type="range"
+            min={10}
+            max={120}
+            step={5}
+            value={minVideoLength}
+            onChange={(e) => setMinVideoLength(parseInt(e.target.value))}
+            className="w-full accent-orange-500"
+          />
+          <div className="flex justify-between text-xs text-white/30 mt-1">
+            <span>10s</span>
+            <span>120s</span>
+          </div>
+        </div>
+
+        {/* Hashtags */}
+        <div className="px-4 py-4">
+          <p className="text-sm font-medium text-white mb-2">Required Hashtags</p>
+          <input
+            type="text"
+            value={hashtags}
+            onChange={(e) => setHashtags(e.target.value)}
+            placeholder="#HIVE #YourBusiness"
+            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20"
+          />
+          <p className="text-xs text-white/30 mt-1.5">Separate hashtags with spaces</p>
+        </div>
+
+        {/* Required Tags */}
+        <div className="px-4 py-4">
+          <p className="text-sm font-medium text-white mb-2">Required Tags</p>
+          <input
+            type="text"
+            value={requiredTags}
+            onChange={(e) => setRequiredTags(e.target.value)}
+            placeholder="@yourbusiness"
+            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20"
+          />
+        </div>
+
+        {/* Caption Requirements */}
+        <div className="px-4 py-4">
+          <p className="text-sm font-medium text-white mb-2">Caption Requirements</p>
+          <input
+            type="text"
+            value={captionRequirements}
+            onChange={(e) => setCaptionRequirements(e.target.value)}
+            placeholder="e.g. Mention the dish name in caption"
+            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20"
+          />
         </div>
       </div>
 
-      {/* Content Requirements card */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-4">
-        <p className="text-base font-bold text-white mb-5">Content Requirements</p>
+      {/* Content Notes */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Content Notes</p>
+      <textarea
+        value={contentNotes}
+        onChange={(e) => setContentNotes(e.target.value)}
+        rows={3}
+        placeholder="Any additional guidelines for creators..."
+        className="w-full bg-white/[0.05] border border-white/[0.08] rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 resize-none mb-5"
+      />
 
-        <div className="flex flex-col gap-4">
+      {/* Posting Window & Avoid Topics */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Policies</p>
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-5">
+        <div className="flex items-center justify-between px-4 py-4">
           <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Minimum Video Length</p>
-            <input type="text" value={minVideoLength} onChange={(e) => setMinVideoLength(e.target.value)} className={fieldClass} placeholder="e.g. 20-30 seconds" />
+            <p className="text-sm font-medium text-white">Posting Window</p>
+            <p className="text-xs text-white/40 mt-0.5">Hours after comp to post</p>
           </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Required Hashtags</p>
-            <input type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} className={fieldClass} placeholder="#HIVE #YourBusiness" />
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              min="12"
+              max="168"
+              value={postingWindow}
+              onChange={(e) => setPostingWindow(parseInt(e.target.value) || 48)}
+              className="w-14 bg-white/[0.08] border border-white/[0.08] rounded-xl px-2 py-1.5 text-sm text-white text-center focus:outline-none"
+            />
+            <span className="text-xs text-white/40">hrs</span>
           </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Required Tags (@)</p>
-            <input type="text" value={requiredTags} onChange={(e) => setRequiredTags(e.target.value)} className={fieldClass} placeholder="@yourbusiness" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Caption Requirements</p>
-            <textarea value={captionRequirements} onChange={(e) => setCaptionRequirements(e.target.value)} rows={2} className={`${fieldClass} resize-none`} placeholder="e.g. Mention the business name and location" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Content Notes</p>
-            <textarea value={contentNotes} onChange={(e) => setContentNotes(e.target.value)} rows={2} className={`${fieldClass} resize-none`} placeholder="Additional guidelines for creators" />
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-1.5" style={gradientLabel}>Posting Window</p>
-            <input type="text" value={postingWindow} onChange={(e) => setPostingWindow(e.target.value)} className={fieldClass} placeholder="e.g. 7 days from redemption" />
-          </div>
+        </div>
+        <div className="px-4 py-4">
+          <p className="text-sm font-medium text-white mb-2">Avoid Topics</p>
+          <textarea
+            value={avoidTopics}
+            onChange={(e) => setAvoidTopics(e.target.value)}
+            rows={2}
+            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none resize-none"
+          />
         </div>
       </div>
 
-      {/* Avoid Topics card */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-4 flex gap-4">
-        <div className="w-8 h-8 rounded-full border border-orange-500/60 flex items-center justify-center shrink-0 mt-0.5">
-          <Info className="h-4 w-4 text-orange-400" />
+      {/* Usage Rights */}
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Usage Rights</p>
+      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl mb-5">
+        <div className="flex items-center justify-between px-4 py-3.5 border-b border-white/[0.05]">
+          <div>
+            <p className="text-sm font-medium text-white">Business may repost with credit</p>
+            <p className="text-xs text-white/40 mt-0.5">Allow reposting creator content on your channels</p>
+          </div>
+          <DarkToggle checked={usageRights} onChange={setUsageRights} />
         </div>
-        <div>
-          <p className="text-base font-bold text-white mb-1">Avoid (Topics)</p>
-          <p className="text-sm text-white/60 leading-relaxed">
-            No profanity, no alcohol/drug references, no competitor brands, no controversial topics.
+        <div className="px-4 py-3.5">
+          <p className="text-xs text-white/40 leading-relaxed">
+            By participating, creators grant the business rights to repost content on their official channels with proper credit.
           </p>
         </div>
       </div>
 
-      {/* Usage Rights card */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <p className="text-base font-bold text-white mb-2">Usage Rights</p>
-            <p className="text-sm text-white/60 leading-relaxed mb-3">
-              We have the right to repost your media on our social channels and marketing.
-            </p>
-            {usageRights && (
-              <p className="text-xs font-semibold" style={gradientLabel}>
-                Enabled — This statement will be included in creator requirements
-              </p>
-            )}
-          </div>
-          <DarkToggle checked={usageRights} onChange={setUsageRights} />
-        </div>
+      {/* Info */}
+      <div className="bg-blue-500/[0.08] border border-blue-500/20 rounded-2xl p-4 mb-5 flex gap-3">
+        <Info className="h-4 w-4 text-blue-400 shrink-0 mt-0.5" />
+        <p className="text-xs text-white/60 leading-relaxed">
+          Creators see these requirements before redeeming. Clear guidelines help ensure quality content.
+        </p>
       </div>
 
-      {/* Save */}
       <button
         type="button"
         onClick={handleSave}
-        className={cn('w-full py-4 rounded-2xl text-white font-bold text-sm transition-all', saved ? 'bg-emerald-500' : '')}
+        className={cn(
+          'w-full py-4 rounded-2xl text-white font-bold text-sm transition-all',
+          saved ? 'bg-emerald-500' : ''
+        )}
         style={saved ? {} : { background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
       >
         {saved ? 'Saved!' : 'Save Changes'}

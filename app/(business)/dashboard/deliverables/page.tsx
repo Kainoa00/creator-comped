@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { DarkToggle } from '@/components/restaurant-ui/DarkToggle'
-import { Info } from 'lucide-react'
+import { Info, Settings2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 
@@ -35,6 +36,19 @@ export default function DeliverablesPage() {
         <h1 className="text-xl font-bold text-white">Deliverables</h1>
         <p className="text-sm text-white/40 mt-0.5">Content requirements for creators</p>
       </div>
+
+      {/* Edit Offer Settings link */}
+      <Link
+        href="/dashboard/offer-settings"
+        className="flex items-center justify-between w-full bg-white/[0.03] border border-white/[0.08] rounded-2xl px-4 py-3 mb-5 hover:bg-white/[0.06] transition-colors group"
+      >
+        <div className="flex items-center gap-3">
+          <Settings2 className="w-4 h-4 text-orange-400" />
+          <span className="text-sm font-semibold text-white">Offer Settings</span>
+          <span className="text-xs text-white/40">Type, platform &amp; creator tiers</span>
+        </div>
+        <span className="text-xs font-semibold text-orange-400 group-hover:text-orange-300 transition-colors">Edit →</span>
+      </Link>
 
       {/* Offer Type */}
       <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Current Offer Type</p>

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { CheckCircle, Info } from 'lucide-react'
+import { CheckCircle, Info, ArrowLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 
@@ -70,6 +71,7 @@ function SelectRow({
 // ── Page ───────────────────────────────────────────────────────
 
 export default function OfferSettingsPage() {
+  const router = useRouter()
   const [offerType, setOfferType] = useState<OfferType>('showcase')
   const [platform, setPlatform] = useState<Platform>('instagram')
   const [creatorTier, setCreatorTier] = useState<CreatorTier>('established')
@@ -86,9 +88,17 @@ export default function OfferSettingsPage() {
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">
       {/* Header */}
       <div className="mb-6">
-        <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
-        <h1 className="text-xl font-bold text-white">Offer Settings</h1>
-        <p className="text-sm text-white/40 mt-0.5">Configure offer type and creator access</p>
+        <div className="flex items-center gap-3 mb-1">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="w-8 h-8 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
+          >
+            <ArrowLeft className="w-4 h-4 text-white/70" />
+          </button>
+          <h1 className="text-xl font-bold text-white">Offer Settings</h1>
+        </div>
+        <p className="text-sm text-white/40 mt-0.5 ml-11">Configure offer type and creator access</p>
       </div>
 
       {/* Offer Type */}

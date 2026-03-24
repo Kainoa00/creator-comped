@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { CheckCircle, Info, ArrowLeft } from 'lucide-react'
+import { CheckCircle, ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
@@ -9,7 +9,6 @@ import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 // ── Types ──────────────────────────────────────────────────────
 
 type OfferType = 'spotlight' | 'showcase' | 'full_campaign'
-type Platform = 'instagram' | 'tiktok'
 type CreatorTier = 'starter' | 'rising' | 'established' | 'premium' | 'elite'
 
 // ── Data ───────────────────────────────────────────────────────
@@ -20,10 +19,6 @@ const OFFER_TYPES: { value: OfferType; label: string; desc: string }[] = [
   { value: 'full_campaign', label: 'Full Campaign',  desc: '1 Instagram Reel + 1 TikTok Video' },
 ]
 
-const PLATFORMS: { value: Platform; label: string }[] = [
-  { value: 'instagram', label: 'Instagram Reel' },
-  { value: 'tiktok',    label: 'TikTok Video' },
-]
 
 const CREATOR_TIERS: { value: CreatorTier; label: string; desc: string }[] = [
   { value: 'starter',     label: 'Starter',     desc: '0–10K followers' },
@@ -73,15 +68,11 @@ function SelectRow({
 export default function OfferSettingsPage() {
   const router = useRouter()
   const [offerType, setOfferType] = useState<OfferType>('showcase')
-  const [platform, setPlatform] = useState<Platform>('instagram')
   const [creatorTier, setCreatorTier] = useState<CreatorTier>('established')
   const { saved, flash: handleSave } = useSaveFlash()
 
   const handleOfferTypeChange = useCallback((type: OfferType) => {
     setOfferType(type)
-    if (type === 'spotlight') {
-      setPlatform('instagram')
-    }
   }, [])
 
   return (
@@ -115,45 +106,6 @@ export default function OfferSettingsPage() {
               onClick={() => handleOfferTypeChange(o.value)}
             />
           ))}
-        </div>
-      </div>
-
-      {/* Video Platform */}
-      <div className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-5 mb-4">
-        <p className="text-base font-bold text-white mb-4">Video Platform</p>
-        {offerType === 'spotlight' && (
-          <div className="flex gap-2.5 mb-3 bg-blue-500/[0.08] border border-blue-500/20 rounded-xl p-3">
-            <Info className="h-4 w-4 text-blue-400 shrink-0 mt-0.5" />
-            <p className="text-xs text-white/60 leading-relaxed">
-              Spotlight offers use Instagram Stories only. Platform is locked to Instagram.
-            </p>
-          </div>
-        )}
-        <div className="grid grid-cols-2 gap-3">
-          {PLATFORMS.map((p) => {
-            const isDisabled = offerType === 'spotlight' && p.value === 'tiktok'
-            return (
-              <button
-                key={p.value}
-                type="button"
-                onClick={() => !isDisabled && setPlatform(p.value)}
-                disabled={isDisabled}
-                className={cn(
-                  'flex flex-col items-center justify-center py-5 rounded-2xl border transition-all',
-                  isDisabled
-                    ? 'border-white/[0.04] bg-white/[0.02] opacity-40 cursor-not-allowed'
-                    : platform === p.value
-                      ? 'border-orange-500/70 bg-gradient-to-b from-orange-500/10 to-transparent'
-                      : 'border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.06]'
-                )}
-              >
-                <p className={cn('text-sm font-bold mb-1.5', platform === p.value && !isDisabled ? 'text-white' : 'text-white/70')}>
-                  {p.label}
-                </p>
-                {platform === p.value && !isDisabled && <CheckCircle className="h-4 w-4 text-orange-400" />}
-              </button>
-            )
-          })}
         </div>
       </div>
 

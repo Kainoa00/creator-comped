@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Plain Node.js scripts — not subject to Next.js/TS lint rules
+    "scripts/**",
   ]),
   // Downgrade React Compiler rules — pre-existing patterns throughout codebase
   {

@@ -101,18 +101,28 @@ function LineChart() {
 
 // ── SVG Donut Chart ───────────────────────────────────────────────────────────
 
-function DonutChart({ hoveredCategory, onHover }: { hoveredCategory: string | null; onHover: (name: string | null) => void }) {
-  const R = 70
-  const r = 44
-  const cx = 90
-  const cy = 90
+const DONUT_R = 70
+const DONUT_r = 44
+const DONUT_CX = 90
+const DONUT_CY = 90
 
-  let cumAngle = -Math.PI / 2
-  const slices = CATEGORIES.map((cat) => {
-    const angle = (cat.value / CAT_TOTAL) * 2 * Math.PI
-    const startAngle = cumAngle
-    cumAngle += angle
-    const endAngle = cumAngle
+const DONUT_SLICES = CATEGORIES.reduce<{ cat: typeof CATEGORIES[0]; startAngle: number; endAngle: number }[]>(
+  (acc, cat) => {
+    const startAngle = acc.length === 0 ? -Math.PI / 2 : acc[acc.length - 1].endAngle
+    const endAngle = startAngle + (cat.value / CAT_TOTAL) * 2 * Math.PI
+    return [...acc, { cat, startAngle, endAngle }]
+  },
+  []
+)
+
+function DonutChart({ hoveredCategory, onHover }: { hoveredCategory: string | null; onHover: (name: string | null) => void }) {
+  const R = DONUT_R
+  const r = DONUT_r
+  const cx = DONUT_CX
+  const cy = DONUT_CY
+
+  const slices = DONUT_SLICES.map(({ cat, startAngle, endAngle }) => {
+    const angle = endAngle - startAngle
 
     const x1 = cx + R * Math.cos(startAngle)
     const y1 = cy + R * Math.sin(startAngle)

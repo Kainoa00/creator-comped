@@ -16,7 +16,7 @@ const config: CapacitorConfig = {
   server: {
     // Point to the /creator route on the production Vercel deployment.
     // Change this to your actual Vercel domain before App Store submission.
-    url: process.env.CAPACITOR_SERVER_URL ?? 'https://creatorcomped.com/login',
+    url: process.env.CAPACITOR_SERVER_URL ?? 'https://webapp-1uptf5rp8-kainoa-shintakus-projects.vercel.app/discover',
     cleartext: false,
     androidScheme: 'https',
   },

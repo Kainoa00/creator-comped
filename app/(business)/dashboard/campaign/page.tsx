@@ -1,15 +1,20 @@
 'use client'
 
 import { useState } from 'react'
-import { DarkToggle } from '@/components/restaurant-ui/DarkToggle'
+import { GradientSlider } from '@/components/restaurant-ui/GradientSlider'
 import { cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 import { DEMO_MENU_ITEMS } from '@/lib/demo-data'
+import { Check } from 'lucide-react'
 
 type Platform = 'IG_REEL' | 'TIKTOK' | 'BOTH'
 
-// Use Brick Oven items as demo
 const menuItems = DEMO_MENU_ITEMS.filter((i) => i.restaurant_id === 'restaurant-001')
+
+// Gradient label style used across screenshot sections
+const labelClass = 'text-xs font-semibold mb-1.5'
+const labelStyle = { background: 'linear-gradient(90deg, #8B5CF6 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
+const inputClass = 'w-full bg-white/[0.05] border border-white/[0.06] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20'
 
 export default function CampaignPage() {
   const [totalItemLimit, setTotalItemLimit] = useState(2)
@@ -17,16 +22,18 @@ export default function CampaignPage() {
     Object.fromEntries(menuItems.map((i) => [i.id, i.max_qty_per_order]))
   )
   const [platform, setPlatform] = useState<Platform>('BOTH')
-  const [featureProducts, setFeatureProducts] = useState(true)
-  const [minVideoLength, setMinVideoLength] = useState(30)
+
+  // Video Requirements — all text fields matching screenshot
+  const [featureProducts, setFeatureProducts] = useState('All ordered items')
+  const [minVideoLength, setMinVideoLength] = useState('20-30 seconds')
   const [hashtags, setHashtags] = useState('#HIVE #YourBusiness')
   const [tags, setTags] = useState('@yourbusiness')
-  const [captionRequirements, setCaptionRequirements] = useState('')
-  const [talkingPoints, setTalkingPoints] = useState('')
-  const [avoidTopics, setAvoidTopics] = useState('Politics, religion, controversial topics')
-  const [usageRights, setUsageRights] = useState(true)
+  const [captionRequirements, setCaptionRequirements] = useState('Mention experience and favorite item')
+  const [talkingPoints, setTalkingPoints] = useState('Atmosphere, food quality, presentation')
+  const [avoidTopics, setAvoidTopics] = useState('Politics, controversial subjects')
+  const [usageRights, setUsageRights] = useState('Restaurant may repost with credit')
   const [mentionLocation, setMentionLocation] = useState(true)
-  const [postingDeadline, setPostingDeadline] = useState(48)
+
   const { saved, flash: handleSave } = useSaveFlash()
 
   const PLATFORMS: { value: Platform; label: string }[] = [
@@ -48,21 +55,14 @@ export default function CampaignPage() {
       <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Item Limits</p>
       <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-5">
         <div className="px-4 py-4">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm font-medium text-white">Total Item Limit</p>
               <p className="text-xs text-white/40 mt-0.5">Max items per comp order</p>
             </div>
             <span className="text-sm font-bold text-white">{totalItemLimit} items</span>
           </div>
-          <input
-            type="range"
-            min={1}
-            max={10}
-            value={totalItemLimit}
-            onChange={(e) => setTotalItemLimit(parseInt(e.target.value))}
-            className="w-full accent-orange-500"
-          />
+          <GradientSlider min={1} max={10} value={totalItemLimit} onChange={setTotalItemLimit} />
           <div className="flex justify-between text-xs text-white/30 mt-1">
             <span>1</span>
             <span>10</span>
@@ -126,137 +126,124 @@ export default function CampaignPage() {
       </div>
 
       {/* Video Requirements */}
-      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Video Requirements</p>
-      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-5">
-        {/* Feature Products toggle */}
-        <div className="flex items-center justify-between px-4 py-3.5">
-          <div>
-            <p className="text-sm font-medium text-white">Feature Products</p>
-            <p className="text-xs text-white/40 mt-0.5">Creator must visually feature your products</p>
-          </div>
-          <DarkToggle checked={featureProducts} onChange={setFeatureProducts} />
-        </div>
-
-        {/* Min Video Length */}
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-medium text-white">Min Video Length</p>
-            <span className="text-sm font-bold text-white">{minVideoLength}s</span>
-          </div>
+      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-4">Video Requirements</p>
+      <div className="flex flex-col gap-3 mb-5">
+        {/* Feature Product(s) */}
+        <div>
+          <p className={labelClass} style={labelStyle}>Feature Product(s)</p>
           <input
-            type="range"
-            min={10}
-            max={120}
-            step={5}
-            value={minVideoLength}
-            onChange={(e) => setMinVideoLength(parseInt(e.target.value))}
-            className="w-full accent-orange-500"
+            type="text"
+            value={featureProducts}
+            onChange={(e) => setFeatureProducts(e.target.value)}
+            className={inputClass}
           />
-          <div className="flex justify-between text-xs text-white/30 mt-1">
-            <span>10s</span>
-            <span>120s</span>
-          </div>
         </div>
 
-        {/* Hashtags */}
-        <div className="px-4 py-4">
-          <p className="text-sm font-medium text-white mb-2">Hashtags</p>
+        {/* Minimum Video Length */}
+        <div>
+          <p className={labelClass} style={labelStyle}>Minimum Video Length</p>
+          <input
+            type="text"
+            value={minVideoLength}
+            onChange={(e) => setMinVideoLength(e.target.value)}
+            placeholder="e.g. 20-30 seconds"
+            className={inputClass}
+          />
+        </div>
+
+        {/* Required Hashtags */}
+        <div>
+          <p className={labelClass} style={labelStyle}>Required Hashtags</p>
           <input
             type="text"
             value={hashtags}
             onChange={(e) => setHashtags(e.target.value)}
             placeholder="#HIVE #YourBusiness"
-            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none"
+            className={inputClass}
           />
         </div>
 
-        {/* Tags */}
-        <div className="px-4 py-4">
-          <p className="text-sm font-medium text-white mb-2">Tags</p>
+        {/* Required Tags */}
+        <div>
+          <p className={labelClass} style={labelStyle}>Required Tags</p>
           <input
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             placeholder="@yourbusiness"
-            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none"
+            className={inputClass}
           />
         </div>
 
         {/* Caption Requirements */}
-        <div className="px-4 py-4">
-          <p className="text-sm font-medium text-white mb-2">Caption Requirements</p>
-          <input
-            type="text"
+        <div>
+          <p className={labelClass} style={labelStyle}>Caption Requirements</p>
+          <textarea
             value={captionRequirements}
             onChange={(e) => setCaptionRequirements(e.target.value)}
-            placeholder="e.g. Mention dish name in caption"
-            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none"
+            rows={2}
+            placeholder="e.g. Mention experience and favorite item"
+            className={`${inputClass} resize-none`}
           />
         </div>
 
-        {/* Talking Points */}
-        <div className="px-4 py-4">
-          <p className="text-sm font-medium text-white mb-2">Talking Points</p>
+        {/* Required Talking Points */}
+        <div>
+          <p className={labelClass} style={labelStyle}>Required Talking Points</p>
           <textarea
             value={talkingPoints}
             onChange={(e) => setTalkingPoints(e.target.value)}
             rows={2}
-            placeholder="Key messages you want creators to mention..."
-            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none resize-none"
+            placeholder="e.g. Atmosphere, food quality, presentation"
+            className={`${inputClass} resize-none`}
           />
         </div>
-      </div>
 
-      {/* Additional Settings */}
-      <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Additional Settings</p>
-      <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05] mb-5">
         {/* Avoid Topics */}
-        <div className="px-4 py-4">
-          <p className="text-sm font-medium text-white mb-2">Avoid Topics</p>
-          <textarea
+        <div>
+          <p className={labelClass} style={labelStyle}>Avoid Topics</p>
+          <input
+            type="text"
             value={avoidTopics}
             onChange={(e) => setAvoidTopics(e.target.value)}
-            rows={2}
-            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none resize-none"
+            placeholder="Politics, controversial subjects"
+            className={inputClass}
           />
         </div>
 
         {/* Usage Rights */}
-        <div className="flex items-center justify-between px-4 py-3.5">
-          <div>
-            <p className="text-sm font-medium text-white">Business may repost with credit</p>
-            <p className="text-xs text-white/40 mt-0.5">Allow reposting creator content</p>
-          </div>
-          <DarkToggle checked={usageRights} onChange={setUsageRights} />
+        <div>
+          <p className={labelClass} style={labelStyle}>Usage Rights</p>
+          <input
+            type="text"
+            value={usageRights}
+            onChange={(e) => setUsageRights(e.target.value)}
+            placeholder="Restaurant may repost with credit"
+            className={inputClass}
+          />
         </div>
 
-        {/* Mention Location */}
-        <div className="flex items-center justify-between px-4 py-3.5">
-          <div>
-            <p className="text-sm font-medium text-white">Mention Location</p>
-            <p className="text-xs text-white/40 mt-0.5">Tag or mention your business location</p>
-          </div>
-          <DarkToggle checked={mentionLocation} onChange={setMentionLocation} />
-        </div>
-
-        {/* Posting Deadline */}
-        <div className="flex items-center justify-between px-4 py-3.5">
-          <div>
-            <p className="text-sm font-medium text-white">Posting Deadline</p>
-            <p className="text-xs text-white/40 mt-0.5">Hours after comp to post</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              min="12"
-              max="168"
-              value={postingDeadline}
-              onChange={(e) => setPostingDeadline(parseInt(e.target.value) || 48)}
-              className="w-14 bg-white/[0.08] border border-white/[0.08] rounded-xl px-2 py-1.5 text-sm text-white text-center focus:outline-none"
-            />
-            <span className="text-xs text-white/40">hrs</span>
-          </div>
-        </div>
+        {/* Mention Location — accessible checkbox */}
+        <label
+          className="flex items-center justify-between bg-white/[0.05] border border-white/[0.06] rounded-2xl px-4 py-3.5 cursor-pointer"
+        >
+          <span className="text-sm font-semibold text-white">Mention Location</span>
+          <input
+            type="checkbox"
+            checked={mentionLocation}
+            onChange={(e) => setMentionLocation(e.target.checked)}
+            className="sr-only peer"
+          />
+          <span
+            className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 transition-all"
+            style={mentionLocation
+              ? { background: 'linear-gradient(135deg, #8B5CF6 0%, #4A90E2 100%)' }
+              : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }
+            }
+          >
+            {mentionLocation && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
+          </span>
+        </label>
       </div>
 
       <button

@@ -80,7 +80,7 @@ function LeaderboardCard({
           </span>
         </div>
         {myRank && (
-          <span className="text-xs font-semibold text-cc-accent border border-cc-accent/30 rounded-md px-2.5 py-0.5">
+          <span className="text-xs font-semibold text-hive-accent border border-hive-accent/30 rounded-md px-2.5 py-0.5">
             #{myRank}
           </span>
         )}
@@ -108,12 +108,12 @@ function LeaderboardCard({
               <span
                 className={cn(
                   'text-sm flex-1 truncate',
-                  isMe ? 'font-semibold text-cc-accent' : 'text-slate-700'
+                  isMe ? 'font-semibold text-hive-accent' : 'text-slate-700'
                 )}
               >
                 {entry.creator_name}
                 {isMe && (
-                  <span className="ml-1.5 text-[10px] border border-cc-accent/30 text-cc-accent rounded-md px-1.5 py-0.5 font-medium align-middle">
+                  <span className="ml-1.5 text-[10px] border border-hive-accent/30 text-hive-accent rounded-md px-1.5 py-0.5 font-medium align-middle">
                     you
                   </span>
                 )}
@@ -177,7 +177,7 @@ export default function ProfilePage() {
               className="w-20 h-20 rounded-full object-cover border border-slate-200"
             />
             {creator.verified && (
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-cc-accent flex items-center justify-center border-2 border-white">
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-hive-accent flex items-center justify-center border-2 border-white">
                 <BadgeCheck className="h-3.5 w-3.5 text-white" />
               </div>
             )}
@@ -187,7 +187,7 @@ export default function ProfilePage() {
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="text-xl font-black text-slate-900 leading-tight">{creator.name}</h2>
             {creator.verified && (
-              <span className="inline-flex items-center gap-1 border border-cc-accent/30 text-cc-accent text-[10px] font-semibold px-2 py-0.5 rounded-md">
+              <span className="inline-flex items-center gap-1 border border-hive-accent/30 text-hive-accent text-[10px] font-semibold px-2 py-0.5 rounded-md">
                 <CheckCircle2 className="h-2.5 w-2.5" />
                 Verified
               </span>
@@ -308,7 +308,7 @@ export default function ProfilePage() {
                           : order.status === 'proof_submitted'
                           ? 'bg-amber-400'
                           : order.status === 'confirmed'
-                          ? 'bg-cc-accent'
+                          ? 'bg-hive-accent'
                           : 'bg-slate-300'
                       )}
                     />

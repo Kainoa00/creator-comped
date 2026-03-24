@@ -25,7 +25,7 @@ export function CCLogo({ size = 'md', className, markOnly = false }: CCLogoProps
         )}
       >
         <span className="text-slate-900">C</span>
-        <span className="text-cc-accent">C</span>
+        <span className="text-hive-accent">C</span>
       </span>
     )
   }
@@ -39,7 +39,7 @@ export function CCLogo({ size = 'md', className, markOnly = false }: CCLogoProps
       )}
     >
       <span className="text-slate-900">Creator</span>
-      <span className="text-cc-accent">Comped</span>
+      <span className="text-hive-accent">Comped</span>
     </span>
   )
 }
@@ -58,7 +58,7 @@ export function CCLogoWithMark({ size = 'md', className }: Omit<CCLogoProps, 'ma
       {/* Blue square mark */}
       <div
         className={cn(
-          'rounded-xl bg-cc-accent flex items-center justify-center font-black text-white shadow-sm',
+          'rounded-xl bg-hive-accent flex items-center justify-center font-black text-white shadow-sm',
           markSize[size]
         )}
       >

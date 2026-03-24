@@ -15,7 +15,7 @@ const variantStyles: Record<BadgeVariant, string> = {
   error: 'bg-red-50 text-red-700 border border-red-200',
   info: 'bg-blue-50 text-blue-700 border border-blue-200',
   neutral: 'bg-slate-100 text-slate-600 border border-slate-200',
-  accent: 'bg-cc-accent-subtle text-cc-accent border border-blue-200',
+  accent: 'bg-hive-accent-subtle text-hive-accent border border-blue-200',
 }
 
 const dotColors: Record<BadgeVariant, string> = {
@@ -24,7 +24,7 @@ const dotColors: Record<BadgeVariant, string> = {
   error: 'bg-red-500',
   info: 'bg-blue-500',
   neutral: 'bg-slate-400',
-  accent: 'bg-cc-accent',
+  accent: 'bg-hive-accent',
 }
 
 export function Badge({

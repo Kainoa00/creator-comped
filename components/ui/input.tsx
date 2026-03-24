@@ -24,22 +24,22 @@ export function Input({
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label htmlFor={inputId} className="text-sm font-medium text-cc-text-secondary">
+        <label htmlFor={inputId} className="text-sm font-medium text-hive-text-secondary">
           {label}
         </label>
       )}
       <div className="relative flex items-center">
         {leftAddon && (
-          <span className="absolute left-3 text-cc-text-muted flex items-center">{leftAddon}</span>
+          <span className="absolute left-3 text-hive-text-muted flex items-center">{leftAddon}</span>
         )}
         <input
           id={inputId}
           className={cn(
-            'w-full h-10 rounded-xl bg-white border text-cc-text text-sm placeholder:text-cc-text-muted',
-            'focus:outline-none focus:ring-2 focus:ring-cc-accent/10 focus:border-cc-accent',
+            'w-full h-10 rounded-xl bg-white border text-hive-text text-sm placeholder:text-hive-text-muted',
+            'focus:outline-none focus:ring-2 focus:ring-hive-accent/10 focus:border-hive-accent',
             'disabled:opacity-40 disabled:cursor-not-allowed',
             'transition-colors duration-150',
-            error ? 'border-cc-error focus:ring-cc-error/10' : 'border-slate-200',
+            error ? 'border-hive-error focus:ring-hive-error/10' : 'border-slate-200',
             leftAddon ? 'pl-9' : 'pl-3',
             rightAddon ? 'pr-9' : 'pr-3',
             className
@@ -47,11 +47,11 @@ export function Input({
           {...props}
         />
         {rightAddon && (
-          <span className="absolute right-3 text-cc-text-muted flex items-center">{rightAddon}</span>
+          <span className="absolute right-3 text-hive-text-muted flex items-center">{rightAddon}</span>
         )}
       </div>
-      {error && <p className="text-xs text-cc-error">{error}</p>}
-      {hint && !error && <p className="text-xs text-cc-text-muted">{hint}</p>}
+      {error && <p className="text-xs text-hive-error">{error}</p>}
+      {hint && !error && <p className="text-xs text-hive-text-muted">{hint}</p>}
     </div>
   )
 }
@@ -70,24 +70,24 @@ export function Textarea({ className, label, error, hint, id, ...props }: Textar
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label htmlFor={inputId} className="text-sm font-medium text-cc-text-secondary">
+        <label htmlFor={inputId} className="text-sm font-medium text-hive-text-secondary">
           {label}
         </label>
       )}
       <textarea
         id={inputId}
         className={cn(
-          'w-full min-h-[80px] rounded-xl bg-white border text-cc-text text-sm placeholder:text-cc-text-muted px-3 py-2.5',
-          'focus:outline-none focus:ring-2 focus:ring-cc-accent/10 focus:border-cc-accent',
+          'w-full min-h-[80px] rounded-xl bg-white border text-hive-text text-sm placeholder:text-hive-text-muted px-3 py-2.5',
+          'focus:outline-none focus:ring-2 focus:ring-hive-accent/10 focus:border-hive-accent',
           'disabled:opacity-40 disabled:cursor-not-allowed resize-y',
           'transition-colors duration-150',
-          error ? 'border-cc-error focus:ring-cc-error/10' : 'border-slate-200',
+          error ? 'border-hive-error focus:ring-hive-error/10' : 'border-slate-200',
           className
         )}
         {...props}
       />
-      {error && <p className="text-xs text-cc-error">{error}</p>}
-      {hint && !error && <p className="text-xs text-cc-text-muted">{hint}</p>}
+      {error && <p className="text-xs text-hive-error">{error}</p>}
+      {hint && !error && <p className="text-xs text-hive-text-muted">{hint}</p>}
     </div>
   )
 }
@@ -126,7 +126,7 @@ export function PinInput({ value, onChange, length = 4, error, label }: PinInput
 
   return (
     <div className="flex flex-col gap-1.5">
-      {label && <label className="text-sm font-medium text-cc-text-secondary">{label}</label>}
+      {label && <label className="text-sm font-medium text-hive-text-secondary">{label}</label>}
       <div className="flex gap-3">
         {digits.map((digit, idx) => (
           <input
@@ -139,15 +139,15 @@ export function PinInput({ value, onChange, length = 4, error, label }: PinInput
             onChange={(e) => handleChange(idx, e.target.value)}
             onKeyDown={(e) => handleKeyDown(idx, e)}
             className={cn(
-              'w-12 h-14 text-center text-xl font-bold rounded-xl bg-white border text-cc-text',
-              'focus:outline-none focus:ring-2 focus:ring-cc-accent/10 focus:border-cc-accent',
+              'w-12 h-14 text-center text-xl font-bold rounded-xl bg-white border text-hive-text',
+              'focus:outline-none focus:ring-2 focus:ring-hive-accent/10 focus:border-hive-accent',
               'transition-colors duration-150',
-              error ? 'border-cc-error' : 'border-slate-200'
+              error ? 'border-hive-error' : 'border-slate-200'
             )}
           />
         ))}
       </div>
-      {error && <p className="text-xs text-cc-error">{error}</p>}
+      {error && <p className="text-xs text-hive-error">{error}</p>}
     </div>
   )
 }

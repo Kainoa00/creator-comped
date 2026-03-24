@@ -9,6 +9,13 @@ import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 
 type OfferType = 'IG_REEL' | 'TIKTOK' | 'BOTH' | 'CHOICE'
 
+const OFFER_TYPES: { value: OfferType; label: string; desc: string }[] = [
+  { value: 'IG_REEL', label: 'Instagram Reel', desc: 'Require an IG Reel only' },
+  { value: 'TIKTOK', label: 'TikTok', desc: 'Require a TikTok only' },
+  { value: 'BOTH', label: 'Both', desc: 'Require IG Reel + TikTok' },
+  { value: 'CHOICE', label: "Creator's Choice", desc: 'Creator picks platform' },
+]
+
 export default function DeliverablesPage() {
   const [offerType, setOfferType] = useState<OfferType>('BOTH')
   const [minVideoLength, setMinVideoLength] = useState(30)
@@ -20,13 +27,6 @@ export default function DeliverablesPage() {
   const [avoidTopics, setAvoidTopics] = useState('Politics, religion, controversial topics')
   const [usageRights, setUsageRights] = useState(true)
   const { saved, flash: handleSave } = useSaveFlash()
-
-  const OFFER_TYPES: { value: OfferType; label: string; desc: string }[] = [
-    { value: 'IG_REEL', label: 'Instagram Reel', desc: 'Require an IG Reel only' },
-    { value: 'TIKTOK', label: 'TikTok', desc: 'Require a TikTok only' },
-    { value: 'BOTH', label: 'Both', desc: 'Require IG Reel + TikTok' },
-    { value: 'CHOICE', label: 'Creator\'s Choice', desc: 'Creator picks platform' },
-  ]
 
   return (
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">

@@ -57,16 +57,16 @@ const icons = {
 }
 
 const variantStyles = {
-  success: 'border-cc-success/40 bg-cc-success/10',
-  error: 'border-cc-error/40 bg-cc-error/10',
-  warning: 'border-cc-warning/40 bg-cc-warning/10',
+  success: 'border-hive-success/40 bg-hive-success/10',
+  error: 'border-hive-error/40 bg-hive-error/10',
+  warning: 'border-hive-warning/40 bg-hive-warning/10',
   info: 'border-blue-500/40 bg-blue-500/10',
 }
 
 const iconColors = {
-  success: 'text-cc-success',
-  error: 'text-cc-error',
-  warning: 'text-cc-warning',
+  success: 'text-hive-success',
+  error: 'text-hive-error',
+  warning: 'text-hive-warning',
   info: 'text-blue-400',
 }
 
@@ -85,7 +85,7 @@ function ToastItem({
       onOpenChange={(open) => !open && onDismiss()}
       className={cn(
         'flex items-start gap-3 rounded-[12px] border p-4 shadow-xl',
-        'bg-cc-card backdrop-blur',
+        'bg-hive-card backdrop-blur',
         variantStyles[notification.type],
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=open]:slide-in-from-right-full data-[state=closed]:slide-out-to-right-full',
@@ -95,18 +95,18 @@ function ToastItem({
     >
       <Icon className={cn('h-5 w-5 shrink-0 mt-0.5', iconColors[notification.type])} />
       <div className="flex-1 min-w-0">
-        <ToastPrimitive.Title className="text-sm font-semibold text-cc-text">
+        <ToastPrimitive.Title className="text-sm font-semibold text-hive-text">
           {notification.title}
         </ToastPrimitive.Title>
         {notification.message && (
-          <ToastPrimitive.Description className="text-xs text-cc-text-secondary mt-0.5">
+          <ToastPrimitive.Description className="text-xs text-hive-text-secondary mt-0.5">
             {notification.message}
           </ToastPrimitive.Description>
         )}
       </div>
       <ToastPrimitive.Close
         aria-label="Dismiss"
-        className="shrink-0 text-cc-text-muted hover:text-cc-text transition-colors"
+        className="shrink-0 text-hive-text-muted hover:text-hive-text transition-colors"
         onClick={onDismiss}
       >
         <X className="h-4 w-4" />

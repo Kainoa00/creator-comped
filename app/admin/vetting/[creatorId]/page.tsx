@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Modal, ModalFooter } from '@/components/ui/modal'
 import { Avatar } from '@/components/ui/avatar'
 import { useToast } from '@/components/ui/toast'
-import { relativeTime } from '@/lib/utils'
+import { relativeTime, formatNumber } from '@/lib/utils'
 import {
   ArrowLeft,
   Instagram,
@@ -208,9 +208,7 @@ export default function CreatorReviewPage() {
               <h2 className="mt-4 text-2xl font-bold text-white">{app.name}</h2>
               {app.follower_count != null && (
                 <p className="text-sm text-white/40 mt-1">
-                  ~{app.follower_count >= 1000
-                    ? `${(app.follower_count / 1000).toFixed(1)}K`
-                    : app.follower_count} followers
+                  ~{formatNumber(app.follower_count)} followers
                 </p>
               )}
             </div>

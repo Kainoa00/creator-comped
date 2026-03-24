@@ -83,7 +83,7 @@ function AgreementCheck({
         className={cn(
           'w-5 h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 transition-colors',
           checked
-            ? 'bg-cc-accent border-cc-accent'
+            ? 'bg-hive-accent border-hive-accent'
             : 'bg-white border-slate-200 group-hover:border-slate-300'
         )}
       >
@@ -124,7 +124,7 @@ function CartItemRow({
         <span className="w-5 text-center text-sm font-semibold text-slate-900 tabular-nums">{qty}</span>
         <button
           onClick={onIncrease}
-          className="w-7 h-7 rounded border border-cc-accent bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark transition-colors"
+          className="w-7 h-7 rounded border border-hive-accent bg-hive-accent flex items-center justify-center text-white hover:bg-hive-accent-dark transition-colors"
         >
           <Plus className="h-3 w-3" />
         </button>
@@ -223,7 +223,7 @@ export default function CartPage() {
         <div className="flex flex-col items-center justify-center gap-5 px-6 text-center" style={{ flex: 1, paddingBottom: '64px' }}>
           {/* Big icon container */}
           <div className="w-20 h-20 rounded-lg border border-slate-200 flex items-center justify-center">
-            <ShoppingCart className="h-9 w-9 text-cc-accent" />
+            <ShoppingCart className="h-9 w-9 text-hive-accent" />
           </div>
           <div>
             <p className="text-xl font-black text-slate-900">Ready to get comped?</p>
@@ -233,7 +233,7 @@ export default function CartPage() {
           </div>
           <button
             onClick={() => router.push('/creator/discover')}
-            className="bg-cc-accent text-white font-black rounded-lg px-8 py-3.5 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all"
+            className="bg-hive-accent text-white font-black rounded-lg px-8 py-3.5 text-sm hover:bg-hive-accent-dark active:scale-95 transition-all"
           >
             Browse Restaurants
           </button>
@@ -255,7 +255,7 @@ export default function CartPage() {
           </button>
           <h1 className="text-base font-black text-slate-900">Your Order</h1>
           {/* Item count badge */}
-          <span className="ml-auto bg-cc-accent text-white text-xs font-black rounded-md px-2.5 py-0.5">
+          <span className="ml-auto bg-hive-accent text-white text-xs font-black rounded-md px-2.5 py-0.5">
             {cartTotal} item{cartTotal !== 1 ? 's' : ''}
           </span>
         </div>
@@ -352,8 +352,8 @@ export default function CartPage() {
           onClick={handlePlaceOrder}
           disabled={!canPlace || placing}
           className={cn(
-            'w-full flex items-center justify-center gap-2 bg-cc-accent text-white font-semibold rounded-lg py-3.5 text-sm transition-colors',
-            'hover:bg-cc-accent-dark',
+            'w-full flex items-center justify-center gap-2 bg-hive-accent text-white font-semibold rounded-lg py-3.5 text-sm transition-colors',
+            'hover:bg-hive-accent-dark',
             (!canPlace || placing) && 'opacity-40 cursor-not-allowed'
           )}
         >

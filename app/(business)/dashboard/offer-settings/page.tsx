@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { CheckCircle, ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -71,9 +71,7 @@ export default function OfferSettingsPage() {
   const [creatorTier, setCreatorTier] = useState<CreatorTier>('established')
   const { saved, flash: handleSave } = useSaveFlash()
 
-  const handleOfferTypeChange = useCallback((type: OfferType) => {
-    setOfferType(type)
-  }, [])
+  const handleOfferTypeChange = (type: OfferType) => setOfferType(type)
 
   return (
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">

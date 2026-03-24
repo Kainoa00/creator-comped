@@ -42,7 +42,7 @@ export function MapPlaceholder({ restaurants }: MapPlaceholderProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search restaurants..."
-            className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cc-accent transition-colors"
+            className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-hive-accent transition-colors"
           />
         </div>
       </div>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar } from '@/components/ui/avatar'
-import { relativeTime, formatDate } from '@/lib/utils'
+import { relativeTime, formatDate, formatNumber } from '@/lib/utils'
 import type { InviteApplication } from '@/lib/types'
 import {
   Search,
@@ -338,11 +338,7 @@ export default function VettingQueuePage() {
                     </td>
                     <td className="px-4 py-4 text-right">
                       <span className="text-sm text-white font-mono font-bold">
-                        {app.follower_count != null
-                          ? app.follower_count >= 1000
-                            ? `${(app.follower_count / 1000).toFixed(1)}K`
-                            : app.follower_count.toString()
-                          : '—'}
+                        {app.follower_count != null ? formatNumber(app.follower_count) : '—'}
                       </span>
                     </td>
                     <td className="px-4 py-4">

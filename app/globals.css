@@ -13,6 +13,8 @@
   --color-hive-border: #2a2a2a;
   --color-hive-accent: #ff6b35;
   --color-hive-accent-blue: #4a90e2;
+  --color-hive-accent-light: #ff8a5c;
+  --color-hive-accent-dark: #e55a2b;
   --color-hive-accent-subtle: rgba(255,107,53,0.1);
   --color-hive-success: #10b981;
   --color-hive-warning: #f59e0b;
@@ -21,21 +23,6 @@
   --color-hive-text-secondary: rgba(255,255,255,0.6);
   --color-hive-text-muted: rgba(255,255,255,0.4);
 
-  /* Legacy cc-* aliases for gradual migration */
-  --color-cc-bg: #ffffff;
-  --color-cc-bg-secondary: #f8fafc;
-  --color-cc-card: #ffffff;
-  --color-cc-border: #e2e8f0;
-  --color-cc-accent: #5c8ebf;
-  --color-cc-accent-light: #7aa8d4;
-  --color-cc-accent-dark: #4a7aad;
-  --color-cc-accent-subtle: #eff6ff;
-  --color-cc-success: #10b981;
-  --color-cc-warning: #f59e0b;
-  --color-cc-error: #ef4444;
-  --color-cc-text: #0f172a;
-  --color-cc-text-secondary: #475569;
-  --color-cc-text-muted: #94a3b8;
 
   /* Font */
   --font-sans: var(--font-manrope), system-ui, sans-serif;
@@ -57,6 +44,8 @@
   --hive-border: #2a2a2a;
   --hive-accent: #ff6b35;
   --hive-accent-blue: #4a90e2;
+  --hive-accent-light: #ff8a5c;
+  --hive-accent-dark: #e55a2b;
   --hive-accent-subtle: rgba(255,107,53,0.1);
   --hive-success: #10b981;
   --hive-warning: #f59e0b;
@@ -65,21 +54,6 @@
   --hive-text-secondary: rgba(255,255,255,0.6);
   --hive-text-muted: rgba(255,255,255,0.4);
 
-  /* Legacy cc-* for existing components */
-  --cc-bg: #ffffff;
-  --cc-bg-secondary: #f8fafc;
-  --cc-card: #ffffff;
-  --cc-border: #e2e8f0;
-  --cc-accent: #5c8ebf;
-  --cc-accent-light: #7aa8d4;
-  --cc-accent-dark: #4a7aad;
-  --cc-accent-subtle: #eff6ff;
-  --cc-success: #10b981;
-  --cc-warning: #f59e0b;
-  --cc-error: #ef4444;
-  --cc-text: #0f172a;
-  --cc-text-secondary: #475569;
-  --cc-text-muted: #94a3b8;
 }
 
 *,

@@ -33,7 +33,7 @@ export function StaggeredList({
           },
         },
       }}
-      className={cn(className)}
+      className={className}
     >
       {children}
     </motion.div>

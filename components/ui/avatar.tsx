@@ -23,7 +23,7 @@ export function Avatar({ src, name, size = 'md', className }: AvatarProps) {
   return (
     <div
       className={cn(
-        'relative shrink-0 rounded-full bg-cc-accent-subtle border border-blue-100 overflow-hidden flex items-center justify-center',
+        'relative shrink-0 rounded-full bg-hive-accent-subtle border border-blue-100 overflow-hidden flex items-center justify-center',
         sizeClasses[size],
         className
       )}
@@ -41,7 +41,7 @@ export function Avatar({ src, name, size = 'md', className }: AvatarProps) {
           }}
         />
       ) : (
-        <span className="font-semibold text-cc-accent select-none">{initials}</span>
+        <span className="font-semibold text-hive-accent select-none">{initials}</span>
       )}
     </div>
   )
@@ -65,9 +65,9 @@ export function AvatarWithText({
     <div className={cn('flex items-center gap-3', className)}>
       <Avatar src={src} name={name} size={size} />
       <div className="flex flex-col min-w-0">
-        <span className="font-medium text-cc-text text-sm truncate">{name}</span>
+        <span className="font-medium text-hive-text text-sm truncate">{name}</span>
         {subtitle && (
-          <span className={cn('text-xs text-cc-text-muted truncate', subtitleClassName)}>
+          <span className={cn('text-xs text-hive-text-muted truncate', subtitleClassName)}>
             {subtitle}
           </span>
         )}

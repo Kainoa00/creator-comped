@@ -51,7 +51,7 @@ export function Countdown({
 
   if (expired) {
     return (
-      <span className={cn('text-cc-error font-bold', sizeClasses[size], className)}>
+      <span className={cn('text-hive-error font-bold', sizeClasses[size], className)}>
         EXPIRED
       </span>
     )
@@ -61,7 +61,7 @@ export function Countdown({
     <span
       className={cn(
         sizeClasses[size],
-        isCritical ? 'text-cc-error animate-pulse' : isWarning ? 'text-amber-600' : 'text-cc-text',
+        isCritical ? 'text-hive-error animate-pulse' : isWarning ? 'text-amber-600' : 'text-hive-text',
         className
       )}
     >
@@ -101,10 +101,10 @@ export function CountdownCard({
           : 'bg-slate-50 border-slate-200'
       )}
     >
-      <p className="text-xs text-cc-text-muted uppercase tracking-wider">{label}</p>
+      <p className="text-xs text-hive-text-muted uppercase tracking-wider">{label}</p>
       <Countdown deadline={deadline} onExpired={onExpired} showHours size="lg" />
       {isUrgent && (
-        <p className="text-xs text-cc-error font-medium">Post immediately to avoid a strike!</p>
+        <p className="text-xs text-hive-error font-medium">Post immediately to avoid a strike!</p>
       )}
     </div>
   )

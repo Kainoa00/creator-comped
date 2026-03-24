@@ -36,8 +36,8 @@ function RestaurantMarker({
         'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer border-2',
         'shadow-md bg-white',
         isSelected
-          ? 'border-cc-accent scale-125 shadow-cc-accent/30'
-          : 'border-cc-accent hover:scale-110 hover:shadow-cc-accent/20',
+          ? 'border-hive-accent scale-125 shadow-hive-accent/30'
+          : 'border-hive-accent hover:scale-110 hover:shadow-hive-accent/20',
         restaurant.settings.pause_comps && 'opacity-40 border-slate-300'
       )}
       aria-label={`View ${restaurant.name}`}
@@ -45,7 +45,7 @@ function RestaurantMarker({
       <MapPin
         className={cn(
           'h-4 w-4',
-          restaurant.settings.pause_comps ? 'text-slate-400' : 'text-cc-accent'
+          restaurant.settings.pause_comps ? 'text-slate-400' : 'text-hive-accent'
         )}
         strokeWidth={2.5}
         fill={isSelected ? 'rgba(92,142,191,0.15)' : 'none'}
@@ -90,7 +90,7 @@ export function MapView({ restaurants }: MapViewProps) {
       {/* Floating location pill — top center */}
       <div className="absolute top-4 left-0 right-0 z-20 flex justify-center pointer-events-none">
         <div className="bg-white shadow-md border border-slate-100 rounded-full px-4 py-1.5 flex items-center gap-1.5">
-          <MapPin className="h-3.5 w-3.5 text-cc-accent" />
+          <MapPin className="h-3.5 w-3.5 text-hive-accent" />
           <span className="text-xs font-semibold text-slate-700">Utah County</span>
         </div>
       </div>
@@ -153,7 +153,7 @@ export function MapView({ restaurants }: MapViewProps) {
               ) : (
                 <button
                   onClick={() => handleViewMenu(selectedRestaurant.id)}
-                  className="w-full mt-2 bg-cc-accent text-white text-sm font-bold rounded-xl px-4 py-2 flex items-center justify-center gap-1 hover:bg-cc-accent-dark transition-colors"
+                  className="w-full mt-2 bg-hive-accent text-white text-sm font-bold rounded-xl px-4 py-2 flex items-center justify-center gap-1 hover:bg-hive-accent-dark transition-colors"
                 >
                   View Menu
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -183,7 +183,7 @@ export function MapView({ restaurants }: MapViewProps) {
               <button
                 onClick={() => handleViewMenu(selectedRestaurant.id)}
                 disabled={selectedRestaurant.settings.pause_comps}
-                className="bg-cc-accent text-white text-sm font-bold rounded-xl px-4 py-2 flex items-center gap-1 hover:bg-cc-accent-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                className="bg-hive-accent text-white text-sm font-bold rounded-xl px-4 py-2 flex items-center gap-1 hover:bg-hive-accent-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
               >
                 View
                 <ChevronRight className="h-3.5 w-3.5" />

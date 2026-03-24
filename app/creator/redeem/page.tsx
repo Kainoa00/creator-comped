@@ -48,7 +48,7 @@ export default function RedeemPage() {
       <div style={{ position: 'fixed', inset: 0, background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '24px', padding: '0 24px 64px', textAlign: 'center', zIndex: 10 }}>
         {/* Big QR icon */}
         <div className="w-24 h-24 rounded-lg border border-slate-200 flex items-center justify-center">
-          <QrCode className="h-11 w-11 text-cc-accent" />
+          <QrCode className="h-11 w-11 text-hive-accent" />
         </div>
         <div>
           <h2 className="text-2xl font-black text-slate-900">No active comp</h2>
@@ -58,7 +58,7 @@ export default function RedeemPage() {
         </div>
         <button
           onClick={() => router.push('/creator/discover')}
-          className="flex items-center gap-2 bg-cc-accent text-white font-black rounded-lg px-8 py-3.5 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all"
+          className="flex items-center gap-2 bg-hive-accent text-white font-black rounded-lg px-8 py-3.5 text-sm hover:bg-hive-accent-dark active:scale-95 transition-all"
         >
           Browse Restaurants
           <ArrowRight className="h-4 w-4" />
@@ -248,7 +248,7 @@ export default function RedeemPage() {
               clearRedemption()
               router.push('/creator/discover')
             }}
-            className="flex items-center gap-2.5 bg-cc-accent text-white font-black rounded-lg px-8 py-4 text-sm hover:bg-cc-accent-dark active:scale-95 transition-all"
+            className="flex items-center gap-2.5 bg-hive-accent text-white font-black rounded-lg px-8 py-4 text-sm hover:bg-hive-accent-dark active:scale-95 transition-all"
           >
             <RefreshCw className="h-4 w-4" />
             Start Over

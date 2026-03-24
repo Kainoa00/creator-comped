@@ -57,7 +57,7 @@ function PlatformPill({
       className={cn(
         'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border font-bold text-sm transition-all',
         selected
-          ? 'border-cc-accent bg-cc-accent text-white'
+          ? 'border-hive-accent bg-hive-accent text-white'
           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
       )}
     >
@@ -150,7 +150,7 @@ export default function ProofPage() {
         <p className="text-sm text-slate-500">You have no pending proofs right now.</p>
         <button
           onClick={() => router.push('/creator/discover')}
-          className="bg-cc-accent text-white font-bold rounded-xl px-6 py-2.5 text-sm hover:bg-cc-accent-dark transition-colors"
+          className="bg-hive-accent text-white font-bold rounded-xl px-6 py-2.5 text-sm hover:bg-hive-accent-dark transition-colors"
         >
           Discover Restaurants
         </button>
@@ -174,7 +174,7 @@ export default function ProofPage() {
         <div className="px-4">
           <div className="bg-slate-50 rounded-xl p-3.5 flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
-              <Utensils className="h-4 w-4 text-cc-accent" />
+              <Utensils className="h-4 w-4 text-hive-accent" />
             </div>
             <div className="min-w-0">
               <p className="text-sm font-bold text-slate-900 truncate">{order.restaurant_name}</p>
@@ -317,8 +317,8 @@ export default function ProofPage() {
           onClick={handleSubmit}
           disabled={!urlValid || submitting}
           className={cn(
-            'w-full flex items-center justify-center gap-2 bg-cc-accent text-white font-bold rounded-lg py-3.5 text-sm transition-all',
-            'hover:bg-cc-accent-dark',
+            'w-full flex items-center justify-center gap-2 bg-hive-accent text-white font-bold rounded-lg py-3.5 text-sm transition-all',
+            'hover:bg-hive-accent-dark',
             (!urlValid || submitting) && 'opacity-50 cursor-not-allowed'
           )}
         >

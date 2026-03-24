@@ -16,6 +16,12 @@ const labelClass = 'text-xs font-semibold mb-1.5'
 const labelStyle = { background: 'linear-gradient(90deg, #8B5CF6 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
 const inputClass = 'w-full bg-white/[0.05] border border-white/[0.06] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20'
 
+const PLATFORMS: { value: Platform; label: string }[] = [
+  { value: 'IG_REEL', label: 'Instagram Reel' },
+  { value: 'TIKTOK', label: 'TikTok' },
+  { value: 'BOTH', label: 'Both Platforms' },
+]
+
 export default function CampaignPage() {
   const [totalItemLimit, setTotalItemLimit] = useState(2)
   const [itemLimits, setItemLimits] = useState<Record<string, number>>(
@@ -35,12 +41,6 @@ export default function CampaignPage() {
   const [mentionLocation, setMentionLocation] = useState(true)
 
   const { saved, flash: handleSave } = useSaveFlash()
-
-  const PLATFORMS: { value: Platform; label: string }[] = [
-    { value: 'IG_REEL', label: 'Instagram Reel' },
-    { value: 'TIKTOK', label: 'TikTok' },
-    { value: 'BOTH', label: 'Both Platforms' },
-  ]
 
   return (
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">

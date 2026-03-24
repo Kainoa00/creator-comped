@@ -91,7 +91,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
                   className={cn(
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
                     isActive
-                      ? 'bg-cc-accent-subtle text-cc-accent'
+                      ? 'bg-hive-accent-subtle text-hive-accent'
                       : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                   )}
                   aria-current={isActive ? 'page' : undefined}
@@ -131,20 +131,20 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
                   href={tab.href}
                   className={cn(
                     'relative flex-1 flex flex-col items-center justify-center gap-0.5 transition-all duration-200',
-                    isActive ? 'text-cc-accent' : 'text-slate-400 hover:text-slate-500'
+                    isActive ? 'text-hive-accent' : 'text-slate-400 hover:text-slate-500'
                   )}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   <div
                     className={cn(
                       'w-10 h-7 rounded-2xl flex items-center justify-center transition-all duration-200',
-                      isActive ? 'bg-cc-accent-subtle' : 'bg-transparent'
+                      isActive ? 'bg-hive-accent-subtle' : 'bg-transparent'
                     )}
                   >
                     <Icon
                       className={cn(
                         'h-5 w-5 transition-colors',
-                        isActive ? 'text-cc-accent' : 'text-slate-400'
+                        isActive ? 'text-hive-accent' : 'text-slate-400'
                       )}
                       strokeWidth={isActive ? 2.5 : 1.75}
                     />
@@ -152,7 +152,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
                   <span
                     className={cn(
                       'text-[10px] font-semibold tracking-wide transition-colors',
-                      isActive ? 'text-cc-accent' : 'text-slate-400'
+                      isActive ? 'text-hive-accent' : 'text-slate-400'
                     )}
                   >
                     {tab.label}

@@ -18,7 +18,7 @@ export function Spinner({ size = 'md', className }: SpinnerProps) {
       role="status"
       aria-label="Loading"
       className={cn(
-        'animate-spin rounded-full border-slate-200 border-t-cc-accent',
+        'animate-spin rounded-full border-slate-200 border-t-hive-accent',
         sizeClasses[size],
         className
       )}
@@ -31,7 +31,7 @@ export function FullPageSpinner() {
     <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
       <div className="flex flex-col items-center gap-4">
         <Spinner size="xl" />
-        <p className="text-cc-text-secondary text-sm">Loading...</p>
+        <p className="text-hive-text-secondary text-sm">Loading...</p>
       </div>
     </div>
   )

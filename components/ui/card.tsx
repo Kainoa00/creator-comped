@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'react'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean
-  /** Adds a cc-accent colored left border for highlighted cards */
+  /** Adds a hive-accent colored left border for highlighted cards */
   highlighted?: boolean
 }
 
@@ -13,7 +13,7 @@ export function Card({ className, hover = false, highlighted = false, children, 
       className={cn(
         'bg-white border border-slate-100 rounded-2xl shadow-sm p-4',
         hover && 'cursor-pointer transition-all duration-200 hover:shadow-md',
-        highlighted && 'border-l-4 border-l-cc-accent',
+        highlighted && 'border-l-4 border-l-hive-accent',
         className
       )}
       {...props}
@@ -39,7 +39,7 @@ interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 
 export function CardTitle({ className, as: Tag = 'h3', children, ...props }: CardTitleProps) {
   return (
-    <Tag className={cn('text-cc-text font-semibold', className)} {...props}>
+    <Tag className={cn('text-hive-text font-semibold', className)} {...props}>
       {children}
     </Tag>
   )
@@ -49,7 +49,7 @@ type CardBodyProps = HTMLAttributes<HTMLDivElement>
 
 export function CardBody({ className, children, ...props }: CardBodyProps) {
   return (
-    <div className={cn('text-cc-text-secondary text-sm', className)} {...props}>
+    <div className={cn('text-hive-text-secondary text-sm', className)} {...props}>
       {children}
     </div>
   )

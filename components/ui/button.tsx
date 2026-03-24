@@ -7,24 +7,24 @@ import type { ButtonHTMLAttributes } from 'react'
 
 const buttonVariants = cva(
   // Base styles
-  'inline-flex items-center justify-center gap-2 font-bold rounded-xl transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cc-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-40 cursor-pointer select-none',
+  'inline-flex items-center justify-center gap-2 font-bold rounded-xl transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hive-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-40 cursor-pointer select-none',
   {
     variants: {
       variant: {
         primary:
-          'bg-cc-accent text-white hover:bg-cc-accent-dark active:bg-cc-accent-dark shadow-sm',
+          'bg-hive-accent text-white hover:bg-hive-accent-dark active:bg-hive-accent-dark shadow-sm',
         secondary:
           'bg-slate-100 text-slate-900 hover:bg-slate-200 active:bg-slate-300',
         ghost:
-          'bg-transparent text-cc-text-secondary hover:bg-slate-50 hover:text-cc-text',
+          'bg-transparent text-hive-text-secondary hover:bg-slate-50 hover:text-hive-text',
         danger:
-          'bg-cc-error text-white hover:bg-red-600 active:bg-red-700 shadow-sm',
+          'bg-hive-error text-white hover:bg-red-600 active:bg-red-700 shadow-sm',
         outline:
-          'bg-transparent text-cc-text border border-cc-border hover:bg-slate-50 active:bg-slate-100',
+          'bg-transparent text-hive-text border border-hive-border hover:bg-slate-50 active:bg-slate-100',
         success:
-          'bg-cc-success text-white hover:bg-emerald-600 active:bg-emerald-700 shadow-sm',
+          'bg-hive-success text-white hover:bg-emerald-600 active:bg-emerald-700 shadow-sm',
         pill:
-          'bg-cc-accent text-white hover:bg-cc-accent-dark active:bg-cc-accent-dark shadow-sm rounded-full',
+          'bg-hive-accent text-white hover:bg-hive-accent-dark active:bg-hive-accent-dark shadow-sm rounded-full',
       },
       size: {
         sm: 'h-8 px-3 text-sm rounded-lg',

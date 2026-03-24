@@ -70,16 +70,16 @@ export function Modal({
           {title ? (
             <div className="flex items-start justify-between mb-4">
               <div>
-                <Dialog.Title className="text-lg font-bold text-cc-text">{title}</Dialog.Title>
+                <Dialog.Title className="text-lg font-bold text-hive-text">{title}</Dialog.Title>
                 {description && (
-                  <Dialog.Description className="text-sm text-cc-text-secondary mt-1">
+                  <Dialog.Description className="text-sm text-hive-text-secondary mt-1">
                     {description}
                   </Dialog.Description>
                 )}
               </div>
               {!hideClose && (
                 <Dialog.Close
-                  className="ml-4 shrink-0 text-cc-text-muted hover:text-cc-text transition-colors rounded-xl p-1.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cc-accent"
+                  className="ml-4 shrink-0 text-hive-text-muted hover:text-hive-text transition-colors rounded-xl p-1.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hive-accent"
                   aria-label="Close"
                 >
                   <X className="h-5 w-5" />
@@ -94,7 +94,7 @@ export function Modal({
               {!hideClose && (
                 <div className="flex justify-end mb-2">
                   <Dialog.Close
-                    className="text-cc-text-muted hover:text-cc-text transition-colors rounded-xl p-1.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cc-accent"
+                    className="text-hive-text-muted hover:text-hive-text transition-colors rounded-xl p-1.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hive-accent"
                     aria-label="Close"
                   >
                     <X className="h-5 w-5" />

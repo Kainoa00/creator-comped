@@ -159,7 +159,7 @@ function MenuItemRow({
             <button
               onClick={onAdd}
               disabled={atItemMax || maxReached}
-              className="w-7 h-7 rounded border border-cc-accent bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
+              className="w-7 h-7 rounded border border-hive-accent bg-hive-accent flex items-center justify-center text-white hover:bg-hive-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
             >
               <Plus className="h-3 w-3" />
             </button>
@@ -168,7 +168,7 @@ function MenuItemRow({
           <button
             onClick={onAdd}
             disabled={maxReached}
-            className="w-7 h-7 rounded border border-cc-accent bg-cc-accent flex items-center justify-center text-white hover:bg-cc-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
+            className="w-7 h-7 rounded border border-hive-accent bg-hive-accent flex items-center justify-center text-white hover:bg-hive-accent-dark disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
           >
             <Plus className="h-3 w-3" />
           </button>
@@ -217,7 +217,7 @@ export default function RestaurantSheetPage({
           <p className="text-slate-900 font-black">Restaurant not found</p>
           <button
             onClick={() => router.back()}
-            className="mt-4 text-sm text-cc-accent font-bold"
+            className="mt-4 text-sm text-hive-accent font-bold"
           >
             Go back
           </button>
@@ -347,13 +347,13 @@ export default function RestaurantSheetPage({
                       key={day}
                       className={cn(
                         'flex items-center justify-between px-4 py-2.5',
-                        isToday && 'bg-cc-accent-subtle'
+                        isToday && 'bg-hive-accent-subtle'
                       )}
                     >
                       <span
                         className={cn(
                           'text-xs font-bold',
-                          isToday ? 'text-cc-accent' : 'text-slate-600'
+                          isToday ? 'text-hive-accent' : 'text-slate-600'
                         )}
                       >
                         {DAY_LABELS[day]}
@@ -464,7 +464,7 @@ export default function RestaurantSheetPage({
           <button
             onClick={() => router.push('/creator/cart')}
             disabled={cartTotal === 0}
-            className="w-full flex items-center justify-between px-5 py-3.5 bg-cc-accent hover:bg-cc-accent-dark active:bg-cc-accent-dark transition-colors rounded-lg"
+            className="w-full flex items-center justify-between px-5 py-3.5 bg-hive-accent hover:bg-hive-accent-dark active:bg-hive-accent-dark transition-colors rounded-lg"
           >
             <div className="flex items-center gap-2.5">
               <ShoppingCart className="h-5 w-5 text-white" />

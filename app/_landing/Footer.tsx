@@ -19,11 +19,12 @@ export default function Footer() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-white/30 mb-4">Resources</p>
             <nav aria-label="Footer resources" className="flex flex-col gap-3">
-              {['Rules', 'Support', 'FAQ'].map((l) => (
-                <a key={l} href="#" className="text-sm text-white/45 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm w-fit">
-                  {l}
-                </a>
-              ))}
+              <Link href="/support" className="text-sm text-white/45 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm w-fit">
+                Support
+              </Link>
+              <a href="#faq" className="text-sm text-white/45 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded-sm w-fit">
+                FAQ
+              </a>
             </nav>
           </div>
 

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { MapPin, ChevronRight, ShoppingCart } from 'lucide-react'
-import { isDemoMode } from '@/lib/supabase'
+import { supabase, isDemoMode } from '@/lib/supabase'
 import { DEMO_RESTAURANTS } from '@/lib/demo-data'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { FullPageSpinner } from '@/components/ui/spinner'
@@ -43,12 +43,28 @@ export default function DiscoverPage() {
   const cartCount = totalItems()
 
   useEffect(() => {
-    if (isDemoMode) {
-      setRestaurants(DEMO_RESTAURANTS)
-    } else {
-      setRestaurants(DEMO_RESTAURANTS)
+    async function loadRestaurants() {
+      if (isDemoMode || !supabase) {
+        setRestaurants(DEMO_RESTAURANTS)
+        setLoading(false)
+        return
+      }
+      try {
+        const { data, error } = await supabase
+          .from('restaurants')
+          .select('*')
+          .order('name')
+        if (error || !data?.length) {
+          setRestaurants(DEMO_RESTAURANTS)
+        } else {
+          setRestaurants(data as Restaurant[])
+        }
+      } catch {
+        setRestaurants(DEMO_RESTAURANTS)
+      }
+      setLoading(false)
     }
-    setLoading(false)
+    loadRestaurants()
   }, [])
 
   if (loading) return <FullPageSpinner />
@@ -57,21 +73,26 @@ export default function DiscoverPage() {
     <div className="min-h-screen bg-[#0B0B0D] text-white">
       {/* Header */}
       <div className="px-4 pt-14 pb-4 flex items-center justify-between max-w-[430px] mx-auto">
-        <div>
-          <h1
-            className="text-2xl font-bold tracking-tight"
-            style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-          >
-            HIVE
-          </h1>
-          <div className="flex items-center gap-1 mt-0.5">
-            <MapPin className="h-3 w-3 text-gray-400" />
-            <span className="text-xs text-gray-400">Provo, UT</span>
+        <div className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/hive-logo.svg" alt="" className="w-9 h-9" />
+          <div>
+            <h1
+              className="text-2xl font-bold tracking-tight"
+              style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              HIVE
+            </h1>
+            <div className="flex items-center gap-1 mt-0.5">
+              <MapPin className="h-3 w-3 text-gray-400" />
+              <span className="text-xs text-gray-400">Provo, UT</span>
+            </div>
           </div>
         </div>
         {cartCount > 0 && (
           <button
             onClick={() => router.push('/cart')}
+            aria-label={`View cart with ${cartCount} items`}
             className="relative w-10 h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#2a2a2a]"
           >
             <ShoppingCart className="h-4 w-4 text-white" />

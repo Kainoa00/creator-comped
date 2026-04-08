@@ -1,14 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import Link from 'next/link'
 import { DarkStatCard } from '@/components/restaurant-ui/DarkStatCard'
-import { DEMO_RESTAURANTS, DEMO_ORDERS, DEMO_ANALYTICS_SNAPSHOTS } from '@/lib/demo-data'
+import { DEMO_RESTAURANTS, DEMO_ORDERS, DEMO_ANALYTICS_SNAPSHOTS, DEMO_CREATORS } from '@/lib/demo-data'
 import { formatNumber, cn } from '@/lib/utils'
-import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
+import { DemoBadge } from '@/lib/business-ui'
+import { supabase, isDemoMode } from '@/lib/supabase'
+import { useAuth } from '@/lib/hooks/useAuth'
 import { TimeRangeTrigger, timeRangeLabel } from '@/components/restaurant-ui/TimeRangeTrigger'
 import { TimeRangeModal } from '@/components/restaurant-ui/TimeRangeModal'
-import { GradientSlider } from '@/components/restaurant-ui/GradientSlider'
-import type { TimeRange } from '@/lib/types'
+import type { TimeRange, RestaurantProfile, Order } from '@/lib/types'
 import { TextGenerateEffect } from '@/components/effects/TextGenerateEffect'
 import { StaggeredList, StaggerItem } from '@/components/effects/StaggeredList'
 import { AuroraBackground } from '@/components/effects/AuroraBackground'
@@ -22,18 +24,10 @@ import {
   Megaphone,
   Scissors,
   Eye,
+  CheckCircle2,
+  Clock,
+  QrCode,
 } from 'lucide-react'
-
-const restaurant = DEMO_RESTAURANTS[0]
-
-const confirmedOrders = DEMO_ORDERS.filter((o) =>
-  ['confirmed', 'proof_submitted', 'approved'].includes(o.status)
-)
-const pendingProofReviews = DEMO_ORDERS.filter((o) => o.status === 'proof_submitted').length
-const totalViews = DEMO_ANALYTICS_SNAPSHOTS.reduce((sum, s) => sum + s.views, 0)
-const monthlyBudget = 5000
-const spent = 4892
-const budgetPct = Math.round((spent / monthlyBudget) * 100)
 
 const QUICK_TILES = [
   { href: '/dashboard/comps', icon: Receipt, label: 'Comps', description: 'View all redemptions' },
@@ -54,12 +48,44 @@ function getGreeting() {
 
 export default function BusinessDashboardPage() {
   const now = new Date()
+  const { user } = useAuth()
   const [timeRange, setTimeRange] = useState<TimeRange>({ mode: 'month', month: now.getMonth(), year: now.getFullYear() })
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [monthlyBudgetInput, setMonthlyBudgetInput] = useState(5000)
-  const [cooldownDays, setCooldownDays] = useState(14)
-  const [totalItemLimit, setTotalItemLimit] = useState(2)
-  const { saved, flash: handleSave } = useSaveFlash()
+  const [restaurant, setRestaurant] = useState<RestaurantProfile>(DEMO_RESTAURANTS[0] as RestaurantProfile)
+  const [orders, setOrders] = useState<Order[]>(DEMO_ORDERS)
+  const [analyticsViews, setAnalyticsViews] = useState(DEMO_ANALYTICS_SNAPSHOTS.reduce((sum, s) => sum + s.views, 0))
+
+  useEffect(() => {
+    async function loadData() {
+      if (isDemoMode || !supabase || !user?.restaurantId) return
+
+      try {
+        // Fetch restaurant
+        const { data: r } = await supabase.from('restaurants').select('*').eq('id', user.restaurantId).single()
+        if (r) setRestaurant(r as RestaurantProfile)
+
+        // Fetch orders
+        const { data: o } = await supabase.from('orders').select('*').eq('restaurant_id', user.restaurantId).order('created_at', { ascending: false }).limit(100)
+        if (o?.length) setOrders(o as Order[])
+
+        // Fetch analytics views
+        const { data: a } = await supabase.from('analytics_snapshots').select('views').limit(500)
+        if (a?.length) setAnalyticsViews(a.reduce((sum: number, s: { views: number }) => sum + s.views, 0))
+      } catch { /* fall back to demo data */ }
+    }
+    loadData()
+  }, [user?.restaurantId])
+
+  const confirmedOrders = useMemo(() => orders.filter((o) =>
+    ['confirmed', 'proof_submitted', 'approved'].includes(o.status)
+  ), [orders])
+  const pendingProofReviews = useMemo(() => orders.filter((o) => o.status === 'proof_submitted').length, [orders])
+  const monthlyBudget = restaurant.monthly_budget ?? 5000
+  const spent = useMemo(() => {
+    // Estimate spend from confirmed orders' item count * avg COGS
+    return confirmedOrders.length * 18 // Approximation — will refine with actual COGS data
+  }, [confirmedOrders])
+  const budgetPct = monthlyBudget > 0 ? Math.round((spent / monthlyBudget) * 100) : 0
 
   return (
     <div className="px-4 pt-6 pb-8 max-w-2xl mx-auto w-full">
@@ -76,6 +102,7 @@ export default function BusinessDashboardPage() {
           </div>
           <TimeRangeTrigger range={timeRange} onClick={() => setIsModalOpen(true)} />
         </div>
+        <DemoBadge />
       </div>
 
       {/* Stats */}
@@ -87,7 +114,7 @@ export default function BusinessDashboardPage() {
           <DarkStatCard icon={DollarSign} label="Spent" value={`$${spent.toLocaleString()}`} sub="of $5k" badge={budgetPct >= 90 ? '!' : undefined} />
         </StaggerItem>
         <StaggerItem>
-          <DarkStatCard icon={Eye} label="Views" value={formatNumber(totalViews)} sub="est. reach" />
+          <DarkStatCard icon={Eye} label="Views" value={formatNumber(analyticsViews)} sub="est. reach" />
         </StaggerItem>
       </StaggeredList>
 
@@ -131,61 +158,60 @@ export default function BusinessDashboardPage() {
         })}
       </StaggeredList>
 
-      {/* Settings Section */}
-      <div className="mb-6">
-        <p className="text-xs text-white/30 uppercase tracking-widest font-medium mb-3">Quick Settings</p>
+      {/* Scan CTA */}
+      <Link
+        href="/dashboard/scanner"
+        className="flex items-center gap-4 bg-gradient-to-r from-[#FF6B35]/20 to-[#4A90E2]/20 border border-white/[0.1] rounded-2xl px-5 py-4 mb-8 hover:from-[#FF6B35]/30 hover:to-[#4A90E2]/30 transition-all active:scale-[0.98]"
+      >
+        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FF6B35] to-[#4A90E2] flex items-center justify-center shrink-0">
+          <QrCode className="h-5 w-5 text-white" />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-bold text-white">Scan Creator Code</p>
+          <p className="text-xs text-white/50 mt-0.5">Tap to open scanner</p>
+        </div>
+        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+      </Link>
+
+      {/* Recent Comps */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs text-white/30 uppercase tracking-widest font-medium">Recent Comps</p>
+          <Link href="/dashboard/comps" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+            View all →
+          </Link>
+        </div>
         <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.05]">
-          {/* Monthly Budget */}
-          <div className="flex items-center justify-between px-4 py-4">
-            <div>
-              <p className="text-sm font-medium text-white">Monthly Budget</p>
-              <p className="text-xs text-white/40 mt-0.5">Total comp budget per month</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-xs text-white/40">$</span>
-              <input
-                type="number"
-                min="100"
-                max="50000"
-                step="100"
-                value={monthlyBudgetInput}
-                onChange={(e) => setMonthlyBudgetInput(parseInt(e.target.value) || 100)}
-                className="w-20 bg-white/[0.08] border border-white/[0.08] rounded-xl px-2 py-1.5 text-sm text-white text-center focus:outline-none focus:border-white/20"
-              />
-            </div>
-          </div>
-
-          {/* Creator Cooldown */}
-          <div className="px-4 py-4">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-sm font-medium text-white">Creator Cooldown</p>
-                <p className="text-xs text-white/40 mt-0.5">Days before a creator can redeem again</p>
+          {orders.slice(0, 4).map((order) => (
+            <div key={order.id} className="flex items-center gap-3 px-4 py-3.5">
+              <div className={cn(
+                'w-8 h-8 rounded-full flex items-center justify-center shrink-0',
+                order.status === 'confirmed' ? 'bg-green-500/20' :
+                order.status === 'scanned' ? 'bg-blue-500/20' : 'bg-white/10'
+              )}>
+                {order.status === 'confirmed'
+                  ? <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  : <Clock className="h-4 w-4 text-blue-400" />
+                }
               </div>
-              <span className="text-sm font-bold text-white">{cooldownDays}d</span>
-            </div>
-            <GradientSlider min={1} max={90} value={cooldownDays} onChange={setCooldownDays} />
-            <div className="flex justify-between text-xs text-white/30 mt-1">
-              <span>1 day</span>
-              <span>90 days</span>
-            </div>
-          </div>
-
-          {/* Total Item Limit */}
-          <div className="px-4 py-4">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-sm font-medium text-white">Total Item Limit</p>
-                <p className="text-xs text-white/40 mt-0.5">Max items per comp order</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-white truncate">
+                  {DEMO_CREATORS.find((c) => c.id === order.creator_id)?.name ?? 'Creator'}
+                </p>
+                <p className="text-xs text-white/40 truncate mt-0.5">
+                  #{order.redemption_code} · {order.restaurant_name}
+                </p>
               </div>
-              <span className="text-sm font-bold text-white">{totalItemLimit} items</span>
+              <span className={cn(
+                'text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0',
+                order.status === 'confirmed' ? 'bg-green-500/20 text-green-400' :
+                order.status === 'rejected' ? 'bg-red-500/20 text-red-400' :
+                'bg-blue-500/20 text-blue-400'
+              )}>
+                {order.status}
+              </span>
             </div>
-            <GradientSlider min={1} max={10} value={totalItemLimit} onChange={setTotalItemLimit} />
-            <div className="flex justify-between text-xs text-white/30 mt-1">
-              <span>1 item</span>
-              <span>10 items</span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
@@ -195,19 +221,6 @@ export default function BusinessDashboardPage() {
         onApply={setTimeRange}
         initialRange={timeRange}
       />
-
-      {/* Save Settings */}
-      <button
-        type="button"
-        onClick={handleSave}
-        className={cn(
-          'w-full py-4 rounded-2xl text-white font-bold text-sm transition-all',
-          saved ? 'bg-emerald-500' : ''
-        )}
-        style={saved ? {} : { background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
-      >
-        {saved ? 'Saved!' : 'Save Settings'}
-      </button>
     </div>
   )
 }

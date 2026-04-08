@@ -65,7 +65,7 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
       <header className="px-4 pt-14 pb-4 flex items-center gap-3">
         <button
           onClick={() => router.back()}
-          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-colors"
+          className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors"
         >
           <ArrowLeft className="h-5 w-5 text-white" />
         </button>

@@ -22,8 +22,14 @@ export function useRealtimeOrders(restaurantId?: string) {
       return
     }
 
+    if (!supabase) {
+      setError('Database not configured')
+      setLoading(false)
+      return
+    }
+
     // Initial fetch
-    supabase!
+    supabase
       .from('orders')
       .select('*')
       .eq('restaurant_id', restaurantId)
@@ -36,7 +42,7 @@ export function useRealtimeOrders(restaurantId?: string) {
       })
 
     // Subscribe to realtime changes
-    const channel = supabase!
+    const channel = supabase
       .channel(`orders:restaurant:${restaurantId}`)
       .on(
         'postgres_changes',
@@ -48,7 +54,7 @@ export function useRealtimeOrders(restaurantId?: string) {
         },
         (payload) => {
           if (payload.eventType === 'INSERT') {
-            setOrders((prev) => [payload.new as Order, ...prev])
+            setOrders((prev) => [payload.new as Order, ...prev].slice(0, 100))
           } else if (payload.eventType === 'UPDATE') {
             setOrders((prev) =>
               prev.map((o) => (o.id === payload.new.id ? (payload.new as Order) : o))
@@ -64,7 +70,7 @@ export function useRealtimeOrders(restaurantId?: string) {
       })
 
     return () => {
-      supabase!.removeChannel(channel)
+      supabase?.removeChannel(channel)
     }
   }, [restaurantId])
 

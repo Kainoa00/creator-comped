@@ -125,8 +125,7 @@ const initialWellnessGroups: WellnessGroup[] = [
 
 // ── Design tokens ──────────────────────────────────────────────────────────
 
-const fieldClass = 'w-full bg-white/[0.06] border border-white/[0.06] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/15'
-const gradientLabel = { background: 'linear-gradient(90deg, #8B5CF6 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
+import { fieldClass, gradientLabel, DemoBadge } from '@/lib/business-ui'
 
 // ── Page ───────────────────────────────────────────────────────────────────
 
@@ -209,6 +208,7 @@ export default function ServicesPage() {
         <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
         <h1 className="text-xl font-bold text-white">Services</h1>
         <p className="text-sm text-white/40 mt-0.5">Manage categories, items, and comp limits</p>
+        <DemoBadge>Sample Data — changes saved locally this session</DemoBadge>
       </div>
 
       {/* Tabs */}
@@ -231,7 +231,7 @@ export default function ServicesPage() {
               <div key={cat.id} className="bg-white/[0.05] border border-white/[0.06] rounded-2xl p-4">
                 <div className="flex items-start gap-2 mb-3">
                   <input type="text" value={cat.name} onChange={(e) => updateFoodCat(cat.id, 'name', e.target.value)} className={`${fieldClass} flex-1`} placeholder="Category name" />
-                  <button type="button" onClick={() => deleteFoodCat(cat.id)} className="mt-0.5 w-10 h-10 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
+                  <button type="button" onClick={() => deleteFoodCat(cat.id)} aria-label={`Delete ${cat.name} category`} className="mt-0.5 w-10 h-10 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
                     <Trash2 className="h-4 w-4 text-red-400" />
                   </button>
                 </div>
@@ -250,12 +250,12 @@ export default function ServicesPage() {
                         <div className="flex-1 flex flex-col gap-2 min-w-0">
                           <div className="flex items-center gap-2">
                             <input type="text" value={item.name} onChange={(e) => updateFoodItem(cat.id, item.id, 'name', e.target.value)} className={`${fieldClass} flex-1`} placeholder="Item name" />
-                            <button type="button" onClick={() => deleteFoodItem(cat.id, item.id)} className="w-9 h-9 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
+                            <button type="button" onClick={() => deleteFoodItem(cat.id, item.id)} aria-label={`Delete ${item.name}`} className="w-9 h-9 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
                               <Trash2 className="h-3.5 w-3.5 text-red-400" />
                             </button>
                           </div>
                           <div className="flex gap-2">
-                            <input type="number" min="0" step="0.01" value={item.price} onChange={(e) => updateFoodItem(cat.id, item.id, 'price', parseFloat(e.target.value) || 0)} className={`${fieldClass} flex-1`} placeholder="Price" />
+                            <input type="number" min="0" step="0.01" value={item.price} onChange={(e) => updateFoodItem(cat.id, item.id, 'price', Math.max(0, parseFloat(e.target.value) || 0))} className={`${fieldClass} flex-1`} placeholder="Price" />
                             <input type="number" min="1" value={item.compLimit} onChange={(e) => updateFoodItem(cat.id, item.id, 'compLimit', parseInt(e.target.value) || 1)} className={`${fieldClass} flex-1`} placeholder="Limit" />
                           </div>
                           <input type="text" value={item.description ?? ''} onChange={(e) => updateFoodItem(cat.id, item.id, 'description', e.target.value)} className={fieldClass} placeholder="Item description" />
@@ -285,7 +285,7 @@ export default function ServicesPage() {
                 {/* Group name + trash */}
                 <div className="flex items-start gap-2 mb-3">
                   <input type="text" value={group.name} onChange={(e) => updateGroup(group.id, 'name', e.target.value)} className={`${fieldClass} flex-1`} placeholder="Group name" />
-                  <button type="button" onClick={() => deleteGroup(group.id)} className="mt-0.5 w-10 h-10 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
+                  <button type="button" onClick={() => deleteGroup(group.id)} aria-label={`Delete ${group.name} group`} className="mt-0.5 w-10 h-10 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
                     <Trash2 className="h-4 w-4 text-red-400" />
                   </button>
                 </div>
@@ -310,7 +310,7 @@ export default function ServicesPage() {
                         </div>
                         <div className="flex-1 flex items-center gap-2 min-w-0">
                           <input type="text" value={svc.name} onChange={(e) => updateService(group.id, svc.id, 'name', e.target.value)} className={`${fieldClass} flex-1`} placeholder="Service name" />
-                          <button type="button" onClick={() => deleteService(group.id, svc.id)} className="w-9 h-9 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
+                          <button type="button" onClick={() => deleteService(group.id, svc.id)} aria-label={`Delete ${svc.name}`} className="w-9 h-9 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0">
                             <Trash2 className="h-3.5 w-3.5 text-red-400" />
                           </button>
                         </div>

@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { QRCodeSVG } from 'qrcode.react'
 import { AlertTriangle, Clock, QrCode, ArrowRight, RefreshCw } from 'lucide-react'
 import { Countdown } from '@/components/ui/countdown'
 import { secondsRemaining } from '@/lib/utils'
 import { useOrderStore } from '@/lib/stores/order-store'
+import { hapticSuccess, hapticError } from '@/lib/haptics'
 
 export default function RedeemPage() {
   const router = useRouter()
@@ -24,13 +25,23 @@ export default function RedeemPage() {
     return () => { wakeLockRef.current?.release().catch(() => {}) }
   }, [])
 
+  const hapticFiredRef = useRef(false)
   useEffect(() => {
-    if (activeRedemption) {
-      if (secondsRemaining(activeRedemption.expiresAt) === 0) setExpired(true)
+    if (activeRedemption && !hapticFiredRef.current) {
+      hapticFiredRef.current = true
+      if (secondsRemaining(activeRedemption.expiresAt) === 0) {
+        setExpired(true)
+        hapticError()
+      } else {
+        hapticSuccess()
+      }
     }
   }, [activeRedemption])
 
-  const handleExpired = () => setExpired(true)
+  const handleExpired = () => {
+    setExpired(true)
+    hapticError()
+  }
 
   // Empty state
   if (!activeRedemption) {

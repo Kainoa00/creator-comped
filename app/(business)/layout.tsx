@@ -37,8 +37,9 @@ const sidebarNav = [
 ]
 
 const mobileTabs = [
-  { href: '/dashboard/scanner', label: 'Scanner', icon: QrCode, matchPaths: ['/dashboard/scanner'] },
-  { href: '/dashboard/settings', label: 'Profile', icon: User, matchPaths: ['/dashboard/settings', '/dashboard/support'] },
+  { href: '/dashboard/scanner', label: 'Scanner', icon: QrCode, exact: false, matchPaths: ['/dashboard/scanner'] },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, exact: true, matchPaths: ['/dashboard'] },
+  { href: '/dashboard/settings', label: 'Profile', icon: User, exact: false, matchPaths: ['/dashboard/settings', '/dashboard/support'] },
 ]
 
 export default function BusinessLayout({ children }: { children: React.ReactNode }) {
@@ -56,17 +57,35 @@ export default function BusinessLayout({ children }: { children: React.ReactNode
     }
   }, [loading, user, router])
 
+  // Native network detection
   useEffect(() => {
-    setOffline(!navigator.onLine)
-    const onOnline = () => setOffline(false)
-    const onOffline = () => setOffline(true)
-    window.addEventListener('online', onOnline)
-    window.addEventListener('offline', onOffline)
-    return () => {
-      window.removeEventListener('online', onOnline)
-      window.removeEventListener('offline', onOffline)
-    }
+    let cleanup: (() => void) | null = null
+    let disposed = false
+    import('@/lib/network').then(({ watchNetwork }) => {
+      if (disposed) return
+      cleanup = watchNetwork((connected) => setOffline(!connected))
+    })
+    return () => { disposed = true; cleanup?.() }
   }, [])
+
+  // Register push notifications on native platforms
+  useEffect(() => {
+    if (!loading && user) {
+      import('@/lib/capacitor').then(({ isNative }) => {
+        if (!isNative()) return
+        import('@/lib/supabase').then(({ supabase, isDemoMode }) => {
+          if (isDemoMode || !supabase) return
+          supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session?.access_token) {
+              import('@/lib/push-notifications').then(({ registerPushNotifications }) => {
+                registerPushNotifications(user.userId, session.access_token).catch(() => {})
+              })
+            }
+          })
+        })
+      })
+    }
+  }, [loading, user])
 
   if (loading) {
     return (
@@ -161,28 +180,38 @@ export default function BusinessLayout({ children }: { children: React.ReactNode
         {children}
       </motion.div>
 
-      {/* Mobile 2-tab bottom nav */}
+      {/* Mobile 3-tab bottom nav */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#1a1a1a] border-t border-white/[0.06]"
-        style={{ height: '64px' }}
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#141414]/95 backdrop-blur-md border-t border-white/[0.06]"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         aria-label="Business navigation"
       >
-        <div className="h-full flex items-stretch">
+        <div className="flex items-stretch h-16">
           {mobileTabs.map((tab) => {
-            const active = tab.matchPaths.some((p) => pathname.startsWith(p))
+            const active = tab.exact
+              ? pathname === tab.href
+              : tab.matchPaths.some((p) => pathname.startsWith(p))
             const Icon = tab.icon
             return (
               <Link
                 key={tab.href}
                 href={tab.href}
                 className={cn(
-                  'flex-1 flex flex-col items-center justify-center gap-1 transition-colors',
-                  active ? 'text-white' : 'text-white/40'
+                  'flex-1 flex flex-col items-center justify-center gap-1 transition-all relative',
+                  active ? 'text-white' : 'text-white/35'
                 )}
                 aria-current={active ? 'page' : undefined}
               >
-                <Icon className="h-5 w-5" strokeWidth={active ? 2.5 : 1.75} />
-                <span className="text-[10px] font-semibold">{tab.label}</span>
+                {active && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-gradient-to-r from-[#FF6B35] to-[#4A90E2]" />
+                )}
+                <div className={cn(
+                  'w-10 h-8 rounded-xl flex items-center justify-center transition-all',
+                  active ? 'bg-white/10' : ''
+                )}>
+                  <Icon className="h-5 w-5" strokeWidth={active ? 2.5 : 1.75} />
+                </div>
+                <span className="text-[10px] font-semibold -mt-0.5">{tab.label}</span>
               </Link>
             )
           })}

@@ -9,7 +9,7 @@ export default function SupportPage() {
   return (
     <div className="min-h-screen bg-[#0B0B0D] text-white max-w-[430px] mx-auto">
       <header className="px-4 pt-14 pb-4 flex items-center gap-3">
-        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-colors">
+        <button onClick={() => router.back()} className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors">
           <ArrowLeft className="h-5 w-5 text-white" />
         </button>
         <h1 className="text-2xl font-bold text-white">Support</h1>
@@ -28,7 +28,7 @@ export default function SupportPage() {
         {/* Contact options */}
         <div className="space-y-3">
           <a
-            href="mailto:support@hive.app"
+            href="mailto:kaishintaku08@gmail.com"
             className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-4 flex items-center gap-4 hover:border-white/20 transition-colors block"
           >
             <div
@@ -39,12 +39,15 @@ export default function SupportPage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-white">Email Support</p>
-              <p className="text-xs text-gray-500 mt-0.5">support@hive.app</p>
+              <p className="text-xs text-gray-500 mt-0.5">kaishintaku08@gmail.com</p>
             </div>
             <ExternalLink className="h-4 w-4 text-gray-600" />
           </a>
 
-          <button className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-4 flex items-center gap-4 hover:border-white/20 transition-colors">
+          <a
+            href="sms:+18015550100"
+            className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-4 flex items-center gap-4 hover:border-white/20 transition-colors block"
+          >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
               style={{ background: 'linear-gradient(135deg, #4A90E2 0%, #FF6B35 100%)' }}
@@ -52,11 +55,11 @@ export default function SupportPage() {
               <MessageCircle className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-bold text-white">Live Chat</p>
-              <p className="text-xs text-gray-500 mt-0.5">Usually responds in under an hour</p>
+              <p className="text-sm font-bold text-white">Text Support</p>
+              <p className="text-xs text-gray-500 mt-0.5">Send us a text message</p>
             </div>
-            <span className="text-[10px] font-semibold bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Online</span>
-          </button>
+            <ExternalLink className="h-4 w-4 text-gray-600" />
+          </a>
 
           <button
             onClick={() => router.push('/rules')}

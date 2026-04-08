@@ -10,19 +10,30 @@ const config: CapacitorConfig = {
   appId: 'com.creatorcomped.app',
   appName: 'HIVE',
   webDir: 'out',
+  server: {
+    allowNavigation: ['*.supabase.co'],
+  },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 0,
+      launchShowDuration: 2000,
       backgroundColor: '#0a0a0a',
       androidScaleType: 'CENTER_CROP',
       showSpinner: false,
     },
     StatusBar: {
-      style: 'dark',
+      style: 'light',
       backgroundColor: '#0a0a0a',
     },
     PushNotifications: {
       presentationOptions: ['badge', 'sound', 'alert'],
+    },
+    Keyboard: {
+      style: 'dark',
+      resize: 'body',
+      resizeOnFullScreen: true,
+    },
+    CapacitorUpdater: {
+      autoUpdate: true,
     },
   },
   ios: {

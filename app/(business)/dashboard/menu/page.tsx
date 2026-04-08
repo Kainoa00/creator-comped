@@ -52,8 +52,7 @@ const initialCategories: MenuCategory[] = [
   },
 ]
 
-const fieldClass = 'w-full bg-white/[0.06] border border-white/[0.06] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-white/15'
-const gradientLabel = { background: 'linear-gradient(90deg, #8B5CF6 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
+import { fieldClass, gradientLabel, DemoBadge } from '@/lib/business-ui'
 
 export default function EditMenuPage() {
   const [categories, setCategories] = useState<MenuCategory[]>(initialCategories)
@@ -93,6 +92,7 @@ export default function EditMenuPage() {
         <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Business Dashboard</p>
         <h1 className="text-xl font-bold text-white">Edit Menu</h1>
         <p className="text-sm text-white/40 mt-0.5">Manage categories, items, and limits</p>
+        <DemoBadge>Sample Data — changes saved locally this session</DemoBadge>
       </div>
 
       {/* Category list */}
@@ -111,6 +111,7 @@ export default function EditMenuPage() {
               <button
                 type="button"
                 onClick={() => deleteCategory(cat.id)}
+                aria-label={`Delete ${cat.name} category`}
                 className="mt-0.5 w-10 h-10 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0"
               >
                 <Trash2 className="h-4 w-4 text-red-400" />
@@ -161,6 +162,7 @@ export default function EditMenuPage() {
                       <button
                         type="button"
                         onClick={() => deleteItem(cat.id, item.id)}
+                        aria-label={`Delete ${item.name}`}
                         className="w-9 h-9 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors shrink-0"
                       >
                         <Trash2 className="h-3.5 w-3.5 text-red-400" />
@@ -177,7 +179,7 @@ export default function EditMenuPage() {
                         min="0"
                         step="0.01"
                         value={item.price}
-                        onChange={(e) => updateItem(cat.id, item.id, 'price', parseFloat(e.target.value) || 0)}
+                        onChange={(e) => updateItem(cat.id, item.id, 'price', Math.max(0, parseFloat(e.target.value) || 0))}
                         className={fieldClass}
                         placeholder="0"
                       />

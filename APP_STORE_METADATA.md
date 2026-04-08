@@ -23,7 +23,7 @@ Ready to copy-paste into App Store Connect when submitting.
 
 ### Subtitle (30 chars max)
 ```
-Get comped. Eat free. Post once.
+Creating Local Buzz
 ```
 
 ### Description (4000 chars max)
@@ -150,8 +150,8 @@ All answers: **No**
 - [x] OAuth buttons hidden (non-functional UI removed)
 
 ### You Need to Do (manual steps)
-- [ ] Enroll in Apple Developer Program ($99/year): developer.apple.com/enroll
-- [ ] After approval (~24-48h): open Xcode → set Team in Signing & Capabilities
+- [x] Enroll in Apple Developer Program ($99/year): developer.apple.com/enroll
+- [x] After approval (~24-48h): open Xcode → set Team in Signing & Capabilities
 - [ ] Create app in App Store Connect → New App → enter metadata above
 - [ ] Register bundle ID `com.creatorcomped.app` (Xcode can auto-register with Automatic signing)
 - [ ] Take App Store screenshots on a real device or Simulator (see list above)

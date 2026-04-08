@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="hiveGrad" x1="160" y1="80" x2="860" y2="940" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#4A90E2"/>
+    </linearGradient>
+    <linearGradient id="hiveStroke" x1="160" y1="80" x2="860" y2="940" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e05a2a"/>
+      <stop offset="100%" stop-color="#3a78c0"/>
+    </linearGradient>
+  </defs>
+  <!-- Dark background -->
+  <rect width="1024" height="1024" rx="230" fill="#0B0B0D"/>
+  <!-- Beehive stacked ridges -->
+  <!-- Top cap -->
+  <rect x="370" y="120" width="284" height="115" rx="57" fill="url(#hiveGrad)" stroke="url(#hiveStroke)" stroke-width="6"/>
+  <!-- Ridge 2 -->
+  <rect x="300" y="255" width="424" height="115" rx="57" fill="url(#hiveGrad)" stroke="url(#hiveStroke)" stroke-width="6"/>
+  <!-- Ridge 3 -->
+  <rect x="235" y="390" width="554" height="115" rx="57" fill="url(#hiveGrad)" stroke="url(#hiveStroke)" stroke-width="6"/>
+  <!-- Ridge 4 (widest) -->
+  <rect x="200" y="525" width="624" height="115" rx="57" fill="url(#hiveGrad)" stroke="url(#hiveStroke)" stroke-width="6"/>
+  <!-- Ridge 5 -->
+  <rect x="235" y="660" width="554" height="115" rx="57" fill="url(#hiveGrad)" stroke="url(#hiveStroke)" stroke-width="6"/>
+  <!-- Ridge 6 (bottom) -->
+  <rect x="300" y="795" width="424" height="115" rx="57" fill="url(#hiveGrad)" stroke="url(#hiveStroke)" stroke-width="6"/>
+  <!-- Entrance hole -->
+  <circle cx="512" cy="585" r="80" fill="#0B0B0D"/>
+</svg>

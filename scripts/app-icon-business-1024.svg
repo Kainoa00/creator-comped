@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bizGrad" x1="160" y1="80" x2="860" y2="940" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4A90E2"/>
+      <stop offset="100%" stop-color="#1a5ca8"/>
+    </linearGradient>
+    <linearGradient id="bizStroke" x1="160" y1="80" x2="860" y2="940" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3a78c0"/>
+      <stop offset="100%" stop-color="#14478a"/>
+    </linearGradient>
+  </defs>
+  <!-- Dark background -->
+  <rect width="1024" height="1024" rx="230" fill="#0B0B0D"/>
+  <!-- Beehive stacked ridges (blue accent) -->
+  <rect x="370" y="120" width="284" height="115" rx="57" fill="url(#bizGrad)" stroke="url(#bizStroke)" stroke-width="6"/>
+  <rect x="300" y="255" width="424" height="115" rx="57" fill="url(#bizGrad)" stroke="url(#bizStroke)" stroke-width="6"/>
+  <rect x="235" y="390" width="554" height="115" rx="57" fill="url(#bizGrad)" stroke="url(#bizStroke)" stroke-width="6"/>
+  <rect x="200" y="525" width="624" height="115" rx="57" fill="url(#bizGrad)" stroke="url(#bizStroke)" stroke-width="6"/>
+  <rect x="235" y="660" width="554" height="115" rx="57" fill="url(#bizGrad)" stroke="url(#bizStroke)" stroke-width="6"/>
+  <rect x="300" y="795" width="424" height="115" rx="57" fill="url(#bizGrad)" stroke="url(#bizStroke)" stroke-width="6"/>
+  <!-- Entrance hole -->
+  <circle cx="512" cy="585" r="80" fill="#0B0B0D"/>
+</svg>

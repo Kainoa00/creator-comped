@@ -20,6 +20,8 @@ export async function signInWithEmail(
   email: string,
   password: string
 ): Promise<{ session: AuthSession | null; error: string | null }> {
+  console.log('[Auth] signIn attempt', { isDemoMode, supabaseInitialized: !!supabase, email })
+
   if (isDemoMode) {
     if (email && password) {
       // Demo: detect role from email pattern
@@ -43,6 +45,7 @@ export async function signInWithEmail(
   }
 
   const { data, error } = await supabase!.auth.signInWithPassword({ email, password })
+  console.log('[Auth] signInWithPassword result', { success: !!data.user, error: error?.message })
   if (error) return { session: null, error: error.message }
   if (!data.user) return { session: null, error: 'No user returned' }
 
@@ -53,8 +56,11 @@ export async function signInWithEmail(
     .eq('auth_user_id', data.user.id)
     .single()
 
+  console.log('[Auth] user_profiles lookup', { found: !!profile, error: profileError?.code, role: profile?.role })
+
   if (profileError || !profile) {
     // Fall back to legacy restaurant_users lookup for existing accounts
+    console.log('[Auth] Falling back to restaurant_users lookup')
     const { data: ru } = await supabase!
       .from('restaurant_users')
       .select('restaurant_id, role')
@@ -62,6 +68,7 @@ export async function signInWithEmail(
       .single()
 
     if (ru) {
+      console.log('[Auth] Legacy restaurant_users hit', { restaurantId: ru.restaurant_id })
       return {
         session: {
           userId: data.user.id,
@@ -74,6 +81,7 @@ export async function signInWithEmail(
       }
     }
 
+    console.log('[Auth] No profile or restaurant_users found — signing out')
     await supabase!.auth.signOut()
     return {
       session: null,
@@ -139,7 +147,8 @@ export async function signUpInfluencer(
     .single()
 
   if (creatorError) {
-    return { session: null, error: 'Failed to create creator profile' }
+    console.error('[Auth] Creator insert failed:', creatorError.message, creatorError.code, creatorError.details)
+    return { session: null, error: `Failed to create creator profile: ${creatorError.message}` }
   }
 
   // Create user_profiles row

@@ -13,6 +13,20 @@ const fs = require('fs')
 
 const root = path.resolve(__dirname, '..')
 
+// Load .env.local so validation picks up the same vars that next build will use
+const envLocalPath = path.join(root, '.env.local')
+if (fs.existsSync(envLocalPath)) {
+  for (const line of fs.readFileSync(envLocalPath, 'utf8').split('\n')) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    const eqIdx = trimmed.indexOf('=')
+    if (eqIdx === -1) continue
+    const key = trimmed.slice(0, eqIdx).trim()
+    const val = trimmed.slice(eqIdx + 1).trim()
+    if (!process.env[key]) process.env[key] = val
+  }
+}
+
 // Directories/files to exclude from the mobile build
 const EXCLUDE = [
   'app/admin',
@@ -21,10 +35,7 @@ const EXCLUDE = [
   'app/restaurant',
   'app/restaurant-admin',
   'app/_landing',
-  // Dynamic route pages — need SPA routing support before they can be included
-  // See: app/(influencer)/discover/[restaurantId] and profile/order/[id]
-  'app/(influencer)/discover/[restaurantId]',
-  'app/(influencer)/profile/order/[id]',
+  // Dynamic route pages now use generateStaticParams for static export
   'middleware.ts',
   'sentry.server.config.ts',
 ]
@@ -94,6 +105,15 @@ function restoreLandingPage() {
     move(LANDING_PAGE_BACKUP, LANDING_PAGE)
     console.log('  restored app/page.tsx')
   }
+}
+
+// Validate required env vars to prevent shipping demo-mode builds
+const requiredEnv = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY']
+const missing = requiredEnv.filter((k) => !process.env[k])
+if (missing.length > 0) {
+  console.error(`\n[build:mobile] ERROR: Missing required environment variables:\n  ${missing.join('\n  ')}`)
+  console.error('Set these in .env.local or your CI/CD environment to avoid shipping a demo-mode build.\n')
+  process.exit(1)
 }
 
 stashExcludes()

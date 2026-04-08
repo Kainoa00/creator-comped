@@ -6,15 +6,12 @@ import { cn } from '@/lib/utils'
 import { useSaveFlash } from '@/lib/hooks/useSaveFlash'
 import { DEMO_MENU_ITEMS } from '@/lib/demo-data'
 import { Check } from 'lucide-react'
+import { fieldClass as inputClass, gradientLabel as labelStyle } from '@/lib/business-ui'
 
 type Platform = 'IG_REEL' | 'TIKTOK' | 'BOTH'
 
 const menuItems = DEMO_MENU_ITEMS.filter((i) => i.restaurant_id === 'restaurant-001')
-
-// Gradient label style used across screenshot sections
 const labelClass = 'text-xs font-semibold mb-1.5'
-const labelStyle = { background: 'linear-gradient(90deg, #8B5CF6 0%, #4A90E2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
-const inputClass = 'w-full bg-white/[0.05] border border-white/[0.06] rounded-2xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20'
 
 const PLATFORMS: { value: Platform; label: string }[] = [
   { value: 'IG_REEL', label: 'Instagram Reel' },
@@ -89,7 +86,7 @@ export default function CampaignPage() {
                   </span>
                   <button
                     type="button"
-                    onClick={() => setItemLimits((prev) => ({ ...prev, [item.id]: (prev[item.id] ?? 1) + 1 }))}
+                    onClick={() => setItemLimits((prev) => ({ ...prev, [item.id]: Math.min(totalItemLimit, (prev[item.id] ?? 1) + 1) }))}
                     className="px-2 py-1 text-xs text-white/60 hover:text-white hover:bg-white/10 transition-colors"
                   >
                     +

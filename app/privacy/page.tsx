@@ -54,7 +54,8 @@ export default function PrivacyPage() {
           <p className="text-white/60 text-sm leading-relaxed">
             Your data is stored securely using Supabase, hosted in the United States. We use industry-standard
             encryption in transit (TLS) and at rest. We retain your account data for as long as your account
-            is active. You may request deletion of your account by contacting support@hive.app.
+            is active. You can delete your account directly from the app in Settings &gt; Delete Account,
+            or by contacting kaishintaku08@gmail.com.
           </p>
         </section>
 
@@ -70,9 +71,10 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-lg font-semibold mb-3">7. Camera Access</h2>
           <p className="text-white/60 text-sm leading-relaxed">
-            The HIVE app requests camera access solely to scan QR codes at partner restaurants
-            during the comp redemption process. We do not capture, store, or transmit photos or video
-            through this permission.
+            The HIVE app requests camera access to scan QR codes at partner restaurants
+            during the comp redemption process. Additionally, photo library access is used to
+            select proof images when submitting content deliverables. Photos are only used for
+            the purpose you provide them and are not shared with third parties.
           </p>
         </section>
 
@@ -88,8 +90,8 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold mb-3">9. Contact</h2>
           <p className="text-white/60 text-sm leading-relaxed">
             For privacy inquiries or to request account deletion, contact us at{' '}
-            <a href="mailto:support@hive.app" className="text-orange-400">
-              support@hive.app
+            <a href="mailto:kaishintaku08@gmail.com" className="text-orange-400">
+              kaishintaku08@gmail.com
             </a>.
           </p>
         </section>

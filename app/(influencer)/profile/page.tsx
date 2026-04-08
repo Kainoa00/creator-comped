@@ -4,10 +4,12 @@ import { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Instagram, Music2, ChevronRight, BarChart3, Clock, Trophy, Settings,
-  Bell, HelpCircle, FileText, UserPen, BadgeCheck,
+  Bell, HelpCircle, FileText, UserPen, BadgeCheck, QrCode, LogOut,
 } from 'lucide-react'
-import { formatNumber, formatDate, getInitials, relativeTime } from '@/lib/utils'
+import { formatNumber, formatDate, getInitials, relativeTime, secondsRemaining } from '@/lib/utils'
 import { useCreatorData } from '@/lib/hooks/useCreatorData'
+import { useOrderStore } from '@/lib/stores/order-store'
+import { signOut } from '@/lib/auth'
 
 function StatBlock({ label, value }: { label: string; value: string | number }) {
   return (
@@ -32,6 +34,7 @@ const NAV_ITEMS = [
 export default function ProfilePage() {
   const router = useRouter()
   const { creator, orders, loading } = useCreatorData()
+  const { activeRedemption } = useOrderStore()
 
   const totalComps = useMemo(
     () => orders.filter((o) => ['confirmed', 'proof_submitted', 'approved'].includes(o.status)).length,
@@ -145,6 +148,32 @@ export default function ProfilePage() {
           </div>
         </section>
 
+        {/* Active Comp banner */}
+        {activeRedemption && secondsRemaining(activeRedemption.expiresAt) > 0 && (
+          <section className="px-4 pt-6">
+            <button
+              onClick={() => router.push('/redeem')}
+              className="w-full rounded-2xl p-4 flex items-center gap-3 border border-green-500/30"
+              style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.12) 0%, rgba(74,144,226,0.12) 100%)' }}
+            >
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
+              >
+                <QrCode className="h-5 w-5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-sm font-bold text-white">Active Comp</p>
+                <p className="text-xs text-gray-400 truncate">{activeRedemption.restaurantName}</p>
+              </div>
+              <span className="text-[10px] font-semibold bg-green-500/20 text-green-400 px-2.5 py-1 rounded-full shrink-0">
+                Active
+              </span>
+              <ChevronRight className="h-4 w-4 text-gray-500 shrink-0" />
+            </button>
+          </section>
+        )}
+
         {/* Nav list */}
         <section className="px-4 pt-6 space-y-2">
           {NAV_ITEMS.map(({ icon: Icon, label, path }) => (
@@ -169,7 +198,11 @@ export default function ProfilePage() {
             </div>
             <div className="space-y-2">
               {recentOrders.map((order) => (
-                <div key={order.id} className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl px-4 py-3 flex items-center gap-3">
+                <button
+                  key={order.id}
+                  onClick={() => router.push(`/profile/order/${order.id}`)}
+                  className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl px-4 py-3 flex items-center gap-3 hover:border-white/20 active:bg-[#252525] transition-colors text-left"
+                >
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-white truncate">{order.restaurant_name}</p>
                     <p className="text-xs text-gray-500 mt-0.5">{relativeTime(order.created_at)}</p>
@@ -177,11 +210,26 @@ export default function ProfilePage() {
                   <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusColor(order.status)}`}>
                     {statusLabel(order.status)}
                   </span>
-                </div>
+                  <ChevronRight className="h-4 w-4 text-gray-600 shrink-0" />
+                </button>
               ))}
             </div>
           </section>
         )}
+
+        {/* Sign Out */}
+        <section className="px-4 pt-6 pb-8">
+          <button
+            onClick={async () => {
+              await signOut()
+              router.replace('/login')
+            }}
+            className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl flex items-center justify-center gap-2 px-4 py-4 hover:border-white/20 active:bg-[#252525] transition-colors"
+          >
+            <LogOut className="h-4 w-4 text-gray-400" />
+            <span className="text-sm font-semibold text-gray-400">Sign Out</span>
+          </button>
+        </section>
       </div>
     </div>
   )

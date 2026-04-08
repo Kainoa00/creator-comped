@@ -21,7 +21,7 @@ export default function Error({
       </p>
       <button
         onClick={reset}
-        className="px-5 py-2.5 text-sm font-medium bg-black text-white rounded-xl"
+        className="px-5 py-2.5 text-sm font-medium bg-hive-accent text-white rounded-xl"
       >
         Try again
       </button>

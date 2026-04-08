@@ -1,11 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { roleRedirectPath } from '@/lib/auth'
+import { isDemoMode } from '@/lib/supabase'
+
+function friendlyError(err: string): string {
+  const lower = err.toLowerCase()
+  if (lower.includes('fetch') || lower.includes('networkerror') || lower.includes('network'))
+    return 'Cannot reach server. Check your internet connection.'
+  if (lower.includes('not set up'))
+    return 'Account not found. Please contact support.'
+  if (lower.includes('invalid login') || lower.includes('invalid email or password'))
+    return 'Incorrect email or password.'
+  return err
+}
 
 export default function LoginPage() {
   const router = useRouter()
@@ -15,6 +27,32 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [resetSent, setResetSent] = useState(false)
+  const [offline, setOffline] = useState(false)
+
+  // Watch network status
+  useEffect(() => {
+    let cleanup: (() => void) | undefined
+    import('@/lib/network').then(({ watchNetwork }) => {
+      cleanup = watchNetwork((connected) => setOffline(!connected))
+    }).catch(() => {})
+    return () => cleanup?.()
+  }, [])
+
+  async function handleForgotPassword() {
+    if (!email) {
+      setError('Enter your email address first')
+      return
+    }
+    if (!isDemoMode) {
+      const { supabase } = await import('@/lib/supabase')
+      if (supabase) {
+        await supabase.auth.resetPasswordForEmail(email)
+      }
+    }
+    setResetSent(true)
+    setError(null)
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -22,7 +60,7 @@ export default function LoginPage() {
     setLoading(true)
     const err = await signIn(email, password)
     if (err) {
-      setError(err)
+      setError(friendlyError(err))
       setLoading(false)
       return
     }
@@ -38,6 +76,8 @@ export default function LoginPage() {
       <div className="w-full max-w-[430px] mx-auto">
         {/* Logo */}
         <div className="text-center pt-8 pb-12">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/hive-logo.svg" alt="HIVE" className="w-16 h-16 mx-auto mb-3" />
           <h1 className="text-3xl font-bold tracking-tight mb-2">
             <span
               className="bg-clip-text text-transparent"
@@ -46,7 +86,7 @@ export default function LoginPage() {
               HIVE
             </span>
           </h1>
-          <p className="text-gray-400 text-sm font-medium">Creators. Businesses. Comped.</p>
+          <p className="text-gray-400 text-sm font-medium">Creating Local Buzz</p>
         </div>
 
         {/* Form */}
@@ -85,9 +125,15 @@ export default function LoginPage() {
             </button>
           </div>
 
+          {offline && (
+            <div className="px-4 py-3 rounded-[14px] bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm text-center">
+              No internet connection. Login requires internet.
+            </div>
+          )}
+
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || offline}
             className="w-full py-4 rounded-[18px] text-white font-semibold text-base transition-opacity hover:opacity-90 disabled:opacity-60"
             style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
           >
@@ -95,9 +141,19 @@ export default function LoginPage() {
           </button>
 
           <div className="text-center">
-            <button type="button" className="text-gray-400 text-sm font-medium hover:text-gray-300 transition-colors">
-              Forgot password?
-            </button>
+            {resetSent ? (
+              <p className="text-green-400 text-sm font-medium">
+                Password reset link sent to {email}
+              </p>
+            ) : (
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="text-gray-400 text-sm font-medium hover:text-gray-300 active:text-white transition-colors"
+              >
+                Forgot password?
+              </button>
+            )}
           </div>
 
           {/* OAuth buttons hidden — Apple/Google sign-in not yet wired up

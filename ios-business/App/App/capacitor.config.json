@@ -1,0 +1,55 @@
+{
+	"appId": "com.creatorcomped.business",
+	"appName": "HIVE Business",
+	"webDir": "out-business",
+	"server": {
+		"allowNavigation": [
+			"*.supabase.co"
+		]
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 2000,
+			"backgroundColor": "#0a0a0a",
+			"androidScaleType": "CENTER_CROP",
+			"showSpinner": false
+		},
+		"StatusBar": {
+			"style": "light",
+			"backgroundColor": "#0a0a0a"
+		},
+		"PushNotifications": {
+			"presentationOptions": [
+				"badge",
+				"sound",
+				"alert"
+			]
+		},
+		"Keyboard": {
+			"style": "dark",
+			"resize": "body",
+			"resizeOnFullScreen": true
+		},
+		"CapacitorUpdater": {
+			"autoUpdate": true
+		}
+	},
+	"ios": {
+		"appendUserAgent": "HIVE-Business",
+		"path": "ios-business"
+	},
+	"android": {
+		"path": "android-business"
+	},
+	"packageClassList": [
+		"CAPCameraPlugin",
+		"HapticsPlugin",
+		"KeyboardPlugin",
+		"CAPNetworkPlugin",
+		"PushNotificationsPlugin",
+		"SharePlugin",
+		"SplashScreenPlugin",
+		"StatusBarPlugin",
+		"CapacitorUpdaterPlugin"
+	]
+}

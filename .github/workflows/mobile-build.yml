@@ -50,3 +50,26 @@ jobs:
             git commit -m "chore: update iOS web assets [skip ci]"
             git push
           fi
+
+      - name: Deploy OTA update via Capgo (Creator app)
+        if: ${{ secrets.CAPGO_API_KEY != '' }}
+        env:
+          CAPGO_API_KEY: ${{ secrets.CAPGO_API_KEY }}
+        run: npx @capgo/cli bundle upload
+
+      - name: Build business mobile (static export)
+        if: ${{ secrets.CAPGO_API_KEY != '' }}
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          BUILD_MODE: mobile
+          BUILD_TARGET: business
+          NEXT_PUBLIC_BUILD_MODE: mobile
+          NEXT_PUBLIC_BUILD_TARGET: business
+        run: npm run build:mobile:business
+
+      - name: Deploy OTA update via Capgo (Business app)
+        if: ${{ secrets.CAPGO_API_KEY != '' }}
+        env:
+          CAPGO_API_KEY: ${{ secrets.CAPGO_API_KEY }}
+        run: npx @capgo/cli bundle upload com.creatorcomped.business --path out-business

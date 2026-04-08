@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Mail, Phone, MessageCircle, ExternalLink, ChevronDown, HelpCircle } from 'lucide-react'
+import { Mail, MessageCircle, ExternalLink, ChevronDown, HelpCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const FAQS = [
@@ -28,8 +28,7 @@ const FAQS = [
 ]
 
 const CONTACT_CARDS = [
-  { icon: Mail, label: 'Email Support', sub: 'support@hive.app', href: 'mailto:support@hive.app' },
-  { icon: Phone, label: 'Phone Support', sub: '(555) 123-4567 · M–F 9am–5pm', href: 'tel:+15551234567' },
+  { icon: Mail, label: 'Email Support', sub: 'support@creatorcomped.com', href: 'mailto:support@creatorcomped.com' },
   { icon: MessageCircle, label: 'Live Chat', sub: 'Chat with us instantly', href: '#' },
 ]
 

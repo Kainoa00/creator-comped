@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft, ShoppingCart, Trash2, Plus, Minus, Check, AlertCircle, MapPin, Instagram, Music2, Zap, CheckCircle2 } from 'lucide-react'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useOrderStore } from '@/lib/stores/order-store'
+import { useAuth } from '@/lib/hooks/useAuth'
+import { supabase, isDemoMode } from '@/lib/supabase'
 import { generateRedemptionCode, generateQRToken, getCodeExpiry } from '@/lib/utils'
+import { hapticMedium, hapticHeavy, hapticLight } from '@/lib/haptics'
 import type { DeliverableType } from '@/lib/types'
 
 // ── Agreement Check ───────────────────────────────────────────
@@ -42,6 +45,7 @@ function CartItemRow({ name, qty, onIncrease, onDecrease, onRemove }: {
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={onDecrease}
+          aria-label={`Decrease ${name} quantity`}
           className="w-7 h-7 rounded-full border border-[#2a2a2a] flex items-center justify-center text-gray-400 hover:border-white/20 transition-colors"
         >
           <Minus className="h-3 w-3" />
@@ -49,12 +53,13 @@ function CartItemRow({ name, qty, onIncrease, onDecrease, onRemove }: {
         <span className="w-5 text-center text-sm font-bold text-white tabular-nums">{qty}</span>
         <button
           onClick={onIncrease}
+          aria-label={`Increase ${name} quantity`}
           className="w-7 h-7 rounded-full flex items-center justify-center text-white"
           style={{ background: 'linear-gradient(90deg, #FF6B35 0%, #4A90E2 100%)' }}
         >
           <Plus className="h-3 w-3" />
         </button>
-        <button onClick={onRemove} className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-red-400 transition-colors ml-0.5">
+        <button onClick={onRemove} aria-label={`Remove ${name}`} className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-red-400 transition-colors ml-0.5">
           <Trash2 className="h-3.5 w-3.5" />
         </button>
       </div>
@@ -89,6 +94,7 @@ export default function CartPage() {
   const router = useRouter()
   const { items, restaurant, deliverableReq, updateQty, removeItem, clearCart, totalItems } = useCartStore()
   const { setActiveRedemption } = useOrderStore()
+  const { user } = useAuth()
 
   const [agree1, setAgree1] = useState(false)
   const [agree2, setAgree2] = useState(false)
@@ -100,23 +106,60 @@ export default function CartPage() {
   const canPlace = allAgreed && cartTotal > 0
 
   const handleIncrease = (itemId: string, currentQty: number, maxQty: number) => {
-    if (currentQty < maxQty) updateQty(itemId, currentQty + 1)
+    if (currentQty < maxQty) {
+      updateQty(itemId, currentQty + 1)
+      hapticLight()
+    }
   }
 
   const handleDecrease = (itemId: string, currentQty: number) => {
-    if (currentQty <= 1) removeItem(itemId)
-    else updateQty(itemId, currentQty - 1)
+    if (currentQty <= 1) {
+      removeItem(itemId)
+      hapticMedium()
+    } else {
+      updateQty(itemId, currentQty - 1)
+      hapticLight()
+    }
   }
 
   const handlePlaceOrder = async () => {
     if (!canPlace || !restaurant) return
     setPlacing(true)
-    await new Promise((r) => setTimeout(r, 600))
+    hapticHeavy()
+
     const code = generateRedemptionCode()
     const token = generateQRToken()
     const expiry = getCodeExpiry()
+    let orderId = `order-demo-${Date.now()}`
+
+    // Persist order to Supabase in production
+    if (!isDemoMode && supabase && user?.creatorId) {
+      try {
+        const { data: orderRow, error } = await supabase.from('orders').insert({
+          creator_id: user.creatorId,
+          restaurant_id: restaurant.id,
+          restaurant_name: restaurant.name,
+          items: items.map((i) => ({
+            menu_item_id: i.menu_item.id,
+            menu_item_name: i.menu_item.name,
+            qty: i.qty,
+          })),
+          status: 'created',
+          redemption_code: code,
+          qr_token: token,
+          expires_at: expiry,
+        }).select('id').single()
+
+        if (!error && orderRow) {
+          orderId = orderRow.id
+        }
+      } catch (err) {
+        console.error('[Cart] Order creation failed:', err)
+      }
+    }
+
     setActiveRedemption({
-      orderId: `order-demo-${Date.now()}`,
+      orderId,
       restaurantName: restaurant.name,
       redemptionCode: code,
       qrToken: token,
@@ -133,7 +176,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen bg-[#0B0B0D] text-white flex flex-col max-w-[430px] mx-auto">
         <header className="px-4 pt-14 pb-4 flex items-center gap-3">
-          <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-colors">
+          <button onClick={() => router.back()} aria-label="Go back" className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors">
             <ArrowLeft className="h-5 w-5 text-white" />
           </button>
           <h1 className="text-lg font-bold text-white">Your Order</h1>
@@ -163,7 +206,7 @@ export default function CartPage() {
       {/* Header */}
       <header className="sticky top-0 z-20 bg-[#0B0B0D]/95 backdrop-blur-md border-b border-[#2a2a2a] px-4 pt-14 pb-4">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-colors">
+          <button onClick={() => router.back()} aria-label="Go back" className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors">
             <ArrowLeft className="h-5 w-5 text-white" />
           </button>
           <h1 className="text-lg font-bold text-white flex-1">Your Order</h1>
@@ -230,7 +273,7 @@ export default function CartPage() {
       </div>
 
       {/* Fixed bottom CTA */}
-      <div className="fixed bottom-24 left-0 right-0 z-30 px-4 max-w-[430px] mx-auto">
+      <div className="fixed left-0 right-0 z-30 px-4 max-w-[430px] mx-auto" style={{ bottom: 'calc(max(24px, env(safe-area-inset-bottom, 24px)) + 72px)' }}>
         <button
           onClick={handlePlaceOrder}
           disabled={!canPlace || placing}

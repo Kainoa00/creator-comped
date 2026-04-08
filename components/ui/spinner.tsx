@@ -28,7 +28,7 @@ export function Spinner({ size = 'md', className }: SpinnerProps) {
 
 export function FullPageSpinner() {
   return (
-    <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-[#0B0B0D] flex items-center justify-center z-50">
       <div className="flex flex-col items-center gap-4">
         <Spinner size="xl" />
         <p className="text-hive-text-secondary text-sm">Loading...</p>

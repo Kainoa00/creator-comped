@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Instagram, Music2, CheckCircle2, Link2, ChevronRight, AlertTriangle } from 'lucide-react'
 import { useOrderStore } from '@/lib/stores/order-store'
+import { useCreatorData } from '@/lib/hooks/useCreatorData'
+import { supabase, isDemoMode } from '@/lib/supabase'
 import { DEMO_ORDERS } from '@/lib/demo-data'
 import type { DeliverableType } from '@/lib/types'
 
@@ -17,9 +19,13 @@ function validateUrl(url: string, platform: ProofPlatform): boolean {
 export default function ProofPage() {
   const router = useRouter()
   const activeRedemption = useOrderStore((s) => s.activeRedemption)
+  const { orders } = useCreatorData()
 
-  // Fallback: use demo order if no active redemption
-  const order = DEMO_ORDERS.find((o) => o.creator_id === 'creator-001' && o.status === 'confirmed')
+  // Find the most recent confirmed order that needs proof
+  const order = activeRedemption
+    ? orders.find((o) => o.id === activeRedemption.orderId)
+    : orders.find((o) => o.status === 'confirmed')
+    ?? DEMO_ORDERS.find((o) => o.status === 'confirmed') // demo fallback
   const deliverableType: DeliverableType | null = order?.deliverable_requirement?.allowed_types ?? null
 
   const [selectedPlatform, setSelectedPlatform] = useState<ProofPlatform>(
@@ -51,7 +57,25 @@ export default function ProofPage() {
   const handleSubmit = async () => {
     if (!urlValid) { setUrlTouched(true); return }
     setSubmitting(true)
-    await new Promise((r) => setTimeout(r, 800))
+
+    if (!isDemoMode && supabase && order) {
+      try {
+        // Insert proof submission
+        await supabase.from('proof_submissions').insert({
+          order_id: order.id,
+          creator_id: order.creator_id,
+          platform: activePlatform,
+          url,
+          review_status: 'pending',
+          deadline: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
+        })
+        // Update order status
+        await supabase.from('orders').update({ status: 'proof_submitted' }).eq('id', order.id)
+      } catch (err) {
+        console.error('[Proof] Submission failed:', err)
+      }
+    }
+
     setSubmitting(false)
     setSubmitted(true)
   }
@@ -101,7 +125,7 @@ export default function ProofPage() {
     <div className="min-h-screen bg-[#0B0B0D] text-white flex flex-col max-w-[430px] mx-auto">
       {/* Header */}
       <header className="px-4 pt-14 pb-4 flex items-center gap-3">
-        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-colors">
+        <button onClick={() => router.back()} className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors">
           <ArrowLeft className="h-5 w-5 text-white" />
         </button>
         <h1 className="text-lg font-bold text-white">Submit Proof</h1>
@@ -149,7 +173,7 @@ export default function ProofPage() {
             </div>
             {(order?.deliverable_requirement?.required_hashtags?.length ?? 0) > 0 && (
               <div className="mt-3 flex flex-wrap gap-1.5">
-                {order!.deliverable_requirement!.required_hashtags.map((h) => (
+                {order?.deliverable_requirement?.required_hashtags?.map((h) => (
                   <span key={h} className="text-xs bg-white/10 text-gray-300 border border-[#2a2a2a] rounded-lg px-2.5 py-0.5 font-semibold">{h}</span>
                 ))}
               </div>

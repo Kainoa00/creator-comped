@@ -15,6 +15,7 @@ import {
   Zap,
   CheckCircle2,
   XCircle,
+  Share2,
 } from 'lucide-react'
 import { isInBlackout } from '@/lib/utils'
 import {
@@ -23,6 +24,8 @@ import {
   getDeliverableForRestaurant,
 } from '@/lib/demo-data'
 import { useCartStore } from '@/lib/stores/cart-store'
+import { hapticLight } from '@/lib/haptics'
+import { shareContent } from '@/lib/share'
 import type { Restaurant, MenuItem, DeliverableRequirement, DeliverableType } from '@/lib/types'
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -203,12 +206,14 @@ export default function RestaurantDetail({ params }: { params: Promise<{ restaur
   const handleAdd = (item: MenuItem) => {
     if (getItemQty(item.id) >= item.max_qty_per_order || maxReached) return
     addItem(item)
+    hapticLight()
   }
 
   const handleRemove = (item: MenuItem) => {
     const qty = getItemQty(item.id)
     if (qty <= 1) removeItem(item.id)
     else updateQty(item.id, qty - 1)
+    hapticLight()
   }
 
   return (
@@ -218,7 +223,8 @@ export default function RestaurantDetail({ params }: { params: Promise<{ restaur
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}
-            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-colors"
+            aria-label="Go back"
+            className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors"
           >
             <ArrowLeft className="h-5 w-5 text-white" />
           </button>
@@ -226,6 +232,20 @@ export default function RestaurantDetail({ params }: { params: Promise<{ restaur
             <h1 className="text-lg font-bold text-white truncate">{restaurant.name}</h1>
             <p className="text-xs text-gray-500 truncate">{restaurant.address}</p>
           </div>
+          <button
+            onClick={() => {
+              hapticLight()
+              shareContent({
+                title: `${restaurant.name} on HIVE`,
+                text: `Check out ${restaurant.name} — get comped on HIVE!`,
+                url: `https://creatorcomped.com/discover/${restaurant.id}`,
+              })
+            }}
+            className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors shrink-0"
+            aria-label={`Share ${restaurant.name}`}
+          >
+            <Share2 className="h-4.5 w-4.5 text-white/60" />
+          </button>
         </div>
       </header>
 
@@ -355,7 +375,10 @@ export default function RestaurantDetail({ params }: { params: Promise<{ restaur
       </div>
 
       {/* Sticky cart CTA */}
-      <div className={`fixed bottom-24 left-0 right-0 z-30 px-4 max-w-[430px] mx-auto transition-all duration-300 ${cartTotal > 0 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+      <div
+        className={`fixed left-0 right-0 z-30 px-4 max-w-[430px] mx-auto transition-all duration-300 ${cartTotal > 0 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}
+        style={{ bottom: 'calc(max(24px, env(safe-area-inset-bottom, 24px)) + 72px)' }}
+      >
         <button
           onClick={() => router.push('/cart')}
           disabled={cartTotal === 0}

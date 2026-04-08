@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Camera, Instagram, Music2 } from 'lucide-react'
+import { useCreatorData } from '@/lib/hooks/useCreatorData'
+import { supabase, isDemoMode } from '@/lib/supabase'
 import { DEMO_ACTIVE_CREATOR } from '@/lib/demo-data'
 import { getInitials } from '@/lib/utils'
 
@@ -29,7 +31,8 @@ function Field({ label, value, onChange, type = 'text', placeholder }: {
 
 export default function EditProfilePage() {
   const router = useRouter()
-  const creator = DEMO_ACTIVE_CREATOR
+  const { creator: liveCreator, loading: creatorLoading } = useCreatorData()
+  const creator = liveCreator ?? DEMO_ACTIVE_CREATOR
   const initials = getInitials(creator.name)
 
   const [name, setName] = useState(creator.name)
@@ -42,7 +45,20 @@ export default function EditProfilePage() {
 
   const handleSave = async () => {
     setSaving(true)
-    await new Promise((r) => setTimeout(r, 600))
+
+    if (!isDemoMode && supabase && creator.id) {
+      try {
+        await supabase.from('creators').update({
+          name,
+          ig_handle: igHandle || null,
+          tiktok_handle: tiktokHandle || null,
+          phone: phone || null,
+        }).eq('id', creator.id)
+      } catch (err) {
+        console.error('[EditProfile] Save failed:', err)
+      }
+    }
+
     setSaving(false)
     router.back()
   }
@@ -51,7 +67,7 @@ export default function EditProfilePage() {
     <div className="min-h-screen bg-[#0B0B0D] text-white max-w-[430px] mx-auto">
       {/* Header */}
       <header className="px-4 pt-14 pb-4 flex items-center gap-3">
-        <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-colors">
+        <button onClick={() => router.back()} className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] active:bg-[#252525] transition-colors">
           <ArrowLeft className="h-5 w-5 text-white" />
         </button>
         <h1 className="text-2xl font-bold text-white flex-1">Edit Profile</h1>
@@ -76,7 +92,23 @@ export default function EditProfilePage() {
               {initials}
             </div>
             <button
-              className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] flex items-center justify-center"
+              onClick={() => {
+                // Photo upload via native camera or gallery
+                import('@/lib/capacitor').then(({ isNative }) => {
+                  if (isNative()) {
+                    import('@capacitor/camera').then(({ Camera, CameraResultType, CameraSource }) => {
+                      Camera.getPhoto({
+                        quality: 80,
+                        allowEditing: true,
+                        resultType: CameraResultType.Uri,
+                        source: CameraSource.Prompt,
+                      }).catch(() => {})
+                    })
+                  }
+                })
+              }}
+              aria-label="Change profile photo"
+              className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] flex items-center justify-center active:bg-[#252525]"
             >
               <Camera className="h-3.5 w-3.5 text-gray-400" />
             </button>

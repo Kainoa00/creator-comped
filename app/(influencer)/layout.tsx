@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { MapPin, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/lib/hooks/useAuth'
+import { isNative } from '@/lib/capacitor'
 
 const tabs = [
   {
@@ -39,16 +40,30 @@ export default function InfluencerLayout({ children }: { children: React.ReactNo
     }
   }, [loading, user, router])
 
+  // Register push notifications on native platforms
   useEffect(() => {
-    setOffline(!navigator.onLine)
-    const onOnline = () => setOffline(false)
-    const onOffline = () => setOffline(true)
-    window.addEventListener('online', onOnline)
-    window.addEventListener('offline', onOffline)
-    return () => {
-      window.removeEventListener('online', onOnline)
-      window.removeEventListener('offline', onOffline)
+    if (!loading && user && isNative()) {
+      import('@/lib/supabase').then(({ supabase, isDemoMode }) => {
+        if (isDemoMode || !supabase) return
+        supabase.auth.getSession().then(({ data: { session } }) => {
+          if (session?.access_token) {
+            import('@/lib/push-notifications').then(({ registerPushNotifications }) => {
+              registerPushNotifications(user.userId, session.access_token).catch(() => {})
+            })
+          }
+        })
+      })
     }
+  }, [loading, user])
+
+  useEffect(() => {
+    let cleanup: (() => void) | null = null
+    let disposed = false
+    import('@/lib/network').then(({ watchNetwork }) => {
+      if (disposed) return
+      cleanup = watchNetwork((connected) => setOffline(!connected))
+    })
+    return () => { disposed = true; cleanup?.() }
   }, [])
 
   if (loading) {
@@ -77,7 +92,8 @@ export default function InfluencerLayout({ children }: { children: React.ReactNo
       {/* Floating pill bottom nav */}
       {!isProofPage && (
         <nav
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
+          className="fixed left-1/2 -translate-x-1/2 z-50"
+          style={{ bottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}
           aria-label="Main navigation"
         >
           <div className="flex items-center bg-[#1a1a1a] rounded-[26px] px-2 py-2 gap-1 shadow-xl shadow-black/40 border border-white/[0.06]">

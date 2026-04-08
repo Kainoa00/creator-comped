@@ -5,6 +5,7 @@
 import { isNative, getPlatform } from './capacitor'
 
 let _registered = false
+let _registering = false
 
 /**
  * Creates an authenticated Supabase client using the user's JWT
@@ -31,7 +32,8 @@ export async function registerPushNotifications(
   authUserId: string,
   accessToken: string
 ): Promise<void> {
-  if (!isNative() || _registered) return
+  if (!isNative() || _registered || _registering) return
+  _registering = true
 
   try {
     const { PushNotifications } = await import('@capacitor/push-notifications')
@@ -87,6 +89,8 @@ export async function registerPushNotifications(
     _registered = true
   } catch (err) {
     console.error('[Push] Setup failed:', err)
+  } finally {
+    _registering = false
   }
 }
 

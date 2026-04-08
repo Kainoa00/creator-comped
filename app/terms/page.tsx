@@ -109,8 +109,8 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold mb-3">11. Contact</h2>
           <p className="text-white/60 text-sm leading-relaxed">
             Questions about these terms? Contact us at{' '}
-            <a href="mailto:support@hive.app" className="text-orange-400">
-              support@hive.app
+            <a href="mailto:kaishintaku08@gmail.com" className="text-orange-400">
+              kaishintaku08@gmail.com
             </a>.
           </p>
         </section>
